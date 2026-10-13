@@ -1,0 +1,32 @@
+{
+  "id": "/sokuryo-quiz/",
+  "name": "測点ノート｜測量士補240問",
+  "short_name": "測量士補240問",
+  "description": "全8分野240問。分野別演習・誤答復習・手入力の計算補助。インストール後はオフラインでも学習できます。",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "/sokuryo-quiz/",
+  "scope": "/sokuryo-quiz/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#edf1f4",
+  "theme_color": "#16324a",
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
