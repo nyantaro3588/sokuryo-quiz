@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>測量士補 一問一答（ランダム出題）｜測点ノート</title>
+<meta name="description" content="測量士補試験の問題を全20問、順不同で出題します。選ぶとその場で正誤と解説が出ます。登録不要・無料。">
+<meta property="og:title" content="測量士補 一問一答（ランダム出題）｜測点ノート">
+<meta property="og:description" content="全20問、順不同。選んだ直後に解説が出ます。">
+<style>
+:root{
+  --ink:#16324A; --ink-soft:#4A6480; --paper:#EDF1F4;
+  --rule:#C3D4E0; --vermilion:#B4372F; --stake:#C8952A;
+  --white:#FBFCFD; --correct:#1F6F5C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  line-height:1.8; font-size:16px;
+  background-image:
+    linear-gradient(var(--rule) .5px,transparent .5px),
+    linear-gradient(90deg,var(--rule) .5px,transparent .5px);
+  background-size:28px 28px; background-position:-.5px -.5px;
+}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho",YuMincho,serif}
+.mono{font-family:"SFMono-Regular",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+
+.masthead{border-bottom:1px solid var(--rule);background:rgba(251,252,253,.88)}
+.masthead .wrap{display:flex;align-items:baseline;gap:12px;padding:14px 20px}
+.masthead a{color:var(--ink);text-decoration:none;font-size:17px;font-weight:600;letter-spacing:.12em}
+.masthead .here{font-size:11px;letter-spacing:.2em;color:var(--ink-soft)}
+
+.head{padding:36px 0 26px}
+.eyebrow{display:inline-block;font-size:11px;letter-spacing:.26em;color:var(--vermilion);
+  border-bottom:1px solid var(--vermilion);padding-bottom:3px;margin-bottom:16px}
+h1{font-size:clamp(22px,5vw,31px);line-height:1.5;font-weight:600}
+.note-small{margin-top:14px;font-size:13px;color:var(--ink-soft)}
+
+/* progress */
+.bar{display:flex;gap:3px;margin:0 0 22px}
+.bar i{flex:1;height:4px;background:var(--rule);display:block}
+.bar i.done{background:var(--ink)}
+.bar i.now{background:var(--vermilion)}
+
+/* card */
+.card{background:var(--white);border:1px solid var(--rule);padding:24px 22px;margin-bottom:18px}
+.meta{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.qno{font-size:12px;letter-spacing:.1em;color:var(--ink-soft)}
+.field{font-size:10px;letter-spacing:.12em;padding:2px 8px;border:1px solid var(--stake);color:var(--stake)}
+.qtext{font-size:17px;line-height:1.75;margin-bottom:20px}
+.qtext strong{background:linear-gradient(transparent 62%,rgba(180,55,47,.22) 62%)}
+
+.choices{list-style:none;display:grid;gap:9px}
+.choice{
+  display:grid;grid-template-columns:34px 1fr;align-items:start;gap:0;
+  width:100%;text-align:left;background:var(--white);
+  border:1px solid var(--rule);font:inherit;color:inherit;cursor:pointer;padding:0;
+}
+.choice:hover:not(:disabled){border-color:var(--ink)}
+.choice:disabled{cursor:default}
+.choice .num{
+  display:flex;align-items:center;justify-content:center;align-self:stretch;
+  border-right:1px solid var(--rule);font-size:13px;color:var(--ink-soft);
+  background:linear-gradient(180deg,#F4F7F9,#EAF0F4);
+}
+.choice .txt{padding:11px 14px;font-size:15px;line-height:1.7}
+.choice.is-correct{border-color:var(--correct);background:#F2F8F6}
+.choice.is-correct .num{background:var(--correct);color:#fff;border-right-color:var(--correct)}
+.choice.is-wrong{border-color:var(--vermilion);background:#FBF3F2}
+.choice.is-wrong .num{background:var(--vermilion);color:#fff;border-right-color:var(--vermilion)}
+
+.verdict{margin-top:20px;border-top:1px solid var(--rule);padding-top:16px}
+.verdict .mark{font-size:14px;font-weight:600;letter-spacing:.08em;margin-bottom:8px}
+.verdict.ok .mark{color:var(--correct)}
+.verdict.ng .mark{color:var(--vermilion)}
+.verdict p{font-size:14px;color:var(--ink-soft)}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  font:inherit;font-size:14px;letter-spacing:.06em;padding:11px 22px;cursor:pointer;
+  background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+}
+.btn:hover{background:#0E2537}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:rgba(22,50,74,.06)}
+
+/* result */
+.score{background:var(--ink);color:var(--paper);padding:34px 26px;margin-bottom:18px}
+.score .big{font-size:44px;font-weight:600;letter-spacing:.02em;line-height:1.1}
+.score .big small{font-size:17px;font-weight:400;color:var(--rule)}
+.score .label{font-size:11px;letter-spacing:.24em;color:var(--stake);margin-bottom:12px}
+.score p{font-size:14px;color:#C3D4E0;margin-top:16px;max-width:32em}
+.score .link{
+  display:inline-block;margin-top:20px;font-size:14px;color:var(--paper);
+  text-decoration:none;border-bottom:1px solid var(--stake);padding-bottom:3px;
+}
+.score .link:hover{color:#fff;border-bottom-color:#fff}
+
+.review{list-style:none;font-size:14px;display:grid;gap:7px;margin-top:4px}
+.review li{display:grid;grid-template-columns:24px 1fr;gap:8px;color:var(--ink-soft)}
+.review .r-ok{color:var(--correct)}
+.review .r-ng{color:var(--vermilion)}
+
+footer{border-top:1px solid var(--rule);margin-top:44px;padding:22px 0 40px;font-size:12px;color:var(--ink-soft)}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:var(--ink-soft)}
+
+:focus-visible{outline:2px solid var(--vermilion);outline-offset:2px}
+@media (max-width:520px){
+  .card{padding:20px 16px}
+  .qtext{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<link rel="canonical" href="https://nyantaro3588.github.io/sokuryo-quiz/intro20.html">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="mincho" href="https://nyantaro3588.github.io/sokuryo/">測点ノート</a>
+    <span class="here mono">T-1 / RANDOM QUIZ</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="head">
+    <span class="eyebrow">測量士補・一問一答</span>
+    <h1 class="mincho">全20問、順不同。<br>選んだ直後に解説が出ます。</h1>
+    <p class="note-small">出題順は毎回変わります。答えを選ぶとその場で正誤と解説が表示されます。登録不要、成績はどこにも送信されません。</p>
+  </div>
+
+  <div id="bar" class="bar" aria-hidden="true"></div>
+  <div id="stage" role="region" aria-live="polite"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span><a href="https://nyantaro3588.github.io/sokuryo/">← 測点ノートに戻る</a>　<a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a></span>
+    <span class="mono">T-1</span>
+  </div>
+</footer>
+
+<script>
+const QUESTIONS = [
+  {f:"測量法", q:"測量法に規定する測量について、正しいものはどれか。",
+   c:["基本測量とは、国土地理院以外の者が行う測量である",
+      "公共測量には、その実施費用の全部または一部を国または公共団体が負担・補助して実施する測量が含まれる",
+      "基本測量および公共測量以外の測量は、測量法の適用を一切受けない",
+      "公共測量の測量成果は、承認を得ずに複製することができる"],
+   a:1, e:"基本測量は国土地理院が行う測量です。公共測量の測量成果を複製するには、測量計画機関の承認が必要です。"},
+
+  {f:"測量法", q:"公共測量に関する記述のうち、正しいものはどれか。",
+   c:["測量計画機関は、公共測量を実施する前に実施計画書を国土地理院長に提出しなければならない",
+      "作業規程は、測量作業機関が定めて国土地理院長の承認を受ける",
+      "公共測量の測量成果は、いかなる場合も複製することができない",
+      "測量士補は、測量に関する計画を作製することができる"],
+   a:0, e:"作業規程は測量計画機関が定め、国土交通大臣の承認を受けます。測量士補は計画の作製はできず、計画に従って測量に従事します。"},
+
+  {f:"測量法", q:"永久標識に関する記述のうち、正しいものはどれか。",
+   c:["基本測量の永久標識を移転しようとする者は、国土地理院長の承認を得なければならない",
+      "永久標識は、測量作業機関が任意の場所に設置できる",
+      "永久標識が亡失した場合、届出の必要はない",
+      "永久標識には木杭を用いるものと定められている"],
+   a:0, e:"基本測量の測量標の移転には国土地理院長の承認が必要です。永久標識は金属標や石標など、長期保存に耐える構造のものを用います。"},
+
+  {f:"誤差論", q:"同じ距離を独立に4回測定したところ、1回の観測の標準偏差は20mmであった。最確値（平均値）の標準偏差はいくらか。",
+   c:["5mm","10mm","20mm","40mm"],
+   a:1, e:"最確値の標準偏差は、1回の観測の標準偏差を観測回数の平方根で割ります。20 ÷ √4 = 10mm。"},
+
+  {f:"多角測量", q:"閉合トラバース測量において、多角形の測点数が6であるとき、内角の総和は何度か。",
+   c:["540度","720度","900度","1,080度"],
+   a:1, e:"n角形の内角の総和は 180°×(n−2)。180 × (6−2) = 720度です。"},
+
+  {f:"多角測量", q:"平面直角座標系において、点Aから点Bへの方向角が210度であるとき、点Bから点Aへの方向角（逆方向角）はいくらか。",
+   c:["30度","120度","300度","330度"],
+   a:0, e:"逆方向角は元の方向角に180度を加減します。210 − 180 = 30度。"},
+
+  {f:"水準測量", q:"レベルを前後の標尺の中間に据え、前視と後視の視準距離を等しくすることで<strong>消去または軽減できないもの</strong>はどれか。",
+   c:["視準線誤差","地球の曲率による誤差","大気の屈折による誤差","標尺の目盛誤差"],
+   a:3, e:"等距離視準で消えるのは器械と大気に起因する誤差です。標尺そのものの目盛誤差は、据付位置と無関係に残ります。"},
+
+  {f:"水準測量", q:"標高10.000mの点Aに標尺を立てて後視を読み1.250m、点Bの前視を読み0.870mであった。点Bの標高はいくらか。",
+   c:["9.620m","10.380m","10.870m","12.120m"],
+   a:1, e:"前地点の標高＋後視−前視。10.000 + 1.250 − 0.870 = 10.380m。"},
+
+  {f:"水準測量", q:"水準測量において、標尺の零目盛誤差を消去するために有効な方法はどれか。",
+   c:["レベルの据付回数（測点数）を偶数回にする","往復観測を行う","三脚をできるだけ低く据える","標尺を後視のみに用いる"],
+   a:0, e:"2本の標尺を交互に用い、据付回数を偶数にすることで、両標尺の零目盛誤差が相殺されます。"},
+
+  {f:"地形測量", q:"トータルステーションを用いた測量に関する記述のうち、<strong>最も適当でないもの</strong>はどれか。",
+   c:["距離測定は、変調した光波の位相差を利用している",
+      "測距値は気温や気圧の影響を受けるため、気象補正を行う",
+      "反射鏡を用いずに測距できる機種がある",
+      "鉛直角の観測では、望遠鏡正・反の両面観測を行う必要はない"],
+   a:3, e:"正・反の両面観測により、視準軸誤差や鉛直軸目盛の偏心誤差を消去します。省略はできません。"},
+
+  {f:"地形測量", q:"等高線に関する記述のうち、<strong>誤っている</strong>ものはどれか。",
+   c:["等高線は、途中で分岐したり交差したりしない",
+      "尾根線および谷線は、等高線と直交する",
+      "等高線の間隔が広い場所は、傾斜が急である",
+      "等高線が谷を横切るときは、上流に向かって曲がる"],
+   a:2, e:"間隔が広いとは、同じ高低差に対して水平距離が長いということです。すなわち傾斜は緩やかになります。"},
+
+  {f:"地形測量", q:"縮尺1/25,000の地形図において、主曲線の間隔は何mか。",
+   c:["5m","10m","20m","50m"],
+   a:1, e:"1/25,000では主曲線10m、計曲線50m、補助曲線5mおよび2.5mです。"},
+
+  {f:"写真測量", q:"画面距離10cm、撮影高度2,000mで撮影した鉛直空中写真の写真縮尺はいくらか。",
+   c:["1/10,000","1/15,000","1/20,000","1/25,000"],
+   a:2, e:"写真縮尺は画面距離÷撮影高度。0.1m ÷ 2,000m = 1/20,000。"},
+
+  {f:"写真測量", q:"鉛直空中写真の撮影において、同一コース内の隣接写真との重複度（オーバーラップ）は一般に何パーセント程度とするか。",
+   c:["30パーセント","45パーセント","60パーセント","90パーセント"],
+   a:2, e:"同一コース内は約60パーセント、隣接コース間（サイドラップ）は約30パーセントが標準です。"},
+
+  {f:"写真測量", q:"画面距離15cm、撮影高度3,000mの鉛直写真において、主点から10cm離れた位置に写る高さ100mの建物の像のずれ（比高による移動量）はおよそいくらか。",
+   c:["1.7mm","3.3mm","5.0mm","6.7mm"],
+   a:1, e:"移動量は（主点からの距離×比高）÷撮影高度。0.10 × 100 ÷ 3,000 = 0.0033m ＝ 約3.3mm。"},
+
+  {f:"GNSS測量", q:"GNSS測量に関する記述のうち、最も適当なものはどれか。",
+   c:["干渉測位方式では、観測点間の視通を確保する必要がある",
+      "スタティック法は短時間の観測で高精度が得られ、短距離の観測に適する",
+      "電子基準点を既知点として利用することができる",
+      "上空視界が確保されていれば、樹木の下でも支障なく観測できる"],
+   a:2, e:"GNSSは観測点間の視通を必要としません。スタティック法は長時間観測で長距離向き、樹木は電波を遮るため観測に適しません。"},
+
+  {f:"GNSS測量", q:"GNSS測量に関する記述のうち、<strong>最も適当でないもの</strong>はどれか。",
+   c:["楕円体高から標高を求めるには、ジオイド高を用いる",
+      "電離層の影響は、2周波の観測により軽減できる",
+      "サイクルスリップが生じても、解析結果には影響しない",
+      "衛星の配置の良否は、DOPの値によって評価できる"],
+   a:2, e:"サイクルスリップは搬送波位相の計数が飛ぶ現象で、基線解析の精度を著しく損ないます。"},
+
+  {f:"地図編集", q:"地図編集の原則に関する記述のうち、最も適当なものはどれか。",
+   c:["編集の基となる資料は、編集しようとする地図より小縮尺のものを用いる",
+      "転位においては、道路より三角点などの基準点を優先する",
+      "有形物より無形物を優先して表示する",
+      "注記は、対象物の位置が不明確になっても差し支えない"],
+   a:1, e:"転位の優先順位は、位置の正確さが要求される基準点や自然物が上位、行政界などの無形物が下位です。編集資料は同縮尺以上（大縮尺）のものを用います。"},
+
+  {f:"応用測量", q:"円曲線において、曲線半径R＝200m、交角I＝60度であるとき、接線長TLはおよそいくらか。",
+   c:["100.00m","115.47m","173.21m","209.44m"],
+   a:1, e:"TL＝R・tan(I/2)＝200 × tan30度 ≒ 115.47m。なお曲線長CLは約209.44mです。"},
+
+  {f:"応用測量", q:"座標が A(10, 10)、B(30, 10)、C(30, 40) である三角形の面積はいくらか。単位はm。",
+   c:["150平方メートル","300平方メートル","600平方メートル","900平方メートル"],
+   a:1, e:"底辺AB＝20m、高さBC＝30m。20 × 30 ÷ 2 ＝ 300平方メートル。"}
+];
+
+const NOTE_URL = "https://nyantaro3588.github.io/sokuryo-quiz/";
+
+let order = [], idx = 0, results = [];
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function start(){
+  order = shuffle(QUESTIONS.map((_,i)=>i));
+  idx = 0; results = [];
+  render();
+}
+function drawBar(){
+  const bar = document.getElementById("bar");
+  bar.innerHTML = order.map((_,i)=>
+    `<i class="${i<idx?"done":(i===idx?"now":"")}"></i>`).join("");
+}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+function render(){
+  drawBar();
+  const stage = document.getElementById("stage");
+  const q = QUESTIONS[order[idx]];
+  stage.innerHTML = `
+    <div class="card">
+      <div class="meta">
+        <span class="qno mono">Q ${idx+1} / ${order.length}</span>
+        <span class="field">${q.f}</span>
+      </div>
+      <p class="qtext">${q.q}</p>
+      <ul class="choices">
+        ${q.c.map((t,i)=>`
+          <li><button class="choice" data-i="${i}">
+            <span class="num mono">${i+1}</span><span class="txt">${esc(t)}</span>
+          </button></li>`).join("")}
+      </ul>
+      <div id="verdict"></div>
+    </div>`;
+  stage.querySelectorAll(".choice").forEach(b=>{
+    b.addEventListener("click",()=>answer(parseInt(b.dataset.i,10)));
+  });
+}
+
+function answer(pick){
+  const q = QUESTIONS[order[idx]];
+  const ok = pick === q.a;
+  results.push({f:q.f, ok:ok});
+  const btns = document.querySelectorAll(".choice");
+  btns.forEach((b,i)=>{
+    b.disabled = true;
+    if(i === q.a) b.classList.add("is-correct");
+    if(i === pick && !ok) b.classList.add("is-wrong");
+  });
+  const last = idx === order.length - 1;
+  document.getElementById("verdict").innerHTML = `
+    <div class="verdict ${ok?"ok":"ng"}">
+      <div class="mark">${ok?"正解":"不正解　正解は "+(q.a+1)+"番"}</div>
+      <p>${q.e}</p>
+      <div class="actions" style="margin-top:18px">
+        <button class="btn" id="next">${last?"結果を見る":"次の問題へ"}</button>
+      </div>
+    </div>`;
+  const nx = document.getElementById("next");
+  nx.addEventListener("click",()=>{ idx++; last ? result() : render(); });
+  nx.focus();
+}
+
+function result(){
+  const hit = results.filter(r=>r.ok).length;
+  const total = results.length;
+  const rate = Math.round(hit/total*100);
+  let msg;
+  if(rate>=80) msg="この調子なら本番も戦えます。取りこぼした分野だけ潰しておけば十分です。";
+  else if(rate>=50) msg="半分は取れています。落とした分野に偏りがあるはずなので、そこから埋めるのが早道です。";
+  else msg="いまは知識の入り口です。分野ごとに区切って回すと、伸び方が変わります。";
+
+  document.getElementById("bar").innerHTML = order.map(()=>`<i class="done"></i>`).join("");
+  document.getElementById("stage").innerHTML = `
+    <div class="score">
+      <div class="label">結果</div>
+      <div class="big mono">${hit}<small> / ${total}　（${rate}％）</small></div>
+      <p>${msg}</p>
+      <p>さらに練習したい場合は、同じサイトの全240問・分野別無料問題集に進めます。</p>
+      <a class="link" href="${NOTE_URL}" target="_blank" rel="noopener">無料240問を開く →</a>
+    </div>
+    <div class="card">
+      <div class="meta"><span class="qno mono">内訳</span></div>
+      <ul class="review">
+        ${results.map((r,i)=>`
+          <li><span class="mono ${r.ok?"r-ok":"r-ng"}">${r.ok?"○":"×"}</span>
+          <span>${i+1}問目　${r.f}</span></li>`).join("")}
+      </ul>
+      <div class="actions" style="margin-top:22px">
+        <button class="btn" id="again">もう一度（順番が変わります）</button>
+        <a class="btn ghost" href="https://nyantaro3588.github.io/sokuryo/" style="text-decoration:none">測点ノートに戻る</a>
+      </div>
+    </div>`;
+  document.getElementById("again").addEventListener("click",start);
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+start();
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3d06a0c40e064a5098be8083400e707c"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
