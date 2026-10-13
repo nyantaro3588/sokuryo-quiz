@@ -1,360 +1,239 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>測量士補 一問一答（ランダム出題）｜測点ノート</title>
-<meta name="description" content="測量士補試験の問題を全20問、順不同で出題します。選ぶとその場で正誤と解説が出ます。登録不要・無料。">
-<meta property="og:title" content="測量士補 一問一答（ランダム出題）｜測点ノート">
-<meta property="og:description" content="全20問、順不同。選んだ直後に解説が出ます。">
-<style>
-:root{
-  --ink:#16324A; --ink-soft:#4A6480; --paper:#EDF1F4;
-  --rule:#C3D4E0; --vermilion:#B4372F; --stake:#C8952A;
-  --white:#FBFCFD; --correct:#1F6F5C;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{
-  background:var(--paper); color:var(--ink);
-  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
-  line-height:1.8; font-size:16px;
-  background-image:
-    linear-gradient(var(--rule) .5px,transparent .5px),
-    linear-gradient(90deg,var(--rule) .5px,transparent .5px);
-  background-size:28px 28px; background-position:-.5px -.5px;
-}
-.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho",YuMincho,serif}
-.mono{font-family:"SFMono-Regular",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums}
-.wrap{max-width:720px;margin:0 auto;padding:0 20px}
-
-.masthead{border-bottom:1px solid var(--rule);background:rgba(251,252,253,.88)}
-.masthead .wrap{display:flex;align-items:baseline;gap:12px;padding:14px 20px}
-.masthead a{color:var(--ink);text-decoration:none;font-size:17px;font-weight:600;letter-spacing:.12em}
-.masthead .here{font-size:11px;letter-spacing:.2em;color:var(--ink-soft)}
-
-.head{padding:36px 0 26px}
-.eyebrow{display:inline-block;font-size:11px;letter-spacing:.26em;color:var(--vermilion);
-  border-bottom:1px solid var(--vermilion);padding-bottom:3px;margin-bottom:16px}
-h1{font-size:clamp(22px,5vw,31px);line-height:1.5;font-weight:600}
-.note-small{margin-top:14px;font-size:13px;color:var(--ink-soft)}
-
-/* progress */
-.bar{display:flex;gap:3px;margin:0 0 22px}
-.bar i{flex:1;height:4px;background:var(--rule);display:block}
-.bar i.done{background:var(--ink)}
-.bar i.now{background:var(--vermilion)}
-
-/* card */
-.card{background:var(--white);border:1px solid var(--rule);padding:24px 22px;margin-bottom:18px}
-.meta{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
-.qno{font-size:12px;letter-spacing:.1em;color:var(--ink-soft)}
-.field{font-size:10px;letter-spacing:.12em;padding:2px 8px;border:1px solid var(--stake);color:var(--stake)}
-.qtext{font-size:17px;line-height:1.75;margin-bottom:20px}
-.qtext strong{background:linear-gradient(transparent 62%,rgba(180,55,47,.22) 62%)}
-
-.choices{list-style:none;display:grid;gap:9px}
-.choice{
-  display:grid;grid-template-columns:34px 1fr;align-items:start;gap:0;
-  width:100%;text-align:left;background:var(--white);
-  border:1px solid var(--rule);font:inherit;color:inherit;cursor:pointer;padding:0;
-}
-.choice:hover:not(:disabled){border-color:var(--ink)}
-.choice:disabled{cursor:default}
-.choice .num{
-  display:flex;align-items:center;justify-content:center;align-self:stretch;
-  border-right:1px solid var(--rule);font-size:13px;color:var(--ink-soft);
-  background:linear-gradient(180deg,#F4F7F9,#EAF0F4);
-}
-.choice .txt{padding:11px 14px;font-size:15px;line-height:1.7}
-.choice.is-correct{border-color:var(--correct);background:#F2F8F6}
-.choice.is-correct .num{background:var(--correct);color:#fff;border-right-color:var(--correct)}
-.choice.is-wrong{border-color:var(--vermilion);background:#FBF3F2}
-.choice.is-wrong .num{background:var(--vermilion);color:#fff;border-right-color:var(--vermilion)}
-
-.verdict{margin-top:20px;border-top:1px solid var(--rule);padding-top:16px}
-.verdict .mark{font-size:14px;font-weight:600;letter-spacing:.08em;margin-bottom:8px}
-.verdict.ok .mark{color:var(--correct)}
-.verdict.ng .mark{color:var(--vermilion)}
-.verdict p{font-size:14px;color:var(--ink-soft)}
-
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn{
-  font:inherit;font-size:14px;letter-spacing:.06em;padding:11px 22px;cursor:pointer;
-  background:var(--ink);color:var(--paper);border:1px solid var(--ink);
-}
-.btn:hover{background:#0E2537}
-.btn.ghost{background:transparent;color:var(--ink)}
-.btn.ghost:hover{background:rgba(22,50,74,.06)}
-
-/* result */
-.score{background:var(--ink);color:var(--paper);padding:34px 26px;margin-bottom:18px}
-.score .big{font-size:44px;font-weight:600;letter-spacing:.02em;line-height:1.1}
-.score .big small{font-size:17px;font-weight:400;color:var(--rule)}
-.score .label{font-size:11px;letter-spacing:.24em;color:var(--stake);margin-bottom:12px}
-.score p{font-size:14px;color:#C3D4E0;margin-top:16px;max-width:32em}
-.score .link{
-  display:inline-block;margin-top:20px;font-size:14px;color:var(--paper);
-  text-decoration:none;border-bottom:1px solid var(--stake);padding-bottom:3px;
-}
-.score .link:hover{color:#fff;border-bottom-color:#fff}
-
-.review{list-style:none;font-size:14px;display:grid;gap:7px;margin-top:4px}
-.review li{display:grid;grid-template-columns:24px 1fr;gap:8px;color:var(--ink-soft)}
-.review .r-ok{color:var(--correct)}
-.review .r-ng{color:var(--vermilion)}
-
-footer{border-top:1px solid var(--rule);margin-top:44px;padding:22px 0 40px;font-size:12px;color:var(--ink-soft)}
-footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
-footer a{color:var(--ink-soft)}
-
-:focus-visible{outline:2px solid var(--vermilion);outline-offset:2px}
-@media (max-width:520px){
-  .card{padding:20px 16px}
-  .qtext{font-size:16px}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>測量士補無料問題集240問｜分野別・スマホ計算ツール付き｜測点ノート</title>
+<meta name="description" content="測量士補のオリジナル練習問題240問（8分野・各30問）を無料で演習。スマホ用計算パネル・誤答復習・分野別ランダム出題。登録不要。">
 <link rel="canonical" href="https://nyantaro3588.github.io/sokuryo-quiz/">
+<style>
+:root{--ink:#16324a;--muted:#4a6480;--bg:#edf1f4;--line:#c3d4e0;--paper:#fbfcfd;--gold:#c8952a;--red:#b4372f;--ok:#1f6f5c;--blue:#e7f0f6;--shadow:0 8px 25px #16324a0d}
+*{box-sizing:border-box} html{scroll-behavior:smooth}body{margin:0;background:var(--bg);background-image:linear-gradient(var(--line) .5px,transparent .5px),linear-gradient(90deg,var(--line) .5px,transparent .5px);background-size:30px 30px;color:var(--ink);font:16px/1.72 "Hiragino Sans","Yu Gothic",Meiryo,sans-serif}
+button,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.58}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+a{color:var(--ink)}.container{max-width:890px;margin:0 auto;padding:0 20px}.top{background:var(--ink);color:#fff;border-bottom:4px solid var(--gold)}.topin{display:flex;justify-content:space-between;align-items:center;min-height:82px;gap:16px}.brand{font-family:"Yu Mincho",serif;font-weight:700;font-size:1.34rem;letter-spacing:.14em;color:#fff;text-decoration:none}.top small{font-size:.72rem;color:#cfdae0;letter-spacing:.14em}.pill{border:1px solid #7991a2;border-radius:100px;padding:5px 11px;font-size:.7rem;white-space:nowrap}
+.hero{padding:44px 0 22px}.eyebrow{color:var(--red);font-size:.75rem;letter-spacing:.2em;font-weight:800}.hero h1{font:700 clamp(1.9rem,5.2vw,3rem)/1.38 "Yu Mincho",serif;letter-spacing:.04em;margin:12px 0}.hero p{max-width:725px;margin:0 0 17px}.caps{display:flex;gap:10px;flex-wrap:wrap}.caps span{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:5px 11px;font-size:.82rem}.notice{border-left:4px solid var(--gold);background:#fff9eb;padding:10px 14px;font-size:.87rem;margin:10px 0 22px}.panel{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);padding:22px;margin:18px 0}.panel h2{font:700 1.38rem/1.4 "Yu Mincho",serif;margin:0 0 12px}.panel h3{margin:0 0 6px;font-size:1.01rem}.summary{display:flex;gap:12px;flex-wrap:wrap}.stat{flex:1;min-width:140px;background:#f0f5f8;padding:13px 15px;border:1px solid var(--line)}.stat b{display:block;font:700 1.8rem/1.2 Georgia,serif}.stat small{color:var(--muted)}.muted{color:var(--muted);font-size:.87rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.chapter{border:1px solid var(--line);background:#fff;text-align:left;padding:14px;display:flex;gap:12px;align-items:center;min-height:75px}.chapter strong{display:block}.chapter small{color:var(--muted)}.chapter.active{border-color:var(--ink);box-shadow:inset 4px 0 var(--gold);background:var(--blue)}.chap-id{font-weight:bold;font-size:.78rem;color:var(--red);white-space:nowrap}.controls{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin:16px 0 0}.controls label{font-size:.84rem;color:var(--muted);font-weight:bold}.controls select{display:block;min-width:120px;max-width:100%;background:white;border:1px solid #9fb4c2;border-radius:4px;padding:10px;margin-top:4px}.btn{background:var(--ink);border:1px solid var(--ink);color:white;border-radius:4px;padding:11px 19px;font-weight:bold}.btn:hover:not(:disabled){background:#284e6b}.btn.secondary{background:transparent;color:var(--ink)}.btn.secondary:hover{background:var(--blue)}.ad{border:1px dashed #b0bec8;background:#f8fafb;padding:14px 16px;margin:22px 0;border-radius:3px}.ad b{font-size:.78rem;letter-spacing:.08em}.ad p{color:var(--muted);margin:5px 0;font-size:.87rem}.ad small{color:#617a8d}.progress{width:100%;height:7px;background:#d9e6ed;border-radius:30px;overflow:hidden;margin:12px 0 16px}.progress>div{background:var(--gold);height:100%;transition:width .2s}.qheader{display:flex;justify-content:space-between;gap:8px;align-items:center}.qtitle{font-size:1.1rem;font-weight:bold;margin:16px 0 12px}.opts{display:grid;gap:9px}.opt{width:100%;border:1px solid var(--line);background:white;display:flex;align-items:baseline;text-align:left;gap:13px;padding:14px;border-radius:3px;color:var(--ink)}.opt:hover:not(:disabled){border-color:var(--gold);background:#fffdf7}.opt .mark{color:var(--red);font-weight:800;font-size:.85rem}.opt.right{border-color:var(--ok);background:#eef9f4}.opt.wrong{border-color:var(--red);background:#fff1ef}.answer{background:#f0f5f7;padding:17px;margin-top:16px;border-left:4px solid var(--gold)}.answer p{margin:6px 0}.answer .ok{color:var(--ok)}.answer .ng{color:var(--red)}.figure{max-width:480px;border:1px solid var(--line);padding:8px;background:white;margin:14px 0 0}.figure svg{display:block;max-width:100%;height:auto}.figure figcaption{font-size:.77rem;color:var(--muted);text-align:center}.hide{display:none!important}.small{font-size:.87rem}.footer{padding:25px 0 35px;border-top:1px solid var(--line);margin-top:45px;font-size:.82rem;color:var(--muted)}.footer p{margin:7px 0}.float{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.result-big{font-size:2.5rem;font-weight:bold;letter-spacing:.02em}.endnote{background:#f0f7f4;border:1px solid #bcd6c9;padding:12px 15px}.sr{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}
+@media(max-width:630px){.grid{grid-template-columns:1fr}.hero{padding:28px 0 14px}.topin{min-height:75px}.panel{padding:16px}.top small{display:none}.controls{display:grid;grid-template-columns:1fr 1fr}.controls .btn{grid-column:1/-1}.pill{display:none}}
+
+/* ============================================================
+   Smartphone calculation companion - no auto-filled values
+   ============================================================ */
+.calc-entry{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff8e9;border:1px solid #e8cf92;border-radius:6px;padding:12px 14px;margin:10px 0 15px}
+.calc-entry .btn{min-height:46px}.calc-entry p{font-size:.84rem;color:#596979;margin:0;flex:1;min-width:160px}
+.calc-dock{position:fixed;bottom:max(14px,env(safe-area-inset-bottom));right:max(16px,env(safe-area-inset-right));z-index:16;background:#16324a;color:#fff;box-shadow:0 5px 21px #152f42a8;border:2px solid #fff;border-radius:50px;padding:12px 18px;font-weight:800;min-height:52px}
+.calc-dock:hover{background:#294f6b}
+.calc-chip{border:1px solid #b6d6c8;background:#eaf6ef;border-radius:5px;padding:8px 12px;margin:0 0 12px;font-size:.92rem;overflow-wrap:anywhere}
+.calc-backdrop{position:fixed;inset:0;z-index:29;background:#102532a8}
+.calc-panel{position:fixed;z-index:30;right:0;bottom:0;width:min(480px,100vw);max-height:92dvh;background:var(--paper);border-top:4px solid var(--gold);box-shadow:0 0 30px #0005;display:flex;flex-direction:column;border-radius:14px 14px 0 0}
+.calc-head{padding:14px 16px 9px;border-bottom:1px solid var(--line);background:#f6f9fa;border-radius:14px 14px 0 0;flex-shrink:0}
+.calc-head-top{display:flex;align-items:start;gap:10px;justify-content:space-between}
+.calc-head strong{font-size:1.05rem}.calc-close{min-width:44px;min-height:44px;background:white;border:1px solid #9fb4c2;border-radius:7px;font-weight:bold;color:var(--ink)}
+.calc-question{font-size:.82rem;color:var(--muted);margin:5px 0 0;max-height:3.5em;overflow:auto;line-height:1.6}
+.calc-body{padding:15px 16px calc(18px + env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;flex:1}
+.calc-label{display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:6px}
+.calc-select{display:block;width:100%;padding:11px 10px;min-height:47px;border-radius:5px;border:1px solid #94aabd;font-size:16px;background:#fff;color:var(--ink);margin-bottom:14px}
+.calc-note{font-size:.79rem;color:var(--muted);margin:7px 0 13px}
+.calc-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.calc-field{display:block;min-width:0}.calc-field label{display:block;font-size:.83rem;font-weight:bold;margin:0 0 5px}.calc-field input{display:block;width:100%;padding:11px 10px;min-height:48px;border-radius:5px;border:1px solid #9fb4c2;background:#fff;color:var(--ink);font:16px/1.25 inherit;font-size:16px;text-align:left}
+.calc-field input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.calc-span{grid-column:1/-1}.calc-actions{display:flex;gap:9px;margin-top:16px}.calc-actions button{min-height:48px}.calc-actions .btn{flex:1}
+.calc-output{margin-top:13px;padding:12px;background:#ebf4ee;border:1px solid #b4d0c5;border-radius:5px;min-height:44px;font-size:.94rem;overflow-wrap:anywhere}.calc-output strong{font-size:1.11rem}
+.calc-error{background:#fff0ee;border-color:#dcaaa6;color:#8c2923}
+.calc-subnotes{font-size:.78rem;line-height:1.7;color:var(--muted);margin:10px 0 0}
+.calc-points{display:grid;gap:8px}.calc-point{display:grid;grid-template-columns:32px minmax(0,1fr) minmax(0,1fr) 42px;gap:7px;align-items:end}.calc-point .calc-field{min-width:0}.calc-point .calc-field label{font-size:.77rem}
+.calc-point span{padding-bottom:12px;font-weight:bold}.calc-point button{min-height:45px;border:1px solid #9fb4c2;background:white;border-radius:5px}.calc-add{min-height:44px;border:1px solid var(--ink);background:transparent;border-radius:4px;margin-top:10px;padding:7px 12px;font-weight:bold;color:var(--ink)}
+body.calc-lock{overflow:hidden}
+@media(max-width:630px){.calc-panel{width:100vw;max-height:82dvh}.calc-dock{bottom:max(12px,env(safe-area-inset-bottom));right:13px;font-size:.91rem}.calc-entry .btn{width:100%}.calc-question{max-height:2.9em}.calc-body{padding:12px 14px calc(14px + env(safe-area-inset-bottom))}}
+@media(max-width:365px){.calc-form{grid-template-columns:1fr}.calc-point{grid-template-columns:28px minmax(0,1fr) minmax(0,1fr) 38px}.calc-point .calc-field input{padding:9px 6px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress>div{transition:none}}
+
+</style>
 </head>
 <body>
-
-<header class="masthead">
-  <div class="wrap">
-    <a class="mincho" href="https://nyantaro3588.github.io/sokuryo/">測点ノート</a>
-    <span class="here mono">T-1 / RANDOM QUIZ</span>
-  </div>
-</header>
-
-<div class="wrap">
-  <div class="head">
-    <span class="eyebrow">測量士補・一問一答</span>
-    <h1 class="mincho">全20問、順不同。<br>選んだ直後に解説が出ます。</h1>
-    <p class="note-small">出題順は毎回変わります。答えを選ぶとその場で正誤と解説が表示されます。登録不要、成績はどこにも送信されません。</p>
-  </div>
-
-  <div id="bar" class="bar" aria-hidden="true"></div>
-  <div id="stage" role="region" aria-live="polite"></div>
+<header class="top"><div class="container topin"><a class="brand" href="#home">測点ノート <small>｜測量士補 問題集</small></a><span class="pill">全240問・無料</span></div></header>
+<main class="container" id="home">
+<section class="hero"><span class="eyebrow">SURVEY EXAM / PRACTICE</span><h1>分野を選び、<br>一問ずつ積み上げる。</h1><p>8分野・各30問のオリジナル予想問題を無料公開。解説・必要な図・復習履歴に加え、計算問題にはスマホ用の計算サポートを表示します。数値は自分で入力する仕組みです。</p><div class="caps"><span>本番設計：8分野 × 30問</span><span>登録不要</span><span>スマホ対応</span><span>問題ごとの計算パネル</span><span>進捗は端末内保存</span></div></section>
+<div class="notice"><b>ご利用にあたって：</b> この240問はオリジナルの学習用予想問題です。公式過去問ではありません。原稿の欠落解答7問を編集上補い、一部記述を修正しています。引き続き設問・法令の点検を進めていますので、最終確認は国土地理院の公式教材・最新法令とあわせて行ってください。</div>
+<div id="homeView">
+<section class="panel" aria-labelledby="heading-practice"><h2 id="heading-practice">演習メニュー</h2><div class="summary"><div class="stat"><b>240</b><small>収録した予想問題</small></div><div class="stat"><b>8</b><small>分野</small></div><div class="stat"><b id="attempts">0</b><small>このブラウザの解答履歴</small></div></div><p class="muted">全8分野から出題。短時間なら10問、まとめて学ぶなら30問や全問で練習できます。</p><div class="grid" id="chapters"></div><div class="controls"><label>出題範囲<select id="scope"><option value="all">全分野</option><option value="wrong">過去に間違えた問題</option></select></label><label>問題数<select id="limit"><option value="10">10問</option><option value="20" selected>20問</option><option value="30">30問</option><option value="all">選択範囲すべて</option></select></label><label>出題順<select id="order"><option value="random">ランダム</option><option value="fixed">章順</option></select></label><button type="button" class="btn" id="start">演習を開始する →</button></div></section>
+<aside class="ad hide" aria-label="PR枠"><b>PR｜関連教材</b><p>ここに関連テキスト・参考書の紹介を設置予定。広告を正式に導入した場合に限り、実際のリンクと適切な広告表示を掲載します。</p><small>問題演習中や選択肢の直近には表示しません。</small></aside>
+<section class="panel"><h2>サイトの使い方</h2><p>分野別・全分野から問題を選択し、4択を回答。計算問題は途中でツールを開いて自分で数値を入力し、答えを検討できます。正誤・解説を確認したら次の問題に進みます。解答履歴はこのブラウザ内に保存され、他の端末には送信しません。</p><p class="muted"><a href="intro20.html">旧20問のランダム練習に戻る</a> ／ <a href="https://nyantaro3588.github.io/sokuryo/">測点ノートへ</a></p></section>
 </div>
-
-<footer>
-  <div class="wrap">
-    <span><a href="https://nyantaro3588.github.io/sokuryo/">← 測点ノートに戻る</a>　<a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a></span>
-    <span class="mono">T-1</span>
+<section class="panel hide" id="quizView"><div class="qheader"><span class="eyebrow" id="qcat"></span><span class="muted" id="qnum"></span></div><div class="progress" role="progressbar" aria-label="解答進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><div id="barIn"></div></div><h2 class="qtitle" id="question"></h2><div class="calc-entry hide" id="calcEntry"><button type="button" class="btn" id="calcInline">🧮 計算ツールを開く</button><p>数値は自分で入力。計算結果は問題画面に残せます。</p></div><div class="calc-chip hide" id="calcChip" aria-live="polite"></div><div class="opts" id="choices"></div><div id="feedback" aria-live="polite"></div><div class="float" style="margin-top:18px"><button type="button" class="btn secondary" id="quit">メニューへ戻る</button><span class="muted">選択肢を選ぶと解説が表示されます。</span></div></section>
+<section class="panel hide" id="resultView" aria-live="polite"><h2>今回の結果</h2><div class="result-big" id="score"></div><p id="summary"></p><div id="errors"></div><div class="float"><button class="btn" id="retry">同じ範囲をもう一度</button><button class="btn secondary" id="back">メニューへ戻る</button></div></section>
+<aside class="ad hide" id="endAd"><b>PR｜関連教材</b><p>学習結果の下で、分野に合った学習書などを案内する枠。本番用の広告リンクは未設定です。</p></aside>
+<button type="button" class="calc-dock hide" id="calcDock" aria-label="この問題の計算ツールを開く">🧮 計算ツール</button>
+</main>
+<div class="calc-backdrop hide" id="calcBackdrop" aria-hidden="true"></div>
+<section class="calc-panel hide" id="calcPanel" role="dialog" aria-modal="true" aria-labelledby="calcPanelTitle">
+  <div class="calc-head"><div class="calc-head-top"><strong id="calcPanelTitle">🧮 計算サポート</strong><button type="button" id="calcClose" class="calc-close" aria-label="計算ツールを閉じる">✕</button></div><p class="calc-question" id="calcProblem"></p></div>
+  <div class="calc-body">
+    <label class="calc-label" for="calcMode">計算方法を選ぶ</label><select class="calc-select" id="calcMode"></select>
+    <p class="calc-note" id="calcHint">問題文を見ながら自分で数値を入力してください。</p><p class="calc-note" id="calcFormula"></p>
+    <div id="calcFields"></div>
+    <div class="calc-actions"><button type="button" class="btn secondary" id="calcReset">数値をクリア</button><button type="button" class="btn" id="calcRun">計算する →</button></div>
+    <div class="calc-output hide" id="calcOutput" role="status" aria-live="polite"></div>
+    <p class="calc-subnotes">※問題の数字は自動入力しません。正解を判定する機能ではなく、計算の補助です。結果は学習用の参考値です。計算欄の数値は次の問題へ持ち越しません。</p>
   </div>
-</footer>
-
+</section>
+<footer class="footer"><div class="container"><p>測点ノート｜測量士補オリジナル予想問題240問（無料）。<a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a> ・ <a href="intro20.html">入門20問</a></p><p>当サイトは学習支援を目的としています。アフィリエイト広告は準備中で、現在は表示していません。</p></div></footer>
 <script>
-const QUESTIONS = [
-  {f:"測量法", q:"測量法に規定する測量について、正しいものはどれか。",
-   c:["基本測量とは、国土地理院以外の者が行う測量である",
-      "公共測量には、その実施費用の全部または一部を国または公共団体が負担・補助して実施する測量が含まれる",
-      "基本測量および公共測量以外の測量は、測量法の適用を一切受けない",
-      "公共測量の測量成果は、承認を得ずに複製することができる"],
-   a:1, e:"基本測量は国土地理院が行う測量です。公共測量の測量成果を複製するには、測量計画機関の承認が必要です。"},
-
-  {f:"測量法", q:"公共測量に関する記述のうち、正しいものはどれか。",
-   c:["測量計画機関は、公共測量を実施する前に実施計画書を国土地理院長に提出しなければならない",
-      "作業規程は、測量作業機関が定めて国土地理院長の承認を受ける",
-      "公共測量の測量成果は、いかなる場合も複製することができない",
-      "測量士補は、測量に関する計画を作製することができる"],
-   a:0, e:"作業規程は測量計画機関が定め、国土交通大臣の承認を受けます。測量士補は計画の作製はできず、計画に従って測量に従事します。"},
-
-  {f:"測量法", q:"永久標識に関する記述のうち、正しいものはどれか。",
-   c:["基本測量の永久標識を移転しようとする者は、国土地理院長の承認を得なければならない",
-      "永久標識は、測量作業機関が任意の場所に設置できる",
-      "永久標識が亡失した場合、届出の必要はない",
-      "永久標識には木杭を用いるものと定められている"],
-   a:0, e:"基本測量の測量標の移転には国土地理院長の承認が必要です。永久標識は金属標や石標など、長期保存に耐える構造のものを用います。"},
-
-  {f:"誤差論", q:"同じ距離を独立に4回測定したところ、1回の観測の標準偏差は20mmであった。最確値（平均値）の標準偏差はいくらか。",
-   c:["5mm","10mm","20mm","40mm"],
-   a:1, e:"最確値の標準偏差は、1回の観測の標準偏差を観測回数の平方根で割ります。20 ÷ √4 = 10mm。"},
-
-  {f:"多角測量", q:"閉合トラバース測量において、多角形の測点数が6であるとき、内角の総和は何度か。",
-   c:["540度","720度","900度","1,080度"],
-   a:1, e:"n角形の内角の総和は 180°×(n−2)。180 × (6−2) = 720度です。"},
-
-  {f:"多角測量", q:"平面直角座標系において、点Aから点Bへの方向角が210度であるとき、点Bから点Aへの方向角（逆方向角）はいくらか。",
-   c:["30度","120度","300度","330度"],
-   a:0, e:"逆方向角は元の方向角に180度を加減します。210 − 180 = 30度。"},
-
-  {f:"水準測量", q:"レベルを前後の標尺の中間に据え、前視と後視の視準距離を等しくすることで<strong>消去または軽減できないもの</strong>はどれか。",
-   c:["視準線誤差","地球の曲率による誤差","大気の屈折による誤差","標尺の目盛誤差"],
-   a:3, e:"等距離視準で消えるのは器械と大気に起因する誤差です。標尺そのものの目盛誤差は、据付位置と無関係に残ります。"},
-
-  {f:"水準測量", q:"標高10.000mの点Aに標尺を立てて後視を読み1.250m、点Bの前視を読み0.870mであった。点Bの標高はいくらか。",
-   c:["9.620m","10.380m","10.870m","12.120m"],
-   a:1, e:"前地点の標高＋後視−前視。10.000 + 1.250 − 0.870 = 10.380m。"},
-
-  {f:"水準測量", q:"水準測量において、標尺の零目盛誤差を消去するために有効な方法はどれか。",
-   c:["レベルの据付回数（測点数）を偶数回にする","往復観測を行う","三脚をできるだけ低く据える","標尺を後視のみに用いる"],
-   a:0, e:"2本の標尺を交互に用い、据付回数を偶数にすることで、両標尺の零目盛誤差が相殺されます。"},
-
-  {f:"地形測量", q:"トータルステーションを用いた測量に関する記述のうち、<strong>最も適当でないもの</strong>はどれか。",
-   c:["距離測定は、変調した光波の位相差を利用している",
-      "測距値は気温や気圧の影響を受けるため、気象補正を行う",
-      "反射鏡を用いずに測距できる機種がある",
-      "鉛直角の観測では、望遠鏡正・反の両面観測を行う必要はない"],
-   a:3, e:"正・反の両面観測により、視準軸誤差や鉛直軸目盛の偏心誤差を消去します。省略はできません。"},
-
-  {f:"地形測量", q:"等高線に関する記述のうち、<strong>誤っている</strong>ものはどれか。",
-   c:["等高線は、途中で分岐したり交差したりしない",
-      "尾根線および谷線は、等高線と直交する",
-      "等高線の間隔が広い場所は、傾斜が急である",
-      "等高線が谷を横切るときは、上流に向かって曲がる"],
-   a:2, e:"間隔が広いとは、同じ高低差に対して水平距離が長いということです。すなわち傾斜は緩やかになります。"},
-
-  {f:"地形測量", q:"縮尺1/25,000の地形図において、主曲線の間隔は何mか。",
-   c:["5m","10m","20m","50m"],
-   a:1, e:"1/25,000では主曲線10m、計曲線50m、補助曲線5mおよび2.5mです。"},
-
-  {f:"写真測量", q:"画面距離10cm、撮影高度2,000mで撮影した鉛直空中写真の写真縮尺はいくらか。",
-   c:["1/10,000","1/15,000","1/20,000","1/25,000"],
-   a:2, e:"写真縮尺は画面距離÷撮影高度。0.1m ÷ 2,000m = 1/20,000。"},
-
-  {f:"写真測量", q:"鉛直空中写真の撮影において、同一コース内の隣接写真との重複度（オーバーラップ）は一般に何パーセント程度とするか。",
-   c:["30パーセント","45パーセント","60パーセント","90パーセント"],
-   a:2, e:"同一コース内は約60パーセント、隣接コース間（サイドラップ）は約30パーセントが標準です。"},
-
-  {f:"写真測量", q:"画面距離15cm、撮影高度3,000mの鉛直写真において、主点から10cm離れた位置に写る高さ100mの建物の像のずれ（比高による移動量）はおよそいくらか。",
-   c:["1.7mm","3.3mm","5.0mm","6.7mm"],
-   a:1, e:"移動量は（主点からの距離×比高）÷撮影高度。0.10 × 100 ÷ 3,000 = 0.0033m ＝ 約3.3mm。"},
-
-  {f:"GNSS測量", q:"GNSS測量に関する記述のうち、最も適当なものはどれか。",
-   c:["干渉測位方式では、観測点間の視通を確保する必要がある",
-      "スタティック法は短時間の観測で高精度が得られ、短距離の観測に適する",
-      "電子基準点を既知点として利用することができる",
-      "上空視界が確保されていれば、樹木の下でも支障なく観測できる"],
-   a:2, e:"GNSSは観測点間の視通を必要としません。スタティック法は長時間観測で長距離向き、樹木は電波を遮るため観測に適しません。"},
-
-  {f:"GNSS測量", q:"GNSS測量に関する記述のうち、<strong>最も適当でないもの</strong>はどれか。",
-   c:["楕円体高から標高を求めるには、ジオイド高を用いる",
-      "電離層の影響は、2周波の観測により軽減できる",
-      "サイクルスリップが生じても、解析結果には影響しない",
-      "衛星の配置の良否は、DOPの値によって評価できる"],
-   a:2, e:"サイクルスリップは搬送波位相の計数が飛ぶ現象で、基線解析の精度を著しく損ないます。"},
-
-  {f:"地図編集", q:"地図編集の原則に関する記述のうち、最も適当なものはどれか。",
-   c:["編集の基となる資料は、編集しようとする地図より小縮尺のものを用いる",
-      "転位においては、道路より三角点などの基準点を優先する",
-      "有形物より無形物を優先して表示する",
-      "注記は、対象物の位置が不明確になっても差し支えない"],
-   a:1, e:"転位の優先順位は、位置の正確さが要求される基準点や自然物が上位、行政界などの無形物が下位です。編集資料は同縮尺以上（大縮尺）のものを用います。"},
-
-  {f:"応用測量", q:"円曲線において、曲線半径R＝200m、交角I＝60度であるとき、接線長TLはおよそいくらか。",
-   c:["100.00m","115.47m","173.21m","209.44m"],
-   a:1, e:"TL＝R・tan(I/2)＝200 × tan30度 ≒ 115.47m。なお曲線長CLは約209.44mです。"},
-
-  {f:"応用測量", q:"座標が A(10, 10)、B(30, 10)、C(30, 40) である三角形の面積はいくらか。単位はm。",
-   c:["150平方メートル","300平方メートル","600平方メートル","900平方メートル"],
-   a:1, e:"底辺AB＝20m、高さBC＝30m。20 × 30 ÷ 2 ＝ 300平方メートル。"}
+"use strict";
+const SUBJECTS=[
+ ["law","測量に関する法規"], ["gnss","GNSS測量"], ["traverse","多角測量・基準点測量"], ["level","水準測量"],
+ ["photo","写真測量"], ["maps","地図編集"], ["terrain","地形測量"], ["applied","応用測量"]
 ];
-
-const NOTE_URL = "https://note.com/nyantaro_3588";
-
-let order = [], idx = 0, results = [];
-
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
+const Q=[{"id":"C1Q01","chapter":1,"choices":["都道府県知事","市町村長","民間測量会社","国土交通省国土地理院"],"answer":3,"explain":"基本測量は、国土交通省国土地理院が実施する測量の基礎となる測量である。","calc":null,"cat":"law","text":"測量法における「基本測量」の実施主体として正しいものはどれか。"},{"id":"C1Q02","chapter":1,"choices":["現地での観測作業","測量成果の整理","測量計画の作成","測量計画機関の指示のもとで行う基準点測量"],"answer":2,"explain":"測量士補は測量計画機関の指示・測量士の作成した計画のもとで実務を行う資格であり、測量計画そのものを作成することはできない(これは測量士の業務)。","calc":null,"cat":"law","text":"測量士補が単独で行うことができない業務はどれか。"},{"id":"C1Q03","chapter":1,"choices":["民間企業が独自に実施する測量すべて","個人が趣味で行う測量","国が費用の全部または一部を負担・補助して実施する測量、および基本測量以外で政令に定める測量","大学の研究目的で行う測量のみ"],"answer":2,"explain":"公共測量の定義には、国や公共団体の費用負担・補助などの要件があります。測量法の定義を確認しましょう。","calc":null,"sourceAnswerMissing":true,"cat":"law","text":"公共測量の定義として正しいものはどれか。"},{"id":"C1Q04","chapter":1,"choices":["測量成果はすべて非公開である","測量成果は国土地理院職員のみ利用可能","基本測量の測量成果は、原則として誰でも複製・使用できる","測量成果の利用には常に有償の許可が必要"],"answer":2,"explain":"国土地理院が実施する基本測量の測量成果は、申請等の手続きを経れば原則として広く複製・使用が可能である。","calc":null,"cat":"law","text":"測量法上、測量成果を利用する際に必要な手続きとして正しいものはどれか。"},{"id":"C1Q05","chapter":1,"choices":["測量士の指導のもとで測量業務に従事できる","国土交通大臣の登録を受けて名称を用いる","測量士補試験に合格すれば自動的に測量士になれる","年齢・学歴を問わず受験できる"],"answer":2,"explain":"測量士補試験に合格しても、自動的に測量士になれるわけではない。測量士とは受験資格・試験内容が異なる別の資格である。","calc":null,"cat":"law","text":"測量士補の資格に関する記述として誤っているものはどれか。"},{"id":"C1Q06","chapter":1,"choices":["民間企業の測量参入を制限すること","測量業者の利益を最大化すること","測量の正確な実施と、測量成果の重複の排除・利用の増進を図ること","測量士の給与水準を定めること"],"answer":2,"explain":"測量法第1条では、測量の正確性の確保と、測量成果の重複防止・広範な利用の促進を目的とすると定められている。","calc":null,"cat":"law","text":"測量法の目的として正しいものはどれか。"},{"id":"C1Q07","chapter":1,"choices":["地図を印刷する行為のみを指す","土地(水面下を含む)の位置・形状を求めることをいう","建物内部の測定のみを指す","土地の測量のみを指し、水域は含まれない"],"answer":1,"explain":"測量法上の「測量」は、土地(水面下も含む)の位置・形状などを、器械や技術を用いて求めることと定義されている。","calc":null,"cat":"law","text":"測量法上の「測量」の定義として正しいものはどれか。"},{"id":"C1Q08","chapter":1,"choices":["基本測量は、公共測量を含むすべての測量の基礎となる測量である","基本測量は民間企業のみが実施する","両者に関係はない","公共測量が基本測量の基礎になる"],"answer":0,"explain":"基本測量はすべての測量の基礎となるもので、国土地理院が実施する。公共測量はこれを基礎として実施される。","calc":null,"cat":"law","text":"「基本測量」と「公共測量」の関係として正しいものはどれか。"},{"id":"C1Q09","chapter":1,"choices":["登録は任意であり、罰則はない","登録の更新は不要で一度取れば永続する","個人であれば登録は不要","公共測量を請け負う者は、国土交通大臣の登録を受けなければならない"],"answer":3,"explain":"測量業を営もうとする者は、国土交通大臣の登録を受ける必要があり、無登録での公共測量業務の請負には罰則が科される。","calc":null,"cat":"law","text":"測量業者の登録制度に関する記述として正しいものはどれか。"},{"id":"C1Q10","chapter":1,"choices":["測量業者の決算書","測量に使用した機材そのもの","測量士の名刺","測量の結果得られた地図・数値データ等の成果物"],"answer":3,"explain":"測量成果とは、測量の実施によって得られた地図、図表、数値データなど成果物一般を指す。","calc":null,"cat":"law","text":"測量法における「測量成果」の定義として正しいものはどれか。"},{"id":"C1Q11","chapter":1,"choices":["承認なしに自由に複製・使用してよい","国土地理院の長の承認を受けて複製・使用できる(所定の手続きあり)","いかなる場合も複製は禁止されている","民間企業のみ承認不要"],"answer":1,"explain":"基本測量の測量成果は、国土地理院の長の承認を得ることで複製・使用が可能である(測量法第44条等)。","calc":null,"cat":"law","text":"基本測量の測量成果を複製・使用する場合の手続きとして正しいものはどれか。"},{"id":"C1Q12","chapter":1,"choices":["発見者が自由に処分してよい","罰則の対象となる","特に規定はない","民事上の責任のみで刑事罰はない"],"answer":1,"explain":"測量標を故意に毀損・移転する行為は、測量法上罰則の対象となる。測量標は公共の測量基盤として保護されている。","calc":null,"cat":"law","text":"測量法上、測量標(三角点・水準点等)を毀損した場合の扱いとして正しいものはどれか。"},{"id":"C1Q13","chapter":1,"choices":["測量士補の給与を定めるもの","公共測量の作業方法・精度等に関する標準的な基準を定めるもの","民間企業のみに適用されるもの","測量機器の販売価格を定めるもの"],"answer":1,"explain":"作業規程の準則は、公共測量を実施する際の作業方法や精度等の標準を定めたもので、公共測量の品質を担保する役割を持つ。","calc":null,"cat":"law","text":"公共測量における「作業規程の準則」の役割として正しいものはどれか。"},{"id":"C1Q14","chapter":1,"choices":["心身の故障により測量業務を適正に行えない者","大学を卒業していない者","測量法に違反し罰金以上の刑に処せられ、一定期間を経過しない者","未成年である者"],"answer":1,"explain":"測量士補は学歴要件がなく、試験に合格すれば大学卒業の有無を問わず登録できる。①③④は登録拒否事由に該当し得る。","calc":null,"cat":"law","text":"測量士補の登録拒否事由に該当しないものはどれか。"},{"id":"C1Q15","chapter":1,"choices":["個人が自宅の庭を測る目的で行う私的な測量","国が費用の一部を補助する河川測量","都道府県が費用を負担して実施する道路測量","市町村が実施する地籍調査に関連する測量"],"answer":0,"explain":"個人が私的な目的で行う測量は、公共の費用負担や政令指定に該当しないため、公共測量には該当しない。","calc":null,"cat":"law","text":"測量法における「公共測量」に該当しないものはどれか。"},{"id":"C1Q16","chapter":1,"choices":["測量士の資格を審査する機関","測量機器を製造する企業","測量成果を印刷する業者","公共測量を企画・実施する国又は公共団体等"],"answer":3,"explain":"測量計画機関とは、公共測量の実施を企画する国の機関や地方公共団体等を指す。","calc":null,"cat":"law","text":"測量法上、測量計画機関の役割として正しいものはどれか。"},{"id":"C1Q17","chapter":1,"choices":["測量業の登録手続きの代行のみできる","測量計画機関または測量士の指示のもとで、測量の実施に関する業務を行うことができる","建築士の業務を兼ねることができる","単独で測量計画を策定し実施できる"],"answer":1,"explain":"測量士補は、測量計画そのものを作ることはできないが、測量計画機関や測量士の指示のもとで、測量実施に関する業務(観測等)を行うことができる。","calc":null,"cat":"law","text":"測量士補が行うことができる業務の範囲として正しいものはどれか。"},{"id":"C1Q18","chapter":1,"choices":["国が全額を負担する河川測量","土木建築工事に伴う工事用測量(一般に契約に基づく私的な測量で該当しない場合が多い)","公共測量","基本測量"],"answer":1,"explain":"土木建築工事に伴う、請負契約に基づいて実施される工事用測量は、一般に測量法上の「公共測量」の定義に該当しない場合が多いとされる(個別の事情により判断は異なる)。","calc":null,"cat":"law","text":"測量法の適用対象とならないものはどれか。"},{"id":"C1Q19","chapter":1,"choices":["測量士補は測量計画を単独で作成できる","両者の業務範囲は完全に同一である","測量士は測量計画を作成でき、測量士補はその計画に従って測量に従事する","測量士補は測量士の上位資格である"],"answer":2,"explain":"測量士は測量計画の作成を含む業務を行えるのに対し、測量士補は測量士が作成した計画に従って測量に従事する。測量士が上位資格にあたる。","calc":null,"cat":"law","text":"測量士と測量士補の関係に関する記述として正しいものはどれか。"},{"id":"C1Q20","chapter":1,"choices":["三角測量・多角測量などの基準点測量","地図の調製","個人住宅の敷地測量","水準測量"],"answer":2,"explain":"個人住宅の敷地測量は、国が行う基本測量には該当しない私的な測量である。","calc":null,"cat":"law","text":"測量法上、国土地理院が行う「基本測量」に含まれないものはどれか。"},{"id":"C1Q21","chapter":1,"choices":["無登録での測量業の営業","測量士補試験を複数回受験すること","虚偽の測量成果の届出","測量標の故意の毀損"],"answer":1,"explain":"測量士補試験は何度でも受験可能であり、罰則の対象にはならない。①③④は測量法上の罰則規定に触れうる行為である。","calc":null,"cat":"law","text":"測量法における罰則の対象となる行為として適切でないものはどれか。"},{"id":"C1Q22","chapter":1,"choices":["公共測量以外の測量成果についても、国土地理院の長による認証を受けられる制度がある","認証は罰則を科すための手続きである","認証は測量業者の登録更新を意味する","認証制度は公共測量のみに適用される"],"answer":0,"explain":"公共測量以外で実施された測量成果についても、一定の基準を満たせば国土地理院の長の認証を受けられる制度が存在する。","calc":null,"cat":"law","text":"測量法における「認証」の制度に関する記述として正しいものはどれか。"},{"id":"C1Q23","chapter":1,"choices":["測量士補登録証","特に定めはない","運転免許証のみ","健康保険証のみ"],"answer":0,"explain":"測量業務に従事する際は、資格者であることを証明するため測量士補登録証の携帯が実務上推奨される。","calc":null,"cat":"law","text":"測量士補として測量業務に従事する際、身分を証明するために携帯が推奨されるものはどれか。"},{"id":"C1Q24","chapter":1,"choices":["測量成果を作成した測量計画機関等が、一定期間保存する義務を負う","保存義務は存在しない","保存は測量士補個人の任意である","保存義務は測量機器メーカーが負う"],"answer":0,"explain":"測量成果は、作成した測量計画機関等において一定のルールに基づき保存されることが求められる。","calc":null,"cat":"law","text":"測量法における「測量成果」の保存義務者として正しいものはどれか。"},{"id":"C1Q25","chapter":1,"choices":["測量法は5年ごとに全面廃止・再制定される","測量法は制定以来一度も改正されていない","測量法に改正の制度はない","測量法は技術の進展(GNSS測量等)に応じて、これまで複数回の改正が行われている"],"answer":3,"explain":"測量法は、GNSS測量などの技術進展や社会情勢の変化に応じて、これまで複数回にわたり改正が行われている。","calc":null,"cat":"law","text":"測量法の一部改正等の経緯に関する一般的な記述として適切なものはどれか。"},{"id":"C1Q26","chapter":1,"choices":["業務上知り得た秘密を正当な理由なく漏らしてはならない","秘密保持の義務は測量士のみに課される","業務上の情報は自由に第三者へ提供してよい","秘密保持に関する定めは一切存在しない"],"answer":0,"explain":"測量業務に従事する者は、業務上知り得た秘密を正当な理由なく漏らしてはならないとされ、秘密保持は測量士補にも求められる基本的な責務である。","calc":null,"cat":"law","text":"測量士補が業務上知り得た秘密の取り扱いに関する記述として正しいものはどれか。"},{"id":"C1Q27","chapter":1,"choices":["民間企業の競争を制限するため","測量士補の収入を守るため","特に趣旨はなく形式的な規定である","無断複製・目的外使用を防ぎ、測量成果の適正な管理と利用を図るため"],"answer":3,"explain":"測量成果の無断複製や不正な目的外使用を防止し、測量成果の質と信頼性を維持するための規定である。","calc":null,"cat":"law","text":"測量法における「測量成果の複製」に関する罰則の趣旨として正しいものはどれか。"},{"id":"C1Q28","chapter":1,"choices":["日本の測地系は国際的な基準(ITRF等)と整合するよう設計されている","測量法は国内専用で国際的な考慮はない","国際的な整合性は不要とされている","日本独自の測地系は国際基準と一切関係がない"],"answer":0,"explain":"現在の日本の測地系(JGD2011等)は、国際的な基準(ITRF)との整合性を考慮して構築されている。","calc":null,"cat":"law","text":"測量に関する国際的な位置づけとして正しいものはどれか。"},{"id":"C1Q29","chapter":1,"choices":["各都道府県の土木事務所","法務局","民間の測量業協会","国土地理院"],"answer":3,"explain":"測量士補試験は、国土交通省国土地理院が実施している。","calc":null,"cat":"law","text":"測量士補試験を実施している機関として正しいものはどれか。"},{"id":"C1Q30","chapter":1,"choices":["測量作業に使用した消耗品(杭・スプレー等)","測量結果をまとめた報告書","測量により得られた地図データ","観測により得られた数値データ"],"answer":0,"explain":"使用した杭・スプレーなどの消耗品は測量の結果得られた成果物ではありません。","calc":null,"sourceAnswerMissing":true,"cat":"law","text":"測量法上の「測量成果」に該当しないものはどれか。"},{"id":"C2Q01","chapter":2,"choices":["全地球航法衛星システムの総称で、GPS・GLONASS・Galileo・準天頂衛星(みちびき)等を含む","アメリカのGPSのみを指す","地上の基準点網の名称","測量機器メーカーの名称"],"answer":0,"explain":"GNSS(Global Navigation Satellite System)は、複数の衛星測位システムの総称であり、GPS(米)、GLONASS(露)、Galileo(欧)、準天頂衛星「みちびき」(日)などを含む。","calc":null,"cat":"gnss","text":"GNSSの説明として正しいものはどれか。"},{"id":"C2Q02","chapter":2,"choices":["長時間観測することで高精度な基線解析が可能","衛星を使用しない測量方法","短時間の観測で高精度が得られる","観測点を動かしながら測定する"],"answer":0,"explain":"スタティック法は、複数の受信機を長時間据え置いて同時観測することで、高精度な基線ベクトルを求める方式である。","calc":null,"cat":"gnss","text":"GNSS測量における「スタティック法」の特徴として正しいものはどれか。"},{"id":"C2Q03","chapter":2,"choices":["衛星数の増加","精度の向上","サイクルスリップの減少","マルチパス"],"answer":3,"explain":"マルチパスは、衛星電波が建物や地面に反射して受信機に届く現象で、上空視界の悪さや反射物の存在で生じやすく、測位精度を低下させる。","calc":null,"cat":"gnss","text":"GNSS測量で、観測点上空の視界が悪いと生じやすい現象はどれか。"},{"id":"C2Q04","chapter":2,"choices":["移動局","補助局","ローバー","基準局(リファレンス局)"],"answer":3,"explain":"相対測位では、既知点に据える受信機を基準局(リファレンス局)、位置を求めたい側を移動局(ローバー)と呼ぶ。","calc":null,"cat":"gnss","text":"相対測位方式において、基準となる既知点の受信機を何と呼ぶか。"},{"id":"C2Q05","chapter":2,"choices":["衛星の打ち上げ位置を補正するため","電池残量を補正するため","気温による誤差を補正するため","地殻変動による位置のずれを補正するため"],"answer":3,"explain":"セミ・ダイナミック補正は、プレート運動等による地殻変動で生じる、基準日からの位置のずれを補正するために行う。","calc":null,"cat":"gnss","text":"GNSS測量の「セミ・ダイナミック補正」が必要となる主な理由はどれか。"},{"id":"C2Q06","chapter":2,"choices":["220.000m","200.000m","180.000m","280.000m"],"answer":1,"explain":"水平距離=√(ΔX² + ΔY²)=√(120.000² + 160.000²)=√(14,400 + 25,600)=√40,000=200.000m","calc":"distance","figure":{"type":"distance"},"cat":"gnss","text":"ある基線ベクトルを観測した結果、ΔX=120.000m、ΔY=160.000mであった。この基線の水平距離はいくらか。"},{"id":"C2Q07","chapter":2,"choices":["1点を長時間観測する方法","衛星を使わない方法","移動しながら連続的に位置を求める観測方法","気圧を測定する方法"],"answer":2,"explain":"キネマティック法は、初期化(基準)を行った後、受信機を移動させながら連続的に各点の位置を求める観測方式。","calc":null,"cat":"gnss","text":"GNSS測量における「キネマティック法」の特徴として正しいものはどれか。"},{"id":"C2Q08","chapter":2,"choices":["衛星1機のみで測位する","基準局からの補正情報をリアルタイムに受信し、その場で高精度な位置を求められる","観測後、数日かけて解析する必要がある","屋内専用の方式である"],"answer":1,"explain":"RTK法は、基準局からの補正データを無線等でリアルタイムに受け取り、現地で即座にcm級の測位結果を得られる方式。","calc":null,"cat":"gnss","text":"RTK-GNSS法(リアルタイムキネマティック法)の特徴として正しいものはどれか。"},{"id":"C2Q09","chapter":2,"choices":["搬送波位相の計数が、障害物等により一時的に途切れる現象","衛星が地球を1周すること","基準点が移動すること","受信機の電源が切れること"],"answer":0,"explain":"サイクルスリップは、上空の障害物などで衛星電波が遮られ、搬送波位相の連続的なカウントが途切れる現象で、測位誤差の原因となる。","calc":null,"cat":"gnss","text":"サイクルスリップの説明として正しいものはどれか。"},{"id":"C2Q10","chapter":2,"choices":["コード測定方式より精度が低い","衛星を使用しない","コード測定方式より高精度な測位が可能","気象観測専用の方式"],"answer":2,"explain":"搬送波位相測定方式は、波長の短い搬送波の位相を利用するため、コード測定方式よりも高精度な測位が可能である。","calc":null,"cat":"gnss","text":"GNSS測量で用いる「搬送波位相測定方式」の特徴として正しいものはどれか。"},{"id":"C2Q11","chapter":2,"choices":["GPSを妨害する","日本付近の上空に長くとどまり、GPSを補完・補強して測位精度を高める","気象観測専用の衛星である","通信のみを行い測位には関与しない"],"answer":1,"explain":"準天頂衛星「みちびき」は、日本の天頂付近に長時間とどまる軌道を持ち、GPSの補完・補強により測位の可用性と精度を高める。","calc":null,"cat":"gnss","text":"準天頂衛星「みちびき」の役割として正しいものはどれか。"},{"id":"C2Q12","chapter":2,"choices":["電池残量を表す指標","受信機の価格を表す指標","衛星の配置の良し悪しを表す指標で、値が小さいほど良好な配置","気温を表す指標"],"answer":2,"explain":"PDOP(Position Dilution of Precision)は、衛星配置による測位精度への影響を表す指標で、値が小さいほど衛星配置が良く、精度が高くなりやすい。","calc":null,"cat":"gnss","text":"GNSS測量における「PDOP」の説明として正しいものはどれか。"},{"id":"C2Q13","chapter":2,"choices":["70.000m","60.000m","100.000m","50.000m"],"answer":3,"explain":"水平距離=√(30² + 40²)=√(900 + 1,600)=√2,500=50.000m","calc":"distance","figure":{"type":"distance"},"cat":"gnss","text":"ある基線でΔX=30.000m、ΔY=40.000mが得られた。水平距離はいくらか。"},{"id":"C2Q14","chapter":2,"choices":["電離層遅延","対流圏遅延","マルチパス","標尺の目盛りの読み間違い"],"answer":3,"explain":"標尺の読み取りは水準測量等の誤差要因であり、GNSS測量の主な誤差要因(電離層遅延・対流圏遅延・マルチパス等)には含まれない。","calc":null,"cat":"gnss","text":"GNSS測量の誤差要因として適切でないものはどれか。"},{"id":"C2Q15","chapter":2,"choices":["2周波(L1・L2等)の観測データを用いて補正する","観測時間を短くする","受信機を1台に減らす","衛星数を減らす"],"answer":0,"explain":"電離層遅延は周波数に依存するため、2周波の観測データを組み合わせることで、その影響を大きく軽減できる。","calc":null,"cat":"gnss","text":"電離層による遅延誤差を軽減する方法として正しいものはどれか。"},{"id":"C2Q16","chapter":2,"choices":["受信機の重量を測るため","2点間の相対的な位置関係(基線ベクトル)を求めるため","衛星の寿命を測るため","気温を測るため"],"answer":1,"explain":"基線解析は、同時観測した2点間の相対的な位置関係(基線ベクトル:ΔX、ΔY、ΔZ)を求める処理である。","calc":null,"cat":"gnss","text":"GNSS測量で「基線解析」を行う目的として正しいものはどれか。"},{"id":"C2Q17","chapter":2,"choices":["気象データを入力すること","搬送波の波数の整数値を確定させる処理で、高精度測位に必要","受信機の電源を入れること","三脚を設置すること"],"answer":1,"explain":"搬送波位相測定では、波数の未知の整数部分(整数値バイアス)を確定させる初期化処理が、高精度な測位を得るために必要となる。","calc":null,"cat":"gnss","text":"GNSS測量における「初期化(整数値バイアスの決定)」の説明として正しいものはどれか。"},{"id":"C2Q18","chapter":2,"choices":["屋内","高いビルに囲まれた場所","上空視界が開けており、反射物が少ない場所","樹木が密集した森の中"],"answer":2,"explain":"GNSS測量は、上空視界が開け、電波の反射物が少ない環境で高精度が得られやすい。ビル街・森林・屋内は不利な条件となる。","calc":null,"cat":"gnss","text":"GNSS測量の観測に適した条件として正しいものはどれか。"},{"id":"C2Q19","chapter":2,"choices":["基準局を必ず自分で設置する必要がある","衛星を使わない方式","複数の電子基準点網から生成された補正情報を利用し、自前の基準局なしで測位できる","観測後に解析が必要な方式"],"answer":2,"explain":"ネットワーク型RTKは、国土地理院の電子基準点等のネットワークから配信される補正情報を用い、利用者が自ら基準局を設置しなくても高精度測位を行える方式。","calc":null,"cat":"gnss","text":"ネットワーク型RTK法の説明として正しいものはどれか。"},{"id":"C2Q20","chapter":2,"choices":["国土地理院が全国に設置し、連続観測を行っている基準点","測量士補が携帯する受信機","民間が任意に設置する仮設点","気象観測用の施設"],"answer":0,"explain":"電子基準点は、国土地理院が全国に約1,300点設置し、連続的にGNSS観測を行っている基準点で、測位の基準として広く利用される。","calc":null,"cat":"gnss","text":"GNSS測量で使用される「電子基準点」の説明として正しいものはどれか。"},{"id":"C2Q21","chapter":2,"choices":["100.000m","140.000m","120.000m","200.000m"],"answer":0,"explain":"斜距離=√(ΔX² + ΔY² + ΔZ²)=√(60² + 80² + 0²)=√(3,600 + 6,400)=√10,000=100.000m","calc":"distance","figure":{"type":"distance"},"cat":"gnss","text":"ある基線でΔX=60.000m、ΔY=80.000m、ΔZ=0.000mが得られた。この基線の斜距離はいくらか。"},{"id":"C2Q22","chapter":2,"choices":["GNSSは点間の視通(見通し)が不要だが、TSは原則として視通が必要","GNSSは視通が必要だが、TSは不要","どちらも視通が必須","どちらも視通は不要"],"answer":0,"explain":"GNSS測量は衛星からの電波を用いるため点間の見通しは不要である。一方、トータルステーション測量は器械と目標間の視通が原則必要となる。","calc":null,"cat":"gnss","text":"GNSS測量と従来のトータルステーション測量の比較として正しいものはどれか。"},{"id":"C2Q23","chapter":2,"choices":["屋内で観測する場合","標高差の大きい基線を観測する場合","短距離かつ標高差のない基線の場合","衛星を使わない場合"],"answer":1,"explain":"対流圏遅延は大気の状態に依存し、特に標高差の大きい2点間の基線では、両点の大気条件の差が影響として現れやすい。","calc":null,"cat":"gnss","text":"GNSS観測において、対流圏遅延の影響が大きくなりやすい状況はどれか。"},{"id":"C2Q24","chapter":2,"choices":["縮尺補正","補正は一切不要","気温補正のみ","ジオイド高による補正(楕円体高からジオイド高を差し引いて標高を求める)"],"answer":3,"explain":"GNSSで得られる高さは楕円体高であり、標高(正標高)を得るにはジオイド高を差し引く補正が必要となる。(標高 ≒ 楕円体高 − ジオイド高)","calc":null,"cat":"gnss","text":"GNSS測量の成果を、標高値として利用する際に必要な補正はどれか。"},{"id":"C2Q25","chapter":2,"choices":["36.500m","8.820m","45.320m","81.820m"],"answer":1,"explain":"標高 ≒ 楕円体高 − ジオイド高 = 45.320 − 36.500 = 8.820m","calc":"geoid","figure":{"type":"geoid"},"cat":"gnss","text":"ある点の楕円体高が45.320m、その地点のジオイド高が36.500mであった。この点の標高はおよそいくらか。"},{"id":"C2Q26","chapter":2,"choices":["精度と観測時間は無関係","基線が長いほど観測時間は短くて済む","観測時間は常に一定である","求める精度が高いほど、また基線が長いほど、観測時間は長く必要になる傾向がある"],"answer":3,"explain":"一般に、高精度を求めるほど、また基線長が長くなるほど、必要な観測時間は長くなる傾向がある。","calc":null,"cat":"gnss","text":"GNSS測量における観測時間の一般的な傾向として正しいものはどれか。"},{"id":"C2Q27","chapter":2,"choices":["衛星配置が偏っており、測位精度が低下しやすい","気温が高い","衛星配置が理想的で精度が高い","受信機が新品である"],"answer":0,"explain":"DOP値が大きいということは衛星配置が偏っていることを意味し、測位精度が低下しやすい状況を示す。","calc":null,"cat":"gnss","text":"GNSS測量における「DOP」値が大きいときの状況として正しいものはどれか。"},{"id":"C2Q28","chapter":2,"choices":["衛星の寿命を延ばすサービス","通信専用のサービス","みちびきから配信される補正情報により、専用受信機でcm級測位が可能となるサービス","気象情報を配信するサービス"],"answer":2,"explain":"CLAS(シーラス)は、準天頂衛星「みちびき」から補正情報を配信し、対応受信機を用いることでcm級の高精度測位を可能にするサービスである。","calc":null,"cat":"gnss","text":"準天頂衛星システムの「センチメータ級測位補強サービス(CLAS)」の説明として正しいものはどれか。"},{"id":"C2Q29","chapter":2,"choices":["偏心とは気温のずれのことである","偏心は一切考慮しなくてよい","受信機のアンテナ位置と、測ろうとする基準点の位置がずれている場合に補正が必要","偏心は衛星側の問題である"],"answer":2,"explain":"アンテナの位相中心と実際の基準点位置がずれている(偏心している)場合、その量を測定し補正する必要がある。","calc":null,"cat":"gnss","text":"GNSS測量における「観測点の偏心」に関する記述として正しいものはどれか。"},{"id":"C2Q30","chapter":2,"choices":["見通しの利かない長距離基線の観測","上空が完全に遮蔽されたトンネル内部の測量","離島間など遠距離の基準点測量","広範囲に散在する基準点網の設置"],"answer":1,"explain":"GNSS測位は衛星からの電波を受信する必要があり、上空が完全に遮蔽されるトンネル内部で単独利用することには適しません。","calc":null,"sourceAnswerMissing":true,"cat":"gnss","text":"GNSS測量が特に有効とされる場面として適切でないものはどれか。"},{"id":"C3Q01","chapter":3,"choices":["気象条件による誤差","観測した角度の合計と理論値との差","GNSS衛星の軌道誤差","観測点の標高の誤差"],"answer":1,"explain":"閉合誤差は、観測した角度の合計(または座標の閉合)と、理論値との差のこと。","calc":null,"cat":"traverse","text":"トラバース測量における「閉合誤差」の説明として正しいものはどれか。"},{"id":"C3Q02","chapter":3,"choices":["1′00″","40″","1′20″","20″"],"answer":1,"explain":"540°00′00″ − 539°59′20″ = 40″。観測合計が理論値より40″不足しており、閉合差は40″となる。","calc":"basic","cat":"traverse","text":"ある閉合トラバース(五角形)の内角の観測値の合計が539°59′20″であった。理論値との閉合差はいくらか。(五角形の内角の和=540°00′00″)"},{"id":"C3Q03","chapter":3,"choices":["未知点のみで構成される","出発点と到達点が同一点である","一切の角度観測を行わない","既知点から出発し、別の既知点に結合する"],"answer":3,"explain":"結合トラバースは、既知点から出発し、別の既知点に結合(到達)する形式。出発点に戻る「閉合トラバース」と区別される。","calc":null,"cat":"traverse","text":"トラバース測量の「結合トラバース」の説明として正しいものはどれか。"},{"id":"C3Q04","chapter":3,"choices":["ΔX=70.7m、ΔY=70.7m","ΔX=50.0m、ΔY=86.6m","ΔX=0.0m、ΔY=100.0m","ΔX=100.0m、ΔY=0.0m"],"answer":0,"explain":"ΔX = 距離 × cos(方位角) = 100 × cos45° = 100 × 0.707 ≒ 70.7m ΔY = 距離 × sin(方位角) = 100 × sin45° = 100 × 0.707 ≒ 70.7m","calc":"basic","figure":{"type":"general"},"cat":"traverse","text":"ある辺の方位角が45°00′00″、距離が100.000mのとき、この辺のX(南北)方向・Y(東西)方向の増分をそれぞれ求めよ。(√2 ≒ 1.414として計算)"},{"id":"C3Q05","chapter":3,"choices":["GNSS測量のみに用いる方法","水準測量の標高補正","気象補正専用の方法","角度観測の精度が距離観測の精度より高い場合に、緯距・経距の閉合差を補正する方法"],"answer":3,"explain":"トランシット法則は、角度観測の精度が距離観測の精度より高い場合に、緯距・経距の誤差を各辺の緯距・経距の絶対値に比例して配分する方法。","calc":null,"cat":"traverse","text":"誤差の配分方法のうち、「トランシット法則」が用いられる場面として正しいものはどれか。"},{"id":"C3Q06","chapter":3,"choices":["気象を観測する点","あらかじめ座標が判明している点で、測量の出発・結合の基準となる","測量士補が任意に決める点","これから座標を求める未知の点"],"answer":1,"explain":"与点(既知点)は、既に座標値が判明している点で、多角測量の出発点や結合点として基準に用いられる。","calc":null,"cat":"traverse","text":"基準点測量における「与点(既知点)」の説明として正しいものはどれか。"},{"id":"C3Q07","chapter":3,"choices":["埋標→計算→観測","観測→選点→踏査","踏査・選点→造標・埋標→観測(角・距離)→計算","計算→観測→選点"],"answer":2,"explain":"トラバース測量は一般に、踏査・選点(点をどこに置くか決める)→造標・埋標(標識設置)→観測(角度・距離)→計算、の順で進める。","calc":null,"cat":"traverse","text":"トラバース測量の作業手順として一般的に正しい順序はどれか。"},{"id":"C3Q08","chapter":3,"choices":["一直線に伸びるのみ","出発点に戻って閉じる多角形を形成する","角度観測を行わない","別の既知点に結合する"],"answer":1,"explain":"閉合トラバースは、出発した点に戻って多角形を閉じる形式で、閉合誤差の検出がしやすいという利点がある。","calc":null,"cat":"traverse","text":"「閉合トラバース」の特徴として正しいものはどれか。"},{"id":"C3Q09","chapter":3,"choices":["100.0m","50.0m","173.2m","200.0m"],"answer":2,"explain":"ΔX = 距離 × cos(方位角) = 200 × cos30° = 200 × 0.866 = 173.2m","calc":"distance","figure":{"type":"distance"},"cat":"traverse","text":"方位角が30°00′00″、距離が200.000mの辺の緯距(ΔX)はいくらか。(cos30°≒0.866)"},{"id":"C3Q10","chapter":3,"choices":["100.0m","200.0m","50.0m","173.2m"],"answer":0,"explain":"ΔY = 距離 × sin(方位角) = 200 × sin30° = 200 × 0.5 = 100.0m","calc":"distance","cat":"traverse","text":"問9と同じ辺(方位角30°、距離200.000m)の経距(ΔY)はいくらか。(sin30°=0.5)"},{"id":"C3Q11","chapter":3,"choices":["2辺のなす内角","鉛直方向からの角度","基準となる北方向から時計回りに測った、その辺の方向の角度","距離を角度に換算した値"],"answer":2,"explain":"方位角は、基準となる北の方向を0°とし、時計回りに測った各辺の方向の角度である。","calc":null,"cat":"traverse","text":"「方位角」の定義として正しいものはどれか。"},{"id":"C3Q12","chapter":3,"choices":["気温から求める","標高から求める","距離から直接求める","前の辺の方位角に交角(観測した水平角)を加減して求める"],"answer":3,"explain":"各辺の方位角は、直前の辺の方位角に、観測した水平角(交角)を加減することで順次求めていく。","calc":"basic","cat":"traverse","text":"トラバース測量で、次の辺の方位角を求める際の一般的な計算方法として正しいものはどれか。"},{"id":"C3Q13","chapter":3,"choices":["等級が上位ほど、より高い精度が要求される","等級は費用のみを表す","等級は精度とは無関係","等級が下位ほど精度が高い"],"answer":0,"explain":"基準点には等級があり、上位等級(例:1級基準点)ほど高い精度が要求され、下位の基準点設置の基準となる。","calc":null,"cat":"traverse","text":"基準点の「等級(1級・2級等)」に関する記述として正しいものはどれか。"},{"id":"C3Q14","chapter":3,"choices":["0.050m","0.010m","0.100m","0.070m"],"answer":0,"explain":"閉合誤差 = √(緯距の総和² + 経距の総和²) = √(0.030² + 0.040²) = √(0.0009 + 0.0016) = √0.0025 = 0.050m","calc":"distance","figure":{"type":"distance"},"cat":"traverse","text":"ある閉合トラバースで、緯距の総和が+0.030m、経距の総和が−0.040mであった。閉合誤差(位置の閉合差)はいくらか。"},{"id":"C3Q15","chapter":3,"choices":["誤差を無視する方法","気温に比例して配分する","標高に比例して配分する","角度と距離の精度が同程度の場合に、閉合誤差を各辺の距離に比例して配分する"],"answer":3,"explain":"コンパス法則(ボーディッチ法則)は、角度と距離の観測精度が同程度のときに用いられ、閉合誤差を各辺の長さ(距離)に比例して配分する。","calc":null,"cat":"traverse","text":"「コンパス法則(ボーディッチ法則)」による誤差配分の説明として正しいものはどれか。"},{"id":"C3Q16","chapter":3,"choices":["気温を測る観測","目標点に器械を据えられない場合、近くの偏心点で観測し補正する方法","衛星を使う観測","標高のみを測る観測"],"answer":1,"explain":"偏心観測は、目標とする点に直接器械を据えられない場合などに、近傍の偏心点で観測を行い、後で偏心量を補正して本来の点の値を求める方法。","calc":null,"cat":"traverse","text":"多角測量における「偏心観測」の説明として正しいものはどれか。"},{"id":"C3Q17","chapter":3,"choices":["水平角・鉛直角・距離を同一器械で観測できる","角度のみを観測する","衛星電波を受信する","距離のみを観測する"],"answer":0,"explain":"トータルステーションは、水平角・鉛直角・距離を1台で同時に観測でき、多角測量の効率化に大きく寄与する。","calc":null,"cat":"traverse","text":"トータルステーション(TS)による多角測量の特徴として正しいものはどれか。"},{"id":"C3Q18","chapter":3,"choices":["標尺を交換するため","器械誤差等を軽減し、角度観測の精度を高めるため","観測時間を延ばすため","気温を測るため"],"answer":1,"explain":"対回観測は、望遠鏡の正位・反位で観測を行うことで、視準軸誤差などの器械誤差を相殺し、角度観測の精度を高める。","calc":null,"cat":"traverse","text":"観測における「対回観測」の目的として正しいものはどれか。"},{"id":"C3Q19","chapter":3,"choices":["60°00′00″","40°00′00″","50°00′00″","70°00′00″"],"answer":2,"explain":"180° − 60° − 70° = 50°00′00″","calc":"basic","figure":{"type":"general"},"cat":"traverse","text":"三角形の2つの内角が60°00′00″と70°00′00″のとき、残る1つの内角はいくらか。(三角形の内角の和=180°)"},{"id":"C3Q20","chapter":3,"choices":["今回の測量で新たに座標を求めようとする点","衛星の名称","気象観測点","既に座標が判明している点"],"answer":0,"explain":"新点は、その測量で新たに設置し、座標値を求めようとする点のこと。既知点(与点)と対になる概念である。","calc":null,"cat":"traverse","text":"基準点測量における「新点」の説明として正しいものはどれか。"},{"id":"C3Q21","chapter":3,"choices":["距離を測ること","望遠鏡の十字線を目標に正確に合わせること","標高を測ること","気温を測ること"],"answer":1,"explain":"視準とは、望遠鏡の十字線(レティクル)を目標点に正確に合わせる操作のことを指す。","calc":null,"cat":"traverse","text":"水平角観測における「視準」の意味として正しいものはどれか。"},{"id":"C3Q22","chapter":3,"choices":["−75.0m","+150.0m","−150.0m","+75.0m"],"answer":0,"explain":"ΔX = 距離 × cos(方位角) = 150 × cos120° = 150 × (−0.5) = −75.0m(南方向)","calc":"distance","figure":{"type":"distance"},"cat":"traverse","text":"方位角120°00′00″、距離150.000mの辺の緯距(ΔX)はいくらか。(cos120°=−0.5)"},{"id":"C3Q23","chapter":3,"choices":["明らかな読み間違い等の過失","原因を特定できず、正負・大小が不規則に現れる誤差","誤差ではなく正しい値","常に一定方向に現れる系統的な誤差"],"answer":1,"explain":"偶然誤差は、原因が特定できず、正負・大小がランダムに現れる誤差で、多数回観測して平均をとることで軽減できる。","calc":null,"cat":"traverse","text":"多角測量における誤差の種類のうち「偶然誤差」の説明として正しいものはどれか。"},{"id":"C3Q24","chapter":3,"choices":["不規則に現れる誤差","明らかな過失","一定の原因により、常に同じ傾向(方向・大きさ)で現れる誤差","誤差が全く生じないこと"],"answer":2,"explain":"系統誤差は、器械の狂いなど一定の原因により、常に同じ傾向で現れる誤差で、補正計算や観測方法の工夫で除去・軽減できる。","calc":null,"cat":"traverse","text":"「系統誤差(定誤差)」の説明として正しいものはどれか。"},{"id":"C3Q25","chapter":3,"choices":["偶然誤差","器械の視準軸誤差","大気による屈折","標尺の読み取り値を明らかに読み間違える"],"answer":3,"explain":"過失(錯誤・ミステイク)は、読み間違い・記録ミスなど人為的な明らかな誤りで、誤差とは区別され、発見して除去すべきものである。","calc":null,"cat":"traverse","text":"多角測量で「過失(錯誤)」に該当するものはどれか。"},{"id":"C3Q26","chapter":3,"choices":["100.000m","70.000m","60.000m","50.000m"],"answer":3,"explain":"距離 = √(ΔX² + ΔY²) = √(40² + 30²) = √(1,600 + 900) = √2,500 = 50.000m","calc":"distance","figure":{"type":"distance"},"cat":"traverse","text":"ある辺の緯距がΔX=+40.000m、経距がΔY=+30.000mのとき、この辺の距離はいくらか。"},{"id":"C3Q27","chapter":3,"choices":["気温を記録するため","観測時間を延ばすため","費用を計算するため","観測値が許容範囲内にあるかを確認し、観測の良否を判定するため"],"answer":3,"explain":"観測差・較差を許容範囲と照合することで、その観測が精度基準を満たしているかを判定し、再観測の要否を決める。","calc":null,"cat":"traverse","text":"基準点測量における「観測差」「較差」の確認の目的として正しいものはどれか。"},{"id":"C3Q28","chapter":3,"choices":["方位角は標高のことである","方向角は距離のことである","座標北を基準にした角度が方向角、真北等を基準にした角度が方位角として区別されることがある","両者は常に完全に同一で区別されない"],"answer":2,"explain":"座標系のX軸(座標北)を基準に測った角度を方向角、真北などを基準に測った角度を方位角と呼び分ける場合がある(基準の取り方で区別される)。","calc":null,"cat":"traverse","text":"トラバース測量における「方向角」と「方位角」の関係として正しいものはどれか。"},{"id":"C3Q29","chapter":3,"choices":["費用を増やすため","観測を省略するため","観測・計算に誤りがないか、閉合差等を用いて確認するため","気象を予測するため"],"answer":2,"explain":"点検計算は、観測値や計算過程に誤りがないかを、閉合差や既知点との整合などで確認する重要な工程である。","calc":"basic","cat":"traverse","text":"多角測量で「点検計算」を行う意義として正しいものはどれか。"},{"id":"C3Q30","chapter":3,"choices":["できるだけ短時間で雑に観測を済ませる","器械を正しく整準・求心する","適切な等級・精度の与点を用いる","対回観測を行う"],"answer":0,"explain":"雑な観測は誤差や作業ミスを増やすため不適切です。整準・求心、適切な既知点の利用、点検観測などが重要です。","calc":null,"sourceAnswerMissing":true,"cat":"traverse","text":"多角測量において精度を高めるための一般的な工夫として適切でないものはどれか。"},{"id":"C4Q01","chapter":4,"choices":["角度を測定する","距離のみを測定する","GNSS信号を受信する","水平な視準線を作り、標尺の目盛りを読み取る"],"answer":3,"explain":"レベル(水準儀)は、水平な視準線を作り出す機器で、標尺(スタッフ)の目盛りを読み取ることで高低差を求める。","calc":null,"cat":"level","text":"水準測量における「レベル」の役割として正しいものはどれか。"},{"id":"C4Q02","chapter":4,"choices":["+2.530m","−2.530m","+0.534m","−0.534m"],"answer":2,"explain":"比高 = 後視(B.S.) − 前視(F.S.) = 1.532 − 0.998 = +0.534m(前視点が後視点より高い)","calc":"level","figure":{"type":"level"},"cat":"level","text":"後視(B.S.)の読みが1.532m、前視(F.S.)の読みが0.998mのとき、この区間の比高(高低差)はいくらか。"},{"id":"C4Q03","chapter":4,"choices":["誤差(較差)を確認し、精度を確保するため","観測時間を短縮するため","標尺を交換するため","天候を確認するため"],"answer":0,"explain":"往復観測により、往路と復路の結果を比較して較差を確認し、観測の精度を担保する。","calc":null,"cat":"level","text":"水準測量において「往復観測」を行う主な目的はどれか。"},{"id":"C4Q04","chapter":4,"choices":["観測時間を統一するため","三脚の設置を楽にするため","大気の屈折や地球の曲率による誤差を相殺するため","標尺の破損を防ぐため"],"answer":2,"explain":"後視・前視の視準距離を等しくすることで、大気の屈折(気差)と地球の曲率(球差)による誤差を、後視と前視で相殺できる。","calc":null,"cat":"level","text":"直接水準測量で、レベルから標尺までの視準距離をできる限り等しくする理由として正しいものはどれか。"},{"id":"C4Q05","chapter":4,"choices":["0.028m","0.014m","6.498m","0.007m"],"answer":1,"explain":"往観測+3.256mに対し、復観測は逆方向なので符号を揃えると+3.242m。較差 = |3.256 − 3.242| = 0.014m","calc":"basic","figure":{"type":"general"},"cat":"level","text":"ある区間の水準測量で、往観測の比高が+3.256m、復観測の比高が−3.242mであった。較差はいくらか。"},{"id":"C4Q06","chapter":4,"choices":["距離を測る巻尺","目盛りが刻まれた尺で、レベルで読み取ることで高さを求める","衛星信号の受信機","角度を測る器械"],"answer":1,"explain":"標尺は目盛りの付いた尺で、鉛直に立ててレベルで読み取り、視準線からの高さを求める。","calc":null,"cat":"level","text":"水準測量で用いる「標尺(スタッフ)」の説明として正しいものはどれか。"},{"id":"C4Q07","chapter":4,"choices":["3.350m低い","0.850m高い","3.350m高い","0.850m低い"],"answer":3,"explain":"比高 = 後視 − 前視 = 1.250 − 2.100 = −0.850m。マイナスなので前視点は後視点より0.850m低い。","calc":"basic","figure":{"type":"general"},"cat":"level","text":"器械点から後視点の標尺を読むと1.250m、前視点の標尺を読むと2.100mであった。前視点は後視点に対して高いか低いか、またその差はいくらか。"},{"id":"C4Q08","chapter":4,"choices":["気象を観測する点","最終的に標高を求める目的の点","衛星を観測する点","器械を移動する際に、前視と次の後視の基準として一時的に用いる点"],"answer":3,"explain":"もりかえ点(TP)は、レベルを次の位置へ移動する際、直前の前視点をそのまま次の後視点として引き継ぐ中継点。","calc":null,"cat":"level","text":"水準測量における「もりかえ点(TP:ターニングポイント)」の説明として正しいものはどれか。"},{"id":"C4Q09","chapter":4,"choices":["+3.120m","+2.120m","−3.120m","+21.840m"],"answer":0,"explain":"総比高 = 後視の合計 − 前視の合計 = 12.480 − 9.360 = +3.120m","calc":"level","figure":{"type":"level"},"cat":"level","text":"ある水準路線で、後視の合計が12.480m、前視の合計が9.360mであった。出発点から到達点までの総比高はいくらか。"},{"id":"C4Q10","chapter":4,"choices":["25.000m","28.120m","21.880m","3.120m"],"answer":1,"explain":"到達点の標高 = 出発点の標高 + 総比高 = 25.000 + 3.120 = 28.120m","calc":"basic","cat":"level","text":"出発点の標高が25.000m、その点から到達点までの総比高が+3.120mのとき、到達点の標高はいくらか。"},{"id":"C4Q11","chapter":4,"choices":["距離が長いほど小さくなる","視準距離に関係なく一定","視準距離が長いほど大きくなる","誤差は生じない"],"answer":2,"explain":"球差は地球が丸いことによる誤差で、視準距離が長くなるほど大きくなる。視準距離を等しくすることで相殺できる。","calc":null,"cat":"level","text":"地球の曲率による誤差(球差)の性質として正しいものはどれか。"},{"id":"C4Q12","chapter":4,"choices":["器械の重量による誤差","標尺の目盛り誤差","光が大気中で曲がることで生じる誤差","観測者の視力による誤差"],"answer":2,"explain":"気差は、光が密度の異なる大気中を進む際に屈折することで生じる誤差である。","calc":null,"cat":"level","text":"大気による光の屈折誤差(気差)の説明として正しいものはどれか。"},{"id":"C4Q13","chapter":4,"choices":["後視が前視より大きければ「昇(上がり)」、小さければ「降(下がり)」となる","後視と前視は無関係","距離のみを記入する","常に降となる"],"answer":0,"explain":"昇降式では、後視 − 前視 が正なら昇(その区間で高くなる)、負なら降(低くなる)として記入する。","calc":null,"cat":"level","text":"「昇降式(細部)」の野帳記入法における比高の考え方として正しいものはどれか。"},{"id":"C4Q14","chapter":4,"choices":["降 2.400m","降 1.200m","昇 1.200m","昇 2.400m"],"answer":2,"explain":"後視 − 前視 = 1.800 − 0.600 = +1.200m。正の値なので「昇」で1.200m。","calc":"basic","figure":{"type":"general"},"cat":"level","text":"後視1.800m、前視0.600mのとき、この区間は昇・降どちらでその値はいくらか。"},{"id":"C4Q15","chapter":4,"choices":["器械高 = 既知点の標高 + 後視","器械高 = 既知点の標高 − 後視","器械高 = 前視 + 後視","器械高 = 距離 × 後視"],"answer":0,"explain":"器高式では、器械高(IH)= その点(既知点)の標高 + 後視 で求め、そこから前視を引いて各点の標高を出す。","calc":null,"cat":"level","text":"「器高式」の野帳記入法における器械高(IH)の求め方として正しいものはどれか。"},{"id":"C4Q16","chapter":4,"choices":["1.500m","11.500m","10.000m","8.500m"],"answer":1,"explain":"器械高 = 既知点の標高 + 後視 = 10.000 + 1.500 = 11.500m","calc":"basic","figure":{"type":"general"},"cat":"level","text":"標高10.000mの点に標尺を立て後視が1.500m、器械の視準線(器械高)はいくらか。"},{"id":"C4Q17","chapter":4,"choices":["10.800m","11.500m","12.200m","0.700m"],"answer":0,"explain":"点の標高 = 器械高 − 前視 = 11.500 − 0.700 = 10.800m","calc":"basic","cat":"level","text":"問16で器械高が11.500mのとき、前視の読みが0.700mの点の標高はいくらか。"},{"id":"C4Q18","chapter":4,"choices":["標尺付属の円形気泡管(標尺水準器)","巻尺","電卓","三脚のみ"],"answer":0,"explain":"標尺は、付属の円形気泡管(標尺水準器)を使って鉛直に立てることで、傾きによる読み取り誤差を防ぐ。","calc":null,"cat":"level","text":"標尺を鉛直に立てるために用いる付属具として正しいものはどれか。"},{"id":"C4Q19","chapter":4,"choices":["常に正しい値より小さく読まれる","常に正しい値より大きく読まれる","読み取り不能になる","傾きは読み取りに影響しない"],"answer":1,"explain":"標尺が鉛直から傾くと、視準線と標尺の交点が本来より上方の目盛りを指すため、読みは常に正しい値より大きくなる。","calc":null,"cat":"level","text":"標尺が観測者側または反対側に傾いた場合の読み取り値の傾向として正しいものはどれか。"},{"id":"C4Q20","chapter":4,"choices":["観測をやめる","後視・前視の視準距離を等しくする","気温を測る","標尺を交換する"],"answer":1,"explain":"視準線誤差(視準線が水平でない誤差)は、後視・前視の距離を等しくすることで相殺される。","calc":null,"cat":"level","text":"水準測量における「レベルの視準線誤差」を軽減する方法として正しいものはどれか。"},{"id":"C4Q21","chapter":4,"choices":["+1.200m","+0.200m","+2.800m","−1.200m"],"answer":0,"explain":"総比高 = (+1.200) + (−0.500) + (+0.800) + (−0.300) = +1.200m","calc":"basic","figure":{"type":"general"},"cat":"level","text":"4区間の比高がそれぞれ +1.200m、−0.500m、+0.800m、−0.300mであった。全区間の総比高はいくらか。"},{"id":"C4Q22","chapter":4,"choices":["気象観測点","GNSS衛星","標高が既知で、水準測量の基準として全国に設置されている点","角度の基準点"],"answer":2,"explain":"水準点(ベンチマーク)は、標高が既知の基準点で、国土地理院等により全国の主要道路沿い等に設置されている。","calc":null,"cat":"level","text":"水準点(ベンチマーク)の説明として正しいものはどれか。"},{"id":"C4Q23","chapter":4,"choices":["距離に関係なく常に一定","観測者の年齢に比例する","気温に比例する","路線長(距離)の平方根に比例する形で許容範囲が定められることが多い"],"answer":3,"explain":"水準測量の許容誤差は、一般に路線長Sの平方根(√S)に比例する形(例:許容誤差=定数×√S)で規定されることが多い。","calc":null,"cat":"level","text":"水準測量における許容誤差の一般的な表現方法として正しいものはどれか。"},{"id":"C4Q24","chapter":4,"choices":["0.010m","10.220m","0.220m","0.020m"],"answer":3,"explain":"復路は逆方向のため符号を揃えると+5.100m。較差 = |5.120 − 5.100| = 0.020m","calc":"basic","figure":{"type":"general"},"cat":"level","text":"ある水準路線(往復)の較差が観測された。往路の比高合計が+5.120m、復路の比高合計が−5.100mのとき、較差はいくらか。"},{"id":"C4Q25","chapter":4,"choices":["角度を測る機器である","標尺のバーコードを自動読み取りし、読み取り誤差や個人差を軽減できる","GNSS専用機器である","手動でしか読めない"],"answer":1,"explain":"電子レベルは、バーコード標尺を自動で読み取ることで、観測者による読み取り誤差や個人差を減らし、作業も効率化する。","calc":null,"cat":"level","text":"精密水準測量で使用される「電子レベル」と「バーコード標尺」の特徴として正しいものはどれか。"},{"id":"C4Q26","chapter":4,"choices":["距離を測るため","レベル本体を概略水平に据え付けるため","標高を直接読むため","角度を測るため"],"answer":1,"explain":"円形気泡管は、レベルをおおまかに水平に整準するために用いる。微細な水平は視準線ごとに補正される(自動レベル等)。","calc":null,"cat":"level","text":"水準測量で「レベルの円形気泡管」を用いる目的として正しいものはどれか。"},{"id":"C4Q27","chapter":4,"choices":["B=48.778m、C=52.445m","B=52.456m、C=50.789m","B=50.445m、C=48.778m","B=48.778m、C=50.445m"],"answer":3,"explain":"器械高 = 50.000 + 1.234 = 51.234m。B=51.234 − 2.456 = 48.778m、C=51.234 − 0.789 = 50.445m","calc":"basic","figure":{"type":"general"},"cat":"level","text":"器高式で、既知点Aの標高が50.000m、後視1.234m。次にB点の前視が2.456m、C点の前視が0.789mであった。B点・C点の標高をそれぞれ求めよ。"},{"id":"C4Q28","chapter":4,"choices":["後視・前視の距離を等しくする","標尺を鉛直に立てる","往復観測を行う","陽炎(かげろう)が強い地表近くを長距離視準する"],"answer":3,"explain":"地表近くは陽炎(大気のゆらぎ)の影響を強く受けるため、長距離視準は誤差を増やす。①②③は誤差軽減の正しい工夫。","calc":null,"cat":"level","text":"水準測量で誤差を小さくするための観測上の工夫として適切でないものはどれか。"},{"id":"C4Q29","chapter":4,"choices":["トータルステーション等で鉛直角と距離から高低差を求める方法","標高を推測で決める方法","標尺とレベルのみで高低差を求める方法","衛星写真から求める方法"],"answer":0,"explain":"間接水準測量は、鉛直角と斜距離を測定し、三角関数を用いて高低差を計算で求める方法(TSによる観測等)。","calc":null,"cat":"level","text":"「間接水準測量」の説明として正しいものはどれか。"},{"id":"C4Q30","chapter":4,"choices":["86.600m","100.000m","50.000m","30.000m"],"answer":2,"explain":"高低差 = 斜距離 × sin(鉛直角) = 100 × sin30° = 100 × 0.5 = 50.000m","calc":"slope","figure":{"type":"slope"},"cat":"level","text":"間接水準測量で、斜距離100.000m、鉛直角(仰角)が30°のとき、高低差(高さの差)はおよそいくらか。(sin30°=0.5)"},{"id":"C5Q01","chapter":5,"choices":["進行方向:約10% 隣接コース間:約90%","重複は不要","常に100%","進行方向(縦):約60% 隣接コース間(横):約30%"],"answer":3,"explain":"一般的な空中写真測量では、進行方向の重複度(オーバーラップ)を約60%、隣接コース間の重複度(サイドラップ)を約30%程度に設定することが多い。","calc":null,"cat":"photo","text":"空中写真測量における「重複度(オーバーラップ)」の一般的な設定として正しいものはどれか。"},{"id":"C5Q02","chapter":5,"choices":["悪天候でも問題なく飛行できる","有人航空機より必ず高精度になる","広範囲を一度に、低コストで撮影しやすい","GNSS測量より常に高精度"],"answer":2,"explain":"UAVは低コストで機動的に運用でき、狭〜中規模の範囲の撮影に向く。ただし精度は条件次第で、常に有人機を上回るわけではない。","calc":null,"cat":"photo","text":"UAV(ドローン)写真測量の特徴として正しいものはどれか。"},{"id":"C5Q03","chapter":5,"choices":["気圧を測定する","現地の看板を撮影する","標尺を読み取る","個々の写真の標定要素を求め、写真間を関連づける"],"answer":3,"explain":"空中三角測量は、各写真の内部標定・外部標定要素を求め、写真同士を地上座標系に関連づける工程。","calc":null,"cat":"photo","text":"空中三角測量(パスポイント法・タイポイント法)の目的として正しいものはどれか。"},{"id":"C5Q04","chapter":5,"choices":["気象条件による色のずれ","隣り合う2枚の写真上で、同一地点の位置がずれて見える現象で、これを利用して高さ情報を得る","カメラのピンボケのこと","撮影者の錯覚"],"answer":1,"explain":"視差は、重複する2枚の写真での同一点の見え方のずれで、これを利用して立体視や高さの算出が可能になる。","calc":null,"cat":"photo","text":"写真測量における「視差」の説明として正しいものはどれか。"},{"id":"C5Q05","chapter":5,"choices":["電波を使い、光は一切使用しない","夜間は測量できない","樹木の下の地表面(地盤高)のデータも取得しやすい","水中の地形は必ず正確に測れる"],"answer":2,"explain":"航空レーザ測量(LiDAR)は、レーザ光の一部が樹木の隙間を通過して地表に届くため、樹木下の地盤高データも取得しやすい。","calc":null,"cat":"photo","text":"航空レーザ測量の特徴として正しいものはどれか。"},{"id":"C5Q06","chapter":5,"choices":["1/10,000","1/2,000","1/20,000","1/200,000"],"answer":2,"explain":"写真縮尺 = 焦点距離 ÷ 撮影高度 = 0.1 ÷ 2,000 = 1/20,000","calc":"photo","figure":{"type":"photo"},"cat":"photo","text":"撮影高度2,000m、カメラの焦点距離100mm(=0.1m)のとき、この空中写真の縮尺はいくらか。"},{"id":"C5Q07","chapter":5,"choices":["50,000m","500m","50m","5,000m"],"answer":1,"explain":"地上距離 = 写真上の長さ × 縮尺分母 = 0.05m × 10,000 = 500m","calc":"distance","cat":"photo","text":"縮尺1/10,000の空中写真上で、ある2点間の長さが5cmであった。実際の地上距離はいくらか。"},{"id":"C5Q08","chapter":5,"choices":["地上の基準点","撮影者の立ち位置","写真の四隅の点","レンズの中心から画面に下ろした垂線と画面との交点"],"answer":3,"explain":"主点は、レンズ中心(投影中心)から写真画面に下ろした垂線の足で、写真の幾何学的な中心となる点。","calc":null,"cat":"photo","text":"空中写真の「主点」の説明として正しいものはどれか。"},{"id":"C5Q09","chapter":5,"choices":["空中写真上で地上の位置を特定するための、地上に設置する目印","カメラのレンズ","撮影機の高度を測る装置","気象を測る装置"],"answer":0,"explain":"標定点(対空標識)は、空中写真上で位置を正確に特定できるよう、あらかじめ地上に設置する目印で、標定計算の基準となる。","calc":null,"cat":"photo","text":"「標定点(対空標識)」の役割として正しいものはどれか。"},{"id":"C5Q10","chapter":5,"choices":["カメラの焦点距離や主点位置など、写真座標系を再現する作業","標尺の読み取り","地上基準点との対応づけ","気象の補正"],"answer":0,"explain":"内部標定は、カメラの焦点距離・主点位置・レンズ歪みなど、撮影時の内部的な幾何条件を再現する作業。","calc":null,"cat":"photo","text":"写真測量における「内部標定」の説明として正しいものはどれか。"},{"id":"C5Q11","chapter":5,"choices":["気温を測る作業","撮影時のカメラの位置(3要素)と傾き(3要素)を求める作業","カメラの焦点距離を求める作業","標尺を読む作業"],"answer":1,"explain":"外部標定は、撮影時のカメラの空間的な位置(X,Y,Z)と傾き(3つの回転角)の計6要素を求める作業。","calc":null,"cat":"photo","text":"写真測量における「外部標定」の説明として正しいものはどれか。"},{"id":"C5Q12","chapter":5,"choices":["1/10,000","1/100,000","1/1,000","1/15,000"],"answer":0,"explain":"写真縮尺 = 焦点距離 ÷ 撮影高度 = 0.15 ÷ 1,500 = 1/10,000","calc":"photo","figure":{"type":"photo"},"cat":"photo","text":"撮影高度1,500m、焦点距離150mm(=0.15m)のとき、写真縮尺はいくらか。"},{"id":"C5Q13","chapter":5,"choices":["写真の1画素が地上で何メートルに相当するかを表す値","カメラの重さ","標定点の数","撮影時刻"],"answer":0,"explain":"GSD(Ground Sample Distance)は、デジタル画像の1画素が地上で占める大きさを表し、値が小さいほど詳細な画像となる。","calc":null,"cat":"photo","text":"デジタル空中写真の「地上画素寸法(GSD)」の説明として正しいものはどれか。"},{"id":"C5Q14","chapter":5,"choices":["撮影→撮影計画→標定点設置","図化→撮影→撮影計画","空中三角測量→撮影→撮影計画","撮影計画→標定点設置→撮影→空中三角測量→図化"],"answer":3,"explain":"一般に、撮影計画→標定点(対空標識)設置→撮影→空中三角測量→数値図化、の順で進める。","calc":null,"cat":"photo","text":"写真測量作業の一般的な流れとして正しい順序はどれか。"},{"id":"C5Q15","chapter":5,"choices":["立体視には赤外線が必要","立体視は不可能である","1枚の写真だけで立体的に見える","重複した2枚の写真を左右の目で別々に見ることで、地形を立体的に把握できる"],"answer":3,"explain":"立体視は、重複撮影された2枚(ステレオペア)を左右の目で別々に見ることで、視差を利用して立体的に地形を認識する方法。","calc":null,"cat":"photo","text":"立体視(実体視)に関する記述として正しいものはどれか。"},{"id":"C5Q16","chapter":5,"choices":["1,000画素","10,000画素","10画素","100画素"],"answer":0,"explain":"画素数 = 地上距離 ÷ GSD = 100m ÷ 0.10m = 1,000画素","calc":null,"cat":"photo","text":"地上画素寸法(GSD)が10cmのデジタル空中写真で、地上100mの長さは何画素に相当するか。"},{"id":"C5Q17","chapter":5,"choices":["バッテリーを節約するため","天候を良くするため","成果の位置精度を確保し、写真を正しく地上座標に対応づけるため","撮影を速くするため"],"answer":2,"explain":"標定点を適切に配置することで、生成される三次元モデルや正射画像の位置精度を確保し、地上座標系に正しく整合させられる。","calc":null,"cat":"photo","text":"UAV写真測量で「標定点(対空標識)」を適切に配置する意義として正しいものはどれか。"},{"id":"C5Q18","chapter":5,"choices":["未補正の生の写真","白黒の写真のみ","写真の傾きや地形の起伏による歪みを補正し、地図と重ねられるようにした画像","立体視専用の画像"],"answer":2,"explain":"オルソ画像は、中心投影による写真の歪み(傾き・起伏)を正射投影に補正した画像で、地図としてそのまま計測・重ね合わせに使える。","calc":null,"cat":"photo","text":"「正射投影画像(オルソ画像)」の説明として正しいものはどれか。"},{"id":"C5Q19","chapter":5,"choices":["夜間","濃霧の日","雲がなく、影の少ない条件","大雨の日"],"answer":2,"explain":"空中写真撮影は、雲や霧がなく、太陽高度が確保され影が少ない条件が好ましい。","calc":null,"cat":"photo","text":"空中写真の撮影時期・条件として一般に好ましいものはどれか。"},{"id":"C5Q20","chapter":5,"choices":["1/3,000","1/10,000","1/1,000","1/30,000"],"answer":1,"explain":"写真縮尺 = 焦点距離 ÷ 撮影高度 = 0.3 ÷ 3,000 = 1/10,000","calc":"photo","figure":{"type":"photo"},"cat":"photo","text":"撮影高度3,000m、焦点距離300mm(=0.3m)のとき、写真縮尺はいくらか。"},{"id":"C5Q21","chapter":5,"choices":["狭い範囲しか測れない","広範囲を短時間で測量でき、現地に立ち入りにくい場所も測れる","必ず現地の全点に立ち入る必要がある","起伏のある地形は一切測れない"],"answer":1,"explain":"写真測量は、上空からの撮影により広範囲を効率的に測量でき、立ち入りが難しい場所の測量にも適する。","calc":null,"cat":"photo","text":"写真測量の長所として適切なものはどれか。"},{"id":"C5Q22","chapter":5,"choices":["標尺を読む","写真を印刷する","ステレオ画像から三次元の地形データ(等高線・地物)を数値的に取得する","気象を予測する"],"answer":2,"explain":"デジタルステレオ図化機は、ステレオ画像上で立体視しながら、等高線や建物などの三次元数値データを取得する装置。","calc":null,"cat":"photo","text":"「デジタルステレオ図化機」の役割として正しいものはどれか。"},{"id":"C5Q23","chapter":5,"choices":["250m","1,000m","100m","10,000m"],"answer":1,"explain":"地上距離 = 図上長 × 縮尺分母 = 0.04m × 25,000 = 1,000m","calc":"map","cat":"photo","text":"縮尺1/25,000の地形図上で4cmの長さは、実際の地上距離でいくらか。"},{"id":"C5Q24","chapter":5,"choices":["焦点距離が一定なら、撮影高度が高いほど縮尺は小さくなる(分母が大きくなる)","高度は縮尺を決めない","高度が高いほど縮尺は大きくなる","高度と縮尺は無関係"],"answer":0,"explain":"写真縮尺 = 焦点距離 ÷ 撮影高度 なので、焦点距離一定なら高度が高いほど縮尺分母は大きく(縮尺は小さく)なる。","calc":null,"cat":"photo","text":"撮影高度と写真縮尺の関係として正しいものはどれか。"},{"id":"C5Q25","chapter":5,"choices":["カメラの焦点距離を測る作業","写真を印刷する作業","気温を測る作業","立体モデルを地上基準点を用いて実際の地上座標系・縮尺・水平に合わせる作業"],"answer":3,"explain":"対地標定(絶対標定)は、相互標定で作った立体モデルを、地上基準点を用いて実際の座標系・縮尺・傾きに合わせる工程。","calc":null,"cat":"photo","text":"対地標定(絶対標定)の説明として正しいものはどれか。"},{"id":"C5Q26","chapter":5,"choices":["1/20,000","1/24,000","1/12,000","1/2,000"],"answer":0,"explain":"写真縮尺 = 0.12 ÷ 2,400 = 1/20,000","calc":"photo","figure":{"type":"photo"},"cat":"photo","text":"撮影高度2,400m、焦点距離120mm(=0.12m)のとき、写真縮尺はいくらか。"},{"id":"C5Q27","chapter":5,"choices":["2枚の写真の相対的な位置・傾きの関係を求め、立体モデルを作る作業","カメラの重量測定","気象観測","地上基準点との対応づけ"],"answer":0,"explain":"相互標定は、ステレオペアの2枚の写真の相対的な位置・傾きを求め、縮尺は未定のまま立体モデル(相対モデル)を構築する作業。","calc":null,"cat":"photo","text":"写真測量における「相互標定」の説明として正しいものはどれか。"},{"id":"C5Q28","chapter":5,"choices":["0.2m","8m","20m","2.0m"],"answer":3,"explain":"実際の長さ = 画素数 × GSD = 40 × 0.05m = 2.0m","calc":"map","cat":"photo","text":"地上画素寸法(GSD)5cmで撮影した画像で、ある建物の一辺が40画素で写っていた。この一辺の実際の長さはいくらか。"},{"id":"C5Q29","chapter":5,"choices":["バッテリー残量を管理する","上空の障害物は一切考慮しなくてよい","飛行に関する法令(航空法等)や許可を確認する","強風時の飛行は避ける"],"answer":1,"explain":"電線・樹木・建物など上空の障害物は衝突リスクとなるため必ず考慮する。①③④はUAV測量で守るべき留意点。","calc":null,"cat":"photo","text":"UAV測量における飛行の一般的な留意点として適切でないものはどれか。"},{"id":"C5Q30","chapter":5,"choices":["UAVは広域のみに使う","広域は有人機の空中写真、狭域・局所は機動的なUAVが向く傾向がある","どちらも同じ範囲にしか使えない","有人機は狭域専用である"],"answer":1,"explain":"有人航空機は比較的広域の撮影に、UAVは狭域・局所の機動的な撮影に適する場合が多いですが、条件によって最適な方法は異なります。","calc":null,"sourceAnswerMissing":true,"cat":"photo","text":"空中写真測量とUAV写真測量の使い分けとして一般に適切なものはどれか。"},{"id":"C6Q01","chapter":6,"choices":["正角図法の一種で、国土地理院の地形図に採用されている","図法ではなく測地系の名称である","3次元の地球儀そのものである","正積図法の一種で、面積が正しい"],"answer":0,"explain":"ガウス・クリューゲル図法は正角図法(角度が正しく表現される図法)の一種で、日本の地形図の多くに採用されている。","calc":null,"cat":"maps","text":"地図投影法のうち、日本の地形図で広く使われている「ガウス・クリューゲル図法」に関する記述として正しいものはどれか。"},{"id":"C6Q02","chapter":6,"choices":["緯度は東西、経度は南北を表す","緯度は常に正の値のみを取る","緯度・経度はどちらも標高を表す","緯度は赤道を0度とし南北を、経度は本初子午線を0度とし東西を表す"],"answer":3,"explain":"緯度は赤道を基準(0度)とした南北方向の角度、経度は本初子午線を基準(0度)とした東西方向の角度を表す。","calc":null,"cat":"maps","text":"緯度・経度に関する記述として正しいものはどれか。"},{"id":"C6Q03","chapter":6,"choices":["GNSS衛星そのものを指す","紙地図のみを指す用語","測量機器の一種で、角度のみを測る機器","位置に関する情報を持ったデータを総合的に管理・分析・表示する情報システム"],"answer":3,"explain":"GISは、位置に関連する情報(空間データ)を統合的に管理・分析・可視化するための情報システムの総称。","calc":null,"cat":"maps","text":"GIS(地理情報システム)の説明として正しいものはどれか。"},{"id":"C6Q04","chapter":6,"choices":["縮尺の分母が大きいほど、より詳細な地図になる","縮尺は面積の単位である","縮尺の分母が小さいほど、実際の距離に対して地図上でより詳細に表現される","縮尺と精度は無関係である"],"answer":2,"explain":"縮尺は分数(例:1/2,500)で表され、分母が小さいほど実際の距離に対して地図上でより詳細な表現になる。","calc":null,"cat":"maps","text":"地図の「縮尺」に関する記述として正しいものはどれか。"},{"id":"C6Q05","chapter":6,"choices":["等高線は道路のみを表す","等高線の間隔が狭いところは傾斜が緩やかである","等高線に標高情報は含まれない","等高線の間隔が狭いところは傾斜が急である"],"answer":3,"explain":"等高線の間隔が狭い(密集している)場所は、短い水平距離で標高差が生じている、つまり傾斜が急であることを示す。","calc":null,"cat":"maps","text":"地図記号・等高線に関する記述として正しいものはどれか。"},{"id":"C6Q06","chapter":6,"choices":["200m","20m","2,000m","2m"],"answer":0,"explain":"実際の長さ = 図上長 × 縮尺分母 = 0.08m × 2,500 = 200m","calc":"map","figure":{"type":"map"},"cat":"maps","text":"縮尺1/2,500の地図上で、ある道路の長さが8cmであった。実際の長さはいくらか。"},{"id":"C6Q07","chapter":6,"choices":["2cm","20cm","0.2cm","200cm"],"answer":0,"explain":"図上長 = 実距離 ÷ 縮尺分母 = 500m ÷ 25,000 = 0.02m = 2cm","calc":"map","figure":{"type":"map"},"cat":"maps","text":"実際の距離500mを、縮尺1/25,000の地図上に描くと何cmになるか。"},{"id":"C6Q08","chapter":6,"choices":["主曲線の方が計曲線より太い","計曲線は主曲線の一定本数ごとに太く描かれ、標高が読み取りやすい","両者は同じものである","計曲線には標高が示されない"],"answer":1,"explain":"等高線は、細い主曲線が一定間隔で引かれ、その一定本数ごとに太い計曲線が描かれる。計曲線には標高値が注記され、読み取りやすい。","calc":null,"cat":"maps","text":"「主曲線」と「計曲線」に関する記述として正しいものはどれか。"},{"id":"C6Q09","chapter":6,"choices":["地図を回転させること","色を変えること","縮尺を変えること","地物が近接して重なる場合、重要度の低い地物をずらして表現すること"],"answer":3,"explain":"転位は、縮尺の制約で地物同士が重なってしまう場合に、優先度に応じて一方をわずかにずらし、判読性を保つ地図編集上の処理。","calc":null,"cat":"maps","text":"地図編集における「転位」の説明として正しいものはどれか。"},{"id":"C6Q10","chapter":6,"choices":["すべての細部を省略せず描くこと","縮尺に応じて細部を簡略化・省略し、地形や地物の特徴を表現すること","地図を印刷すること","色を塗ること"],"answer":1,"explain":"総描は、縮尺が小さくなるほど、細かい形状を簡略化・取捨選択して、対象の本質的な特徴を表現する編集技法。","calc":null,"cat":"maps","text":"地図における「総描(総合描示)」の説明として正しいものはどれか。"},{"id":"C6Q11","chapter":6,"choices":["測地系は存在しない","現在も旧日本測地系のみが使われている","世界測地系(日本測地系2011/JGD2011等)が採用されている","各都道府県が独自の測地系を使う"],"answer":2,"explain":"現行では世界測地系(JGD2011等)が採用されており、GNSS等による国際的な基準と整合した座標系が用いられている。","calc":null,"cat":"maps","text":"日本の測地基準系(現行)に関する記述として正しいものはどれか。"},{"id":"C6Q12","chapter":6,"choices":["標高のみを表す座標系","緯度・経度のみを使う座標系","日本を複数の区域(系)に分け、各区域内で平面上の直交座標で位置を表す座標系","全国を1つの平面で表す座標系"],"answer":2,"explain":"平面直角座標系は、日本全国を19の区域(系)に分け、各系内で歪みが小さくなるよう平面直交座標で位置を表す座標系。","calc":null,"cat":"maps","text":"「平面直角座標系」の説明として正しいものはどれか。"},{"id":"C6Q13","chapter":6,"choices":["15km","0.15km","150km","1.5km"],"answer":3,"explain":"実距離 = 0.03m × 50,000 = 1,500m = 1.5km","calc":"map","figure":{"type":"map"},"cat":"maps","text":"縮尺1/50,000の地図上で3cmの距離は、実際には何kmか。"},{"id":"C6Q14","chapter":6,"choices":["編集は撮影のことである","小さい縮尺から大きい縮尺を作る","編集原図は不要である","より大きな縮尺の資料をもとに、目的の縮尺の地図を編集して作成する"],"answer":3,"explain":"地図編集は一般に、より大縮尺(詳細)な資料を基図として用い、目的とする(より小縮尺の)地図を編集・作成する。","calc":null,"cat":"maps","text":"地図の「編集原図」と「編集」の関係として正しいものはどれか。"},{"id":"C6Q15","chapter":6,"choices":["面積が常に正しい","地図上の任意の点で、角度(方位)の関係が正しく保たれる","距離が常に正しい","何も保存されない"],"answer":1,"explain":"正角図法は、局所的に角度(形状)が正しく保たれる図法で、狭い範囲では形が正確に表現される(ガウス・クリューゲル等)。","calc":null,"cat":"maps","text":"「正角図法」の特徴として正しいものはどれか。"},{"id":"C6Q16","chapter":6,"choices":["何も保存されない","地図上で面積の比が正しく保たれる","角度が正しく保たれる","すべての距離が正しい"],"answer":1,"explain":"正積図法は、地図上での面積の比が正しく保たれる図法で、分布図など面積の比較が重要な用途に用いられる。","calc":null,"cat":"maps","text":"「正積図法」の特徴として正しいものはどれか。"},{"id":"C6Q17","chapter":6,"choices":["10cm²","10,000cm²","100cm²","1,000cm²"],"answer":2,"explain":"面積の縮尺は長さの縮尺の2乗。10,000m² ÷ (1,000²) = 10,000 ÷ 1,000,000 = 0.01m² = 100cm²","calc":"map","figure":{"type":"map"},"cat":"maps","text":"ある土地の実際の面積が10,000m²である。縮尺1/1,000の地図上では、この面積は何cm²で表されるか。"},{"id":"C6Q18","chapter":6,"choices":["GNSS衛星の名称","国土地理院が提供する、地形図・空中写真等を閲覧できるウェブ地図サービス","カーナビ専用の地図","民間の紙地図の名称"],"answer":1,"explain":"地理院地図は、国土地理院が提供するウェブ地図で、地形図・空中写真・標高データなどを閲覧・利用できる。","calc":null,"cat":"maps","text":"「地理院地図」に関する記述として正しいものはどれか。"},{"id":"C6Q19","chapter":6,"choices":["紙に印刷した地図のみ","手書きの地図のみ","地形・地物の情報を数値化し、コンピュータで扱える形にした地図データ","気象データのこと"],"answer":2,"explain":"数値地図は、地形や地物を数値座標・属性データとして表現し、GIS等で編集・解析・表示できるデジタル地図データ。","calc":null,"cat":"maps","text":"「数値地図(数値地形図データ)」の説明として正しいものはどれか。"},{"id":"C6Q20","chapter":6,"choices":["2cmと4cm","4cmと8cm","4cmと2cm","1cmと2cm"],"answer":2,"explain":"1/25,000:1,000m ÷ 25,000 = 0.04m = 4cm。1/50,000:1,000m ÷ 50,000 = 0.02m = 2cm","calc":"map","cat":"maps","text":"縮尺1/25,000の地図と1/50,000の地図で、同じ実際の距離1kmを描いたとき、図上長はそれぞれ何cmか。"},{"id":"C6Q21","chapter":6,"choices":["記号に決まりはない","実際の大きさに関わらず、一定の記号で地物を表すことがある","すべて実寸で描かれる","記号は使われない"],"answer":1,"explain":"地図記号は、縮尺上そのままでは描けない小さな地物(神社・郵便局等)を、一定の記号で表現する。実寸とは限らない。","calc":null,"cat":"maps","text":"地図記号の一般的な性質として正しいものはどれか。"},{"id":"C6Q22","chapter":6,"choices":["地名・施設名などの文字情報を地図上に配置し、判読を助ける","等高線を描くこと","色を塗ること","縮尺を決めること"],"answer":0,"explain":"注記は、地名・河川名・施設名などの文字情報を適切に配置し、地図の内容を判読しやすくする編集要素。","calc":null,"cat":"maps","text":"「注記」の地図編集上の役割として正しいものはどれか。"},{"id":"C6Q23","chapter":6,"choices":["80.000m","140.000m","60.000m","100.000m"],"answer":3,"explain":"距離 = √((160−100)² + (280−200)²) = √(60² + 80²) = √(3,600+6,400) = √10,000 = 100.000m","calc":"distance","figure":{"type":"distance"},"cat":"maps","text":"平面上で、ある2点の座標がA(100.000, 200.000)、B(160.000, 280.000)であった(単位m)。2点間の距離はいくらか。"},{"id":"C6Q24","chapter":6,"choices":["地図記号・注記・線の太さなど、地図表現の統一的なルールを定めたもの","撮影の手順書","地図の値段表","気象の記録"],"answer":0,"explain":"図式は、地図に用いる記号・注記・線の種類や太さ・色などの表現方法を統一的に定めた規程で、地図の一貫性を保つ。","calc":null,"cat":"maps","text":"地図の「図式」の説明として正しいものはどれか。"},{"id":"C6Q25","chapter":6,"choices":["正積図法の一種","標高を表す方法","地球を経度帯(ゾーン)に分けて表現する、横メルカトル系の正角図法","図法ではなく測量機器"],"answer":2,"explain":"UTM図法は、地球を経度6度ごとのゾーンに分け、各ゾーンを横メルカトル図法(正角)で表す方法で、広域の地図に用いられる。","calc":null,"cat":"maps","text":"「UTM図法(ユニバーサル横メルカトル図法)」の説明として正しいものはどれか。"},{"id":"C6Q26","chapter":6,"choices":["1,000cm²","100cm²","20cm²","10cm²"],"answer":1,"explain":"面積の縮尺は長さの2乗。40,000m² ÷ (2,000²) = 40,000 ÷ 4,000,000 = 0.01m² = 100cm²","calc":"map","figure":{"type":"map"},"cat":"maps","text":"実際の面積40,000m²の土地を、縮尺1/2,000の地図に描いたときの面積は何cm²か。"},{"id":"C6Q27","chapter":6,"choices":["すべての地物を必ず描くため","縮尺に応じて表現できる情報量に限りがあるため、重要な地物を選んで表現する","情報を増やすため","縮尺を変えないため"],"answer":1,"explain":"縮尺が小さくなるほど描ける情報量は限られるため、目的に応じて重要な地物を選び、他を省略する取捨選択が必要になる。","calc":null,"cat":"maps","text":"地図編集で「取捨選択」を行う理由として正しいものはどれか。"},{"id":"C6Q28","chapter":6,"choices":["一度作ると一切更新できない","更新・修正がしやすい","他の空間データと統合しやすい","拡大・縮小や重ね合わせ、検索・解析が容易"],"answer":0,"explain":"デジタル地図は更新・修正が容易であることが利点の一つ。「一切更新できない」は誤り。","calc":null,"cat":"maps","text":"「デジタル地図」の利点として適切でないものはどれか。"},{"id":"C6Q29","chapter":6,"choices":["50.000m","35.000m","100.000m","70.000m"],"answer":0,"explain":"距離 = √(30² + 40²) = √(900+1,600) = √2,500 = 50.000m","calc":"basic","figure":{"type":"general"},"cat":"maps","text":"平面直角座標でA(0.000, 0.000)、B(30.000, 40.000)の2点がある(単位m)。AB間の距離はいくらか。"},{"id":"C6Q30","chapter":6,"choices":["一般図は地形・地物を広く表し、主題図は特定のテーマ(人口・地質等)を強調して表す","主題図は地形のみを表す","一般図はテーマを強調する","両者は同じもの"],"answer":0,"explain":"一般図は地形・地物を広く扱い、主題図は人口や地質など特定のテーマを強調します。","calc":null,"sourceAnswerMissing":true,"cat":"maps","text":"地図の一般図と主題図の違いとして正しいものはどれか。"},{"id":"C7Q01","chapter":7,"choices":["角度と距離を同時に測定でき、座標計算まで一貫して行いやすい","角度のみを測定する機器である","水準測量専用の機器である","GNSS衛星を必ず内蔵している"],"answer":0,"explain":"トータルステーションは、水平角・鉛直角・距離を同時に測定でき、観測から座標計算まで一貫して行いやすい。","calc":null,"cat":"terrain","text":"TS(トータルステーション)を用いた地形測量の特徴として正しいものはどれか。"},{"id":"C7Q02","chapter":7,"choices":["等高線を描くための定規","測定した点群データを不規則な三角形の集合で表現し、立体的な地形を表すモデル","縮尺の一種","GNSS測量専用の座標系"],"answer":1,"explain":"TIN(不整三角網)は、不規則に分布する測定点を結んで三角形の集合を作り、地形の起伏を立体的に表現するデータモデル。","calc":null,"cat":"terrain","text":"地形測量における「TIN(不整三角網)」の説明として正しいものはどれか。"},{"id":"C7Q03","chapter":7,"choices":["上空視界が悪い場所ほど精度が上がる","リアルタイムで数センチメートル程度の精度の位置情報が得られる","数時間の観測が必須である","屋内でのみ使用される"],"answer":1,"explain":"RTK-GNSS法は、基準局からの補正情報をリアルタイムに受信し、その場でcm級の精度の位置情報を得られる。","calc":null,"cat":"terrain","text":"現地測量におけるRTK-GNSS法の利点として正しいものはどれか。"},{"id":"C7Q04","chapter":7,"choices":["災害時のハザードマップ作成基礎資料","各種GISへのデータ活用","個人のSNS投稿の自動生成","道路・河川などの設計基礎資料"],"answer":2,"explain":"数値地形図データは公共インフラ設計・GIS・防災など公共性の高い用途で活用される。SNS投稿の自動生成は一般的な活用例ではない。","calc":null,"cat":"terrain","text":"地形測量で得られた数値地形図データの活用例として適切でないものはどれか。"},{"id":"C7Q05","chapter":7,"choices":["点群データは1点のみである","必ず有人航空機に搭載する必要がある","音波を利用した測定方式である","短時間で広範囲の点群データを取得できる"],"answer":3,"explain":"レーザースキャナ(3Dスキャナ)は、短時間で対象物・地形の広範囲な点群データを取得できることが大きな特徴。","calc":null,"cat":"terrain","text":"測量におけるレーザースキャナ(3Dスキャナ)の特徴として正しいものはどれか。"},{"id":"C7Q06","chapter":7,"choices":["57.74m","43.30m","50.00m","25.00m"],"answer":1,"explain":"水平距離 = 斜距離 × cos(鉛直角) = 50 × cos30° = 50 × 0.866 = 43.30m","calc":"slope","figure":{"type":"slope"},"cat":"terrain","text":"TSで、器械点から目標点までの斜距離が50.000m、鉛直角(仰角)が30°であった。水平距離はいくらか。(cos30°≒0.866)"},{"id":"C7Q07","chapter":7,"choices":["43.30m","25.00m","50.00m","12.50m"],"answer":1,"explain":"高低差 = 斜距離 × sin(鉛直角) = 50 × sin30° = 50 × 0.5 = 25.00m","calc":"slope","cat":"terrain","text":"問6と同じ観測(斜距離50.000m、鉛直角30°)で、器械点と目標点の高低差はいくらか。(sin30°=0.5)"},{"id":"C7Q08","chapter":7,"choices":["現地でTSやGNSS等を用いて地形・地物を測定し、数値地形図データを作成する作業","空中写真を撮影する作業","室内で地図を清書する作業のみ","気象を観測する作業"],"answer":0,"explain":"現地測量は、現地でトータルステーションやGNSS測量機等を用いて地形・地物を直接測定し、数値地形図データを作成する作業。","calc":null,"cat":"terrain","text":"「現地測量」の説明として正しいものはどれか。"},{"id":"C7Q09","chapter":7,"choices":["基準点測量そのもの","基準点をもとに、地形・地物の細部の位置を測定すること","地図の印刷","気象観測"],"answer":1,"explain":"細部測量は、設置した基準点(または補助点)を基準に、地形の起伏や建物・道路などの細部の位置を測定する作業。","calc":null,"cat":"terrain","text":"地形測量における「細部測量」の説明として正しいものはどれか。"},{"id":"C7Q10","chapter":7,"choices":["0°00′00″","180°00′00″","45°00′00″","90°00′00″"],"answer":3,"explain":"∠AOB = 90°00′00″ − 0°00′00″ = 90°00′00″","calc":"basic","figure":{"type":"general"},"cat":"terrain","text":"TSで水平角を測り、器械点Oから点Aへの方向を0°00′00″、点Bへの方向を90°00′00″としたとき、∠AOBはいくらか。"},{"id":"C7Q11","chapter":7,"choices":["等高線は色データから作る","等高線は距離データから作る","標高データ(点群やTIN)から、一定標高の点を結んで等高線を描く","等高線は手描きでしか作れない"],"answer":2,"explain":"等高線は、標高を持つ点群やTINなどの標高データから、同一標高の位置を結んで自動生成できる。","calc":null,"cat":"terrain","text":"「等高線」を数値地形図データから生成する際の一般的な考え方として正しいものはどれか。"},{"id":"C7Q12","chapter":7,"choices":["標尺を使わない方法","望遠鏡の視距線と標尺の関係から、距離を間接的に求める方法","気象を測る方法","衛星を使う方法"],"answer":1,"explain":"スタジア測量は、望遠鏡内の視距線(スタジア線)と標尺の読み取り差から、距離を間接的に求める古典的な方法。","calc":null,"cat":"terrain","text":"地形測量で用いる「スタジア測量」の説明として正しいものはどれか。"},{"id":"C7Q13","chapter":7,"choices":["P(50.000, 86.600)","P(100.000, 0.000)","P(86.600, 50.000)","P(0.000, 100.000)"],"answer":0,"explain":"ΔX = 100 × cos60° = 50.000m、ΔY = 100 × sin60° = 86.600m。よってP(0+50.000, 0+86.600) = P(50.000, 86.600)","calc":"basic","figure":{"type":"general"},"cat":"terrain","text":"ある点の座標がO(0.000, 0.000)、O点から方位角60°、水平距離100.000mの点Pの座標を求めよ。(sin60°≒0.866、cos60°=0.5)"},{"id":"C7Q14","chapter":7,"choices":["建物の輪郭線のみ","等高線と同じもの","道路の中心線のみ","尾根線・谷線など、地形の骨格を表す線"],"answer":3,"explain":"地性線は、尾根線(分水線)や谷線(合水線)など、地形の起伏の骨格を示す線で、地形表現の基礎となる。","calc":null,"cat":"terrain","text":"地形測量における「地性線」の説明として正しいものはどれか。"},{"id":"C7Q15","chapter":7,"choices":["衛星の名称","気象観測専用車","車両にGNSS・IMU・レーザスキャナ等を搭載し、走行しながら周辺の三次元データを取得する","徒歩でのみ測量する方式"],"answer":2,"explain":"MMS(モバイルマッピングシステム)は、車両にGNSS・IMU・レーザスキャナ・カメラ等を搭載し、走行しながら道路周辺の三次元データを効率的に取得するシステム。","calc":null,"cat":"terrain","text":"モバイルマッピングシステム(MMS)の説明として正しいものはどれか。"},{"id":"C7Q16","chapter":7,"choices":["Q(0.000, 80.000)","Q(80.000, 80.000)","Q(80.000, 0.000)","Q(0.000, 0.000)"],"answer":0,"explain":"ΔX = 80 × cos90° = 0.000m、ΔY = 80 × sin90° = 80.000m。よってQ(0.000, 80.000)","calc":"basic","cat":"terrain","text":"器械点O(0.000, 0.000)から方位角90°、水平距離80.000mの点Qの座標はいくらか。(cos90°=0、sin90°=1)"},{"id":"C7Q17","chapter":7,"choices":["気温を測る","距離のみを測る","標尺を読む","移動体の姿勢(傾き)や加速度を計測し、位置・姿勢の推定を補助する"],"answer":3,"explain":"IMUは、ジャイロと加速度計により移動体の姿勢や加速度を計測し、GNSSと組み合わせて位置・姿勢を高精度に推定するのを助ける。","calc":null,"cat":"terrain","text":"「IMU(慣性計測装置)」の役割として正しいものはどれか。"},{"id":"C7Q18","chapter":7,"choices":["樹木のある地域でも、レーザの一部が地表に届き地盤高を取得しやすい","平地しか測れない","夜間は測量できない","樹木があると一切測れない"],"answer":0,"explain":"UAVレーザ測量は、レーザ光の一部が樹木の隙間から地表に届くため、植生下の地盤高データも取得しやすい。","calc":null,"cat":"terrain","text":"UAVレーザ測量の地形測量における利点として正しいものはどれか。"},{"id":"C7Q19","chapter":7,"choices":["60.00m","103.92m","43.30m","120.00m"],"answer":1,"explain":"高低差 = 斜距離 × sin(鉛直角) = 120 × sin60° = 120 × 0.866 = 103.92m","calc":"slope","figure":{"type":"slope"},"cat":"terrain","text":"TSで斜距離120.000m、鉛直角(仰角)が60°のとき、高低差はいくらか。(sin60°≒0.866)"},{"id":"C7Q20","chapter":7,"choices":["数値地形図データの位置精度の水準を表す指標(例:レベル500、1000等)","地図の色数","地図の重さ","地図の値段"],"answer":0,"explain":"地図情報レベルは、数値地形図データの位置精度を表す指標で、数値が小さいほど高精度(例:レベル500は縮尺1/500相当の精度)。","calc":null,"cat":"terrain","text":"数値地形図データの「地図情報レベル」の説明として正しいものはどれか。"},{"id":"C7Q21","chapter":7,"choices":["衛星は不要","屋内でも高精度","上空視界の確保が精度に大きく影響する","障害物が多いほど精度が上がる"],"answer":2,"explain":"GNSSを用いる地形測量では、上空視界の確保がマルチパスや測位精度に直結するため、開けた環境での観測が望ましい。","calc":null,"cat":"terrain","text":"「オンライン(スタティックでない)なGNSS観測を用いた地形測量」で留意すべき点として正しいものはどれか。"},{"id":"C7Q22","chapter":7,"choices":["70.000m","20.000m","100.000m","140.000m"],"answer":2,"explain":"斜距離 = √(水平距離² + 高低差²) = √(60² + 80²) = √(3,600+6,400) = √10,000 = 100.000m","calc":"basic","figure":{"type":"general"},"cat":"terrain","text":"水平距離が既知で60.000m、その区間の高低差が80.000mのとき、斜距離はいくらか。"},{"id":"C7Q23","chapter":7,"choices":["地形(等高線・標高点)や地物(建物・道路等)の位置・形状データ","音声データ","気象予報","株価データ"],"answer":0,"explain":"数値地形図データには、等高線・標高点などの地形情報と、建物・道路・水部などの地物情報が、位置・形状・属性として含まれる。","calc":null,"cat":"terrain","text":"地形測量の成果としての「数値地形図データ」に含まれるものとして適切なものはどれか。"},{"id":"C7Q24","chapter":7,"choices":["TSは必ず未知点にのみ据える","既知の基準点にTSを据え、または後方交会等で器械点座標を求めて細部測量を行う","基準点は不要","TSは座標と無関係に使える"],"answer":1,"explain":"地形測量では、既知の基準点にTSを据えるか、複数の既知点への観測(後方交会)で器械点の座標を求めてから、細部測量を行う。","calc":null,"cat":"terrain","text":"「基準点」と「TS点(TSを据える点)」の関係として正しいものはどれか。"},{"id":"C7Q25","chapter":7,"choices":["R(40.000, 40.000)","R(10.000, 50.000)","R(40.000, 20.000)","R(20.000, 40.000)"],"answer":2,"explain":"ΔX = 30 × cos0° = 30.000m、ΔY = 30 × sin0° = 0.000m。よってR(10+30, 20+0) = R(40.000, 20.000)","calc":"basic","cat":"terrain","text":"器械点O(10.000, 20.000)から方位角0°(真北方向)、水平距離30.000mの点Rの座標はいくらか。(cos0°=1、sin0°=0)"},{"id":"C7Q26","chapter":7,"choices":["基準点測量のやり直し","地図の印刷","空中写真測量等で得られない部分を、現地で補って測量すること","気象観測"],"answer":2,"explain":"補備測量は、空中写真測量では判読・取得しにくい部分(樹木下の地物、名称等)を、現地で補って測量・調査する作業。","calc":null,"cat":"terrain","text":"地形測量における「補備測量」の説明として正しいものはどれか。"},{"id":"C7Q27","chapter":7,"choices":["地表面の点と、樹木・建物等の地表面以外の点を分離する","点群を削除して減らすだけ","音を出す","色を変える"],"answer":0,"explain":"フィルタリングは、レーザ測量等で得た点群から、地表面(グラウンド)の点と、植生・建物等の非地表面の点を分離し、地盤高モデルを作る処理。","calc":null,"cat":"terrain","text":"点群データの「フィルタリング」処理の目的として正しいものはどれか。"},{"id":"C7Q28","chapter":7,"choices":["10.000m","70.000m","35.000m","50.000m"],"answer":3,"explain":"斜距離 = √(40² + 30²) = √(1,600+900) = √2,500 = 50.000m","calc":"basic","figure":{"type":"general"},"cat":"terrain","text":"水平距離40.000m、高低差30.000mの斜面の斜距離はいくらか。"},{"id":"C7Q29","chapter":7,"choices":["音声データ","地図の色データ","気象データ","地表面の標高を格子状(または点群)で表した数値データ"],"answer":3,"explain":"DEM(Digital Elevation Model)は、地表面の標高を格子状などの数値で表したデータで、地形解析や等高線生成等に用いられる。","calc":null,"cat":"terrain","text":"「DEM(数値標高モデル)」の説明として正しいものはどれか。"},{"id":"C7Q30","chapter":7,"choices":["適切な等級・精度の基準点を用いる","点検・再測を行う","TSの整準・求心を正しく行う","上空視界が悪い場所で無理にGNSS単独測位に頼る"],"answer":3,"explain":"上空視界が悪い場合は衛星電波が遮られたり反射したりするため、GNSSに無理に頼らず、TS等の適切な測量方法を選びます。","calc":null,"sourceAnswerMissing":true,"cat":"terrain","text":"地形測量で精度を確保するための一般的な工夫として適切でないものはどれか。"},{"id":"C8Q01","chapter":8,"choices":["道路・鉄道等の中心線の位置を、地形図や設計図に基づき現地に明示する","河川の流量を測定する","建物の内部を測定する","気象データを収集する"],"answer":0,"explain":"中心線測量は、道路・鉄道等の設計上の中心線の位置を、現地に杭などで明示する作業。","calc":null,"cat":"applied","text":"路線測量における「中心線測量」の目的として正しいものはどれか。"},{"id":"C8Q02","chapter":8,"choices":["河川の色を測定する測量","陸上の等高線のみを測定する測量","河川・海域等の水底の地形を測定する測量","河川の流速のみを測定する測量"],"answer":2,"explain":"深浅測量は、河川・湖沼・海域などの水底の地形(水深)を測定する測量。","calc":null,"cat":"applied","text":"河川測量における「深浅測量」の説明として正しいものはどれか。"},{"id":"C8Q03","chapter":8,"choices":["道路の中心を示す点","登記上の一筆の土地と他の土地を区画する筆界上の点","河川の水位を示す点","建物の柱の位置を示す点"],"answer":1,"explain":"筆界点とは、登記上の土地の区画を示す筆界上の点です。筆界と所有権界は必ずしも一致しません。","calc":null,"cat":"applied","text":"用地測量における「筆界点」の説明として正しいものはどれか。"},{"id":"C8Q04","chapter":8,"choices":["中心線に沿った地盤の高低(縦断面)を明らかにする","平面上の位置のみを求める","気温の変化を記録する","道路の幅員のみを測定する"],"answer":0,"explain":"縦断測量は、中心線に沿った地盤の高低(縦断面図)を明らかにするための測量で、勾配計画などに用いられる。","calc":null,"cat":"applied","text":"路線測量における「縦断測量」の目的として正しいものはどれか。"},{"id":"C8Q05","chapter":8,"choices":["資料調査→現地調査→境界確認・立会い→境界点座標計算→用地実測図作成","順序は特に定められていない","用地実測図作成→現地測量→資料調査","境界確認→資料調査→用地実測図作成→現地測量"],"answer":0,"explain":"用地測量は、一般に資料調査→現地調査→境界確認・立会い→境界点座標計算→用地実測図作成、という順序で進める。","calc":null,"cat":"applied","text":"用地測量の一般的な作業手順として正しい順序はどれか。"},{"id":"C8Q06","chapter":8,"choices":["河川の流量を測定する","中心線に直角な方向の地盤の高低(横断面)を測定する","中心線に沿った縦断面を測定する","建物の高さを測定する"],"answer":1,"explain":"横断測量は、中心線に直角な方向の地盤の高低(横断面)を測定し、切土・盛土量の算定などに用いる。","calc":null,"cat":"applied","text":"路線測量における「横断測量」の目的として正しいものはどれか。"},{"id":"C8Q07","chapter":8,"choices":["60.00m","104.72m","314.16m","209.44m"],"answer":3,"explain":"CL = R × I × π/180 = 200 × 60 × 3.1416 ÷ 180 = 200 × 1.0472 = 209.44m","calc":"curveLength","figure":{"type":"curveLength"},"cat":"applied","text":"ある単曲線で、曲線半径R=200.000m、交角(I)が60°のとき、曲線長(CL)はいくらか。(π≒3.1416、CL = R × I(ラジアン)= R × I° × π/180)"},{"id":"C8Q08","chapter":8,"choices":["100.00m","200.00m","141.42m","50.00m"],"answer":0,"explain":"TL = R × tan(I/2) = 100 × tan(90°/2) = 100 × tan45° = 100 × 1 = 100.00m","calc":"tangent","figure":{"type":"tangent"},"cat":"applied","text":"単曲線で曲線半径R=100.000m、交角I=90°のとき、接線長(TL)はいくらか。(TL = R × tan(I/2)、tan45°=1)"},{"id":"C8Q09","chapter":8,"choices":["建物の高さを測る","直線と円曲線の間に挿入し、曲率を緩やかに変化させて走行の安全性を高める","標高を測る","河川の流量を測る"],"answer":1,"explain":"クロソイド曲線(緩和曲線)は、直線と円曲線の間に設け、曲率を連続的に変化させることで、急な進路変化を防ぎ走行の安全・快適性を高める。","calc":null,"cat":"applied","text":"「クロソイド曲線(緩和曲線)」の役割として正しいものはどれか。"},{"id":"C8Q10","chapter":8,"choices":["川幅のみを測る","河川の色を測る","流速のみを測る","河川沿いに設置した水準基標の標高を精密に定める"],"answer":3,"explain":"水準基標測量は、河川沿いに設けた水準基標の標高を精密に求め、河川の縦断測量や水位観測の基準とする。","calc":null,"cat":"applied","text":"河川測量における「水準基標測量」の目的として正しいものはどれか。"},{"id":"C8Q11","chapter":8,"choices":["150.0m³","200.0m³","600.0m³","300.0m³"],"answer":3,"explain":"平均断面法:体積 = (断面積1 + 断面積2)/2 × 距離 = (20.0 + 10.0)/2 × 20 = 15.0 × 20 = 300.0m³","calc":"volume","figure":{"type":"volume"},"cat":"applied","text":"横断測量で、切土断面積が20.0m²、盛土断面積が0m²の断面と、切土断面積が10.0m²の断面が20m間隔であった。両断面間の切土量を平均断面法で求めよ。"},{"id":"C8Q12","chapter":8,"choices":["河川の流量を確認する作業","気象を確認する作業","土地所有者等の立会いのもとで、隣接地との境界を確認する作業","建物の内装を確認する作業"],"answer":2,"explain":"境界確認(立会い)は、隣接する土地所有者等の立会いのもと、現地で境界の位置を相互に確認する作業で、用地測量の重要な工程。","calc":null,"cat":"applied","text":"用地測量における「境界確認(立会い)」の説明として正しいものはどれか。"},{"id":"C8Q13","chapter":8,"choices":["300.0m²","1,200.0m²","600.0m²","70.0m²"],"answer":2,"explain":"三角形の面積 = 底辺 × 高さ ÷ 2 = 40.000 × 30.000 ÷ 2 = 600.0m²","calc":"basic","figure":{"type":"general"},"cat":"applied","text":"三角形の土地で、底辺が40.000m、高さが30.000mのとき、面積はいくらか。"},{"id":"C8Q14","chapter":8,"choices":["1,200.0m²","70.0m²","600.0m²","300.0m²"],"answer":2,"explain":"面積 = |x_A(y_B−y_C) + x_B(y_C−y_A) + x_C(y_A−y_B)| ÷ 2 = |0(0−30)+40(30−0)+0(0−0)| ÷ 2 = |1,200| ÷ 2 = 600.0m²","calc":"polygon","figure":{"type":"polygon"},"cat":"applied","text":"座標法で、3点A(0,0)、B(40,0)、C(0,30)で囲まれる三角形の面積を求めよ(単位m)。"},{"id":"C8Q15","chapter":8,"choices":["縦断測量→路線選定→中心線測量","路線選定→中心線測量→縦断測量→横断測量→用地測量","用地測量→路線選定→中心線測量","横断測量→路線選定→縦断測量"],"answer":1,"explain":"路線測量は一般に、路線選定→中心線測量→縦断測量→横断測量→(必要に応じ用地測量)、という段階で進む。","calc":null,"cat":"applied","text":"「路線測量」の一般的な作業段階の順序として正しいものはどれか。"},{"id":"C8Q16","chapter":8,"choices":["80.0m²","150.0m²","1,500.0m²","800.0m²"],"answer":2,"explain":"長方形の面積 = 縦 × 横 = 50.000 × 30.000 = 1,500.0m²","calc":"rectangle","cat":"applied","text":"長方形の土地で、縦50.000m、横30.000mのとき、面積はいくらか。"},{"id":"C8Q17","chapter":8,"choices":["気象観測装置","流速計","水温を測る装置","河口や基準点からの距離を示すため、河川沿いに一定間隔で設置する標識"],"answer":3,"explain":"距離標は、河口等の基準からの距離を示すため、河川沿いに一定間隔(例:200mごと)で設置され、河川管理の位置基準となる。","calc":null,"cat":"applied","text":"河川測量における「距離標」の役割として正しいものはどれか。"},{"id":"C8Q18","chapter":8,"choices":["900.0m²","600.0m²","1,200.0m²","1,800.0m²"],"answer":0,"explain":"台形の面積 = (上底 + 下底) × 高さ ÷ 2 = (20.000 + 40.000) × 30.000 ÷ 2 = 60 × 30 ÷ 2 = 900.0m²","calc":"basic","figure":{"type":"general"},"cat":"applied","text":"台形の土地で、上底20.000m、下底40.000m、高さ30.000mのとき、面積はいくらか。"},{"id":"C8Q19","chapter":8,"choices":["気象図","取得する用地の範囲・面積・境界点等を示した図面","河川の流量図","建物の内装図"],"answer":1,"explain":"用地実測図は、取得予定の用地の範囲・面積・境界点座標などを正確に示した図面で、用地買収等の基礎資料となる。","calc":null,"cat":"applied","text":"用地測量における「用地実測図」の説明として正しいものはどれか。"},{"id":"C8Q20","chapter":8,"choices":["300.00m","104.72m","418.88m","209.44m"],"answer":3,"explain":"CL = R × I × π/180 = 300 × 40 × 3.1416 ÷ 180 = 300 × 0.6981 = 209.44m","calc":"curveLength","figure":{"type":"curveLength"},"cat":"applied","text":"単曲線で曲線半径R=300.000m、交角I=40°のとき、曲線長(CL)はいくらか。(π≒3.1416)"},{"id":"C8Q21","chapter":8,"choices":["ジオイド高による補正","補正は不要","縮尺補正","気温補正のみ"],"answer":0,"explain":"GNSSで得られる楕円体高から標高(正標高)を求めるには、ジオイド高による補正が必要となる。","calc":null,"cat":"applied","text":"「GNSS水準測量(GNSSによる標高決定)」で必要な補正として正しいものはどれか。"},{"id":"C8Q22","chapter":8,"choices":["216.0m³","30.0m³","150.0m³","300.0m³"],"answer":2,"explain":"体積 = (12.0 + 18.0)/2 × 10 = 15.0 × 10 = 150.0m³","calc":"volume","figure":{"type":"volume"},"cat":"applied","text":"平均断面法で、2つの横断面の面積がそれぞれ12.0m²と18.0m²、断面間の距離が10mのとき、その区間の土量はいくらか。"},{"id":"C8Q23","chapter":8,"choices":["気象を測る","距離標等を基準に、河川の横断方向の河床・堤防等の形状を測定する","河川の色を測る","建物を測る"],"answer":1,"explain":"河川の横断測量は、距離標などを基準に、川を横切る方向の河床・水際・堤防などの地形断面を測定する。","calc":null,"cat":"applied","text":"河川測量における「横断測量」の説明として正しいものはどれか。"},{"id":"C8Q24","chapter":8,"choices":["200.0m²","1,200.0m²","100.0m²","2,400.0m²"],"answer":3,"explain":"長方形なので 縦×横 = 60 × 40 = 2,400.0m²(座標法でも同じ結果になる)","calc":"polygon","figure":{"type":"polygon"},"cat":"applied","text":"座標法で、4点A(0,0)、B(60,0)、C(60,40)、D(0,40)で囲まれる長方形の面積を求めよ(単位m)。"},{"id":"C8Q25","chapter":8,"choices":["気象を記録するため","境界点の位置を数値(座標)で記録し、将来の復元や面積計算に用いるため","河川の流速を測るため","建物の色を決めるため"],"answer":1,"explain":"境界点を座標で記録することで、境界標が失われても復元でき、正確な面積計算にも利用できる。","calc":null,"cat":"applied","text":"「境界点座標」を求める意義として正しいものはどれか。"},{"id":"C8Q26","chapter":8,"choices":["150.00m","86.60m","259.81m","75.00m"],"answer":1,"explain":"TL = R × tan(I/2) = 150 × tan30° = 150 × 0.5774 = 86.60m","calc":"tangent","figure":{"type":"tangent"},"cat":"applied","text":"単曲線で曲線半径R=150.000m、交角I=60°のとき、接線長(TL)はいくらか。(TL = R × tan(I/2)、tan30°≒0.5774)"},{"id":"C8Q27","chapter":8,"choices":["標高から計算する","気温から計算する","境界点の座標を用いた座標法(倍横距法等)で計算する","目分量で決める"],"answer":2,"explain":"用地の面積は、境界点の座標値を用いた座標法(倍横距法・座標面積計算)によって正確に求めるのが一般的。","calc":"basic","cat":"applied","text":"用地測量における「面積計算」の一般的な方法として正しいものはどれか。"},{"id":"C8Q28","chapter":8,"choices":["5.0%","50.0%","20.0%","0.5%"],"answer":0,"explain":"勾配(%) = 高低差 ÷ 水平距離 × 100 = 5.000 ÷ 100.000 × 100 = 5.0%","calc":"grade","figure":{"type":"grade"},"cat":"applied","text":"ある区間の縦断で、水平距離100.000mに対して高低差が5.000mであった。この区間の勾配(%)はいくらか。"},{"id":"C8Q29","chapter":8,"choices":["河川およびその周辺の平面的な地形・地物(水際線・堤防等)を測定し図化する","建物の内装を測る","河川の水温を測る","気象を予測する"],"answer":0,"explain":"河川の平面測量は、水際線・堤防・河川構造物など、河川とその周辺の平面的な地形・地物を測定し、河川平面図を作成する。","calc":null,"cat":"applied","text":"河川測量の「平面測量」の目的として正しいものはどれか。"},{"id":"C8Q30","chapter":8,"choices":["50.000m","500.000m","0.500m","5.000m"],"answer":3,"explain":"高低差 = 水平距離 × 勾配 = 250.000 × 0.02 = 5.000m おわりに 全240問、お疲れさまでした。分野ごとの得意・不得意が見えてきたのではないかと思います。 繰り返しになりますが、これはオリジナルの予想問題であり、本試験そのものではありません。間違えた分野があれば、市販の過去問集(「測量士補 過去問280」など)に戻り、同じ分野の本試験過去問を追加で解いてみてください。 この問題集が、あなたの合格の一助になれば嬉しいです。 もし役に立ったら、フォローしていただけると励みになります。土地家屋調査士版の問題集も準備中です。 計算の解説と練習問題を無料で置いています → https://nyantaro3588.github.io/ 本書はオリジナルの予想問題です。実際の測量士補試験の過去問を転載したものではありません。出題傾向の分析に基づき作成していますが、本試験の出題内容・形式を保証するものではありません。図・計算の数値は学習用に作成したものです。 #問題集 #測量士補 #測量士補試験 #測量士補独学","calc":"grade","figure":{"type":"grade"},"cat":"applied","text":"勾配2.0%の道路で、水平距離が250.000m進むと、高低差はいくらになるか。"}];
+const el=id=>document.getElementById(id);const store="sokuryo-quiz-240-v1";
+const history=(()=>{try{return JSON.parse(localStorage.getItem(store))||{}}catch{return{}}})();
+let selected="all",deck=[],pos=0,answers=[];
+function shuffle(xs){for(let i=xs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[xs[i],xs[j]]=[xs[j],xs[i]]}return xs}
+function escapeHTML(v){return String(v).replace(/[&<>"']/g,x=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[x])}
+function count(){el("attempts").textContent=Object.values(history).reduce((t,h)=>t+(h.attempts||0),0)}
+function chapters(){el("chapters").innerHTML=SUBJECTS.map(([id,label],i)=>`<button class="chapter ${selected===id?"active":""}" data-cat="${id}" aria-pressed="${selected===id}"><span class="chap-id">CH ${String(i+1).padStart(2,"0")}</span><span><strong>${escapeHTML(label)}</strong><small>30問収録</small></span></button>`).join("");el("chapters").querySelectorAll("button").forEach(b=>b.onclick=()=>{selected=selected===b.dataset.cat?"all":b.dataset.cat;chapters()})}
+function switchView(target){if(target!=="quizView"){closeCalculator();el("calcDock").classList.add("hide")}for(const id of ["homeView","quizView","resultView","endAd"])el(id).classList.toggle("hide",id!==target);/* Ads inactive until configured with a real affiliate ID and disclosure. */scrollTo({top:0,behavior:"smooth"})}
+function diagram(f){
+ if(!f)return "";
+ const type=f.type;
+ const common='stroke="#16324a" stroke-width="2.5" fill="none" stroke-linejoin="round"';
+ let shape='',label='';
+ if(type==='level') {shape='<path d="M30 135 H375" stroke="#607f94" stroke-width="2"/><path d="M30 60 H375" stroke="#c8952a" stroke-dasharray="6 5"/><path d="M85 50 V148 M310 50 V148" stroke="#16324a" stroke-width="3"/><text x="60" y="36">後視 BS</text><text x="284" y="36">前視 FS</text><text x="125" y="170">比高＝BS−FS</text>';label='後視と前視の位置関係';}
+ else if(['slope','distance','grade'].includes(type)){shape='<path d="M55 150 H320 V45 Z" fill="#e7f0f6" stroke="#16324a" stroke-width="2"/><text x="128" y="175">水平成分</text><text x="325" y="104">高さ</text><text x="135" y="83">斜距離</text><text x="75" y="141">θ</text>';label='直角三角形と水平・鉛直成分';}
+ else if(type==='rectangle'){shape='<rect x="85" y="42" width="210" height="118" fill="#e7f0f6" stroke="#16324a" stroke-width="2"/><text x="175" y="30">幅</text><text x="306" y="112">高さ</text>';label='長方形の辺の関係';}
+ else if(type==='polygon'){shape='<path d="M70 140 L105 45 L252 30 L336 122 L208 167 Z" fill="#e7f0f6" stroke="#16324a" stroke-width="2"/><text x="40" y="158">A</text><text x="101" y="32">B</text><text x="255" y="24">C</text><text x="342" y="131">D</text>';label='座標法で扱う多角形の頂点順';}
+ else if(['curveLength','tangent'].includes(type)){shape='<path d="M80 150 Q195 -20 320 150" '+common+'/><path d="M80 150 L195 16 L320 150" stroke="#c8952a" stroke-width="2" fill="none"/><text x="185" y="75">R</text><text x="166" y="174">交角 I</text>';label='円曲線の半径と交角の模式図';}
+ else if(type==='photo'){shape='<path d="M20 155 H380" stroke="#607f94" stroke-width="3"/><path d="M193 37 L85 155 M193 37 L300 155" stroke="#c8952a" stroke-width="2"/><rect x="171" y="22" width="44" height="22" fill="#16324a"/><text x="212" y="103">撮影高度 H</text><text x="118" y="181">地表</text>';label='写真撮影高度と地表の模式図';}
+ else if(type==='map'){shape='<path d="M55 70 H340 M55 60 V80 M340 60 V80" stroke="#16324a" stroke-width="3"/><text x="150" y="52">図上長</text><path d="M55 130 H340 M55 120 V140 M340 120 V140" stroke="#c8952a" stroke-width="3"/><text x="145" y="163">実距離</text>';label='縮尺と距離の模式図';}
+ else if(type==='volume'){shape='<path d="M70 45 L150 140 H235 L320 45" '+common+'/><text x="65" y="30">断面①</text><text x="276" y="30">断面②</text><text x="170" y="168">区間距離</text>';label='平均断面法の模式図';}
+ else if(type==='geoid'){shape='<path d="M35 65 Q195 18 370 66 M35 134 Q195 85 370 134" stroke="#16324a" stroke-width="2" fill="none"/><text x="110" y="32">地表の標高基準</text><text x="120" y="174">楕円体高・ジオイド高</text>';label='高さの基準面の概念図';}
+ else return '';
+ return `<figure class="figure"><svg viewBox="0 0 400 192" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeHTML(label)}"><g fill="#16324a" font-family="sans-serif" font-size="15">${shape}</g></svg><figcaption>${escapeHTML(label)}（模式図・縮尺は正確ではありません）</figcaption></figure>`;
 }
-function start(){
-  order = shuffle(QUESTIONS.map((_,i)=>i));
-  idx = 0; results = [];
-  render();
-}
-function drawBar(){
-  const bar = document.getElementById("bar");
-  bar.innerHTML = order.map((_,i)=>
-    `<i class="${i<idx?"done":(i===idx?"now":"")}"></i>`).join("");
-}
-function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function start(){let qs=selected==="all"?Q.slice():Q.filter(q=>q.cat===selected);if(el("scope").value==="wrong")qs=qs.filter(q=>history[q.id]?.lastWrong);if(!qs.length){alert("この条件の問題はありません。別の範囲を選んでください。");return}if(el("order").value==="random")shuffle(qs);const limit=el("limit").value;deck=limit==="all"?qs:qs.slice(0,Number(limit));pos=0;answers=[];switchView("quizView");render()}
+function render(){const q=deck[pos];const name=SUBJECTS.find(s=>s[0]===q.cat)?.[1]||"";el("qcat").textContent=name;el("qnum").textContent=`${pos+1} / ${deck.length} 問`;el("question").textContent=q.text;el("bar").setAttribute("aria-valuenow",String(Math.round(pos/deck.length*100)));el("barIn").style.width=`${pos/deck.length*100}%`;el("choices").innerHTML=q.choices.map((c,i)=>`<button type="button" class="opt" data-pick="${i}"><span class="mark">${["①","②","③","④"][i]}</span><span>${escapeHTML(c)}</span></button>`).join("");el("feedback").innerHTML="";el("choices").querySelectorAll("button").forEach(b=>b.onclick=()=>answer(Number(b.dataset.pick)));configureCalculator(q);el("quizView").scrollIntoView({block:"start",behavior:"instant"})}
+function answer(pick){const q=deck[pos],ok=pick===q.answer;closeCalculator();el("calcDock").classList.add("hide");el("calcEntry").classList.add("hide");answers.push({q,ok});const h=history[q.id]||{attempts:0,correct:0};h.attempts++;h.correct+=ok?1:0;h.lastWrong=!ok;history[q.id]=h;try{localStorage.setItem(store,JSON.stringify(history))}catch{};el("choices").querySelectorAll("button").forEach((b,i)=>{b.disabled=true;if(i===q.answer)b.classList.add("right");if(i===pick&&!ok)b.classList.add("wrong")});el("feedback").innerHTML=`<section class="answer"><b class="${ok?"ok":"ng"}">${ok?"正解！":"不正解"} ／ 正解は${["①","②","③","④"][q.answer]}</b><p>${escapeHTML(q.explain)}</p>${diagram(q.figure)}<button class="btn" id="next" type="button">${pos===deck.length-1?"結果を見る":"次の問題へ →"}</button></section>`;el("next").onclick=()=>{pos++;if(pos===deck.length)end();else render()};el("next").focus()}
+function end(){const hit=answers.filter(x=>x.ok).length;el("score").textContent=`${hit} / ${answers.length}`;el("summary").textContent=`正答率 ${Math.round(hit/answers.length*100)}％　｜　各分野のつまずきを復習しましょう。`;const missed=answers.filter(x=>!x.ok);el("errors").innerHTML=missed.length?`<h3>今回間違えた問題</h3><ol>${missed.map(x=>`<li>${escapeHTML(x.q.text)}</li>`).join("")}</ol>`:`<p class="endnote">全問正解！ 継続して定着させましょう。</p>`;count();switchView("resultView")}
 
-function render(){
-  drawBar();
-  const stage = document.getElementById("stage");
-  const q = QUESTIONS[order[idx]];
-  stage.innerHTML = `
-    <div class="card">
-      <div class="meta">
-        <span class="qno mono">Q ${idx+1} / ${order.length}</span>
-        <span class="field">${q.f}</span>
-      </div>
-      <p class="qtext">${q.q}</p>
-      <ul class="choices">
-        ${q.c.map((t,i)=>`
-          <li><button class="choice" data-i="${i}">
-            <span class="num mono">${i+1}</span><span class="txt">${esc(t)}</span>
-          </button></li>`).join("")}
-      </ul>
-      <div id="verdict"></div>
-    </div>`;
-  stage.querySelectorAll(".choice").forEach(b=>{
-    b.addEventListener("click",()=>answer(parseInt(b.dataset.i,10)));
-  });
+// Formula catalog: inputs are always manual and start blank for every question.
+// All formulas are transparent, finite-number checked, and evaluated WITHOUT eval/Function.
+const CALC={
+  basic:{label:"基本電卓（四則・三角関数）",hint:"角度は度（°）で入力。√やsin/cos/tanなどはXのみを使います。",fields:[["x","数値 X",""],["y","数値 Y（必要な場合）",""]],ops:true},
+  level:{label:"水準測量｜比高",hint:"後視(BS)と前視(FS)を自分で入力します。",fields:[["bs","後視 BS","m"],["fs","前視 FS","m"]]},
+  slope:{label:"斜距離と鉛直角｜水平距離・高低差",hint:"斜距離と仰角（度）を自分で入力します。",fields:[["length","斜距離","m"],["angle","仰角","°"]]},
+  rectangle:{label:"長方形の面積",hint:"縦と横を入力してください。",fields:[["width","横幅","m"],["height","縦幅","m"]]},
+  distance:{label:"2点間の距離（座標差）",hint:"X座標・Y座標それぞれの差を入力します。",fields:[["dx","ΔX","m"],["dy","ΔY","m"]]},
+  polygon:{label:"座標法｜多角形の面積",hint:"境界点を時計回りか反時計回りの順番で入力。少なくとも3点必要です。",fields:[],points:true},
+  curveLength:{label:"単曲線｜曲線長 CL",hint:"半径と交角を入力します。",fields:[["r","曲線半径 R","m"],["i","交角 I","°"]]},
+  tangent:{label:"単曲線｜接線長 TL",hint:"半径と交角を入力します。",fields:[["r","曲線半径 R","m"],["i","交角 I","°"]]},
+  photo:{label:"空中写真｜撮影縮尺",hint:"焦点距離はmm、地表からの撮影高度はm。結果は1/NのNです。",fields:[["f","焦点距離","mm"],["h","地表からの高度","m"]]},
+  map:{label:"地図縮尺｜図上長→実距離",hint:"図上の長さcmと縮尺分母N（例: 25000）を入力。",fields:[["cm","図上長","cm"],["n","縮尺分母 N",""]]},
+  grade:{label:"勾配（％）",hint:"高低差と水平距離を入力。下りはマイナス入力もできます。",fields:[["h","高低差","m"],["d","水平距離","m"]]},
+  volume:{label:"平均断面法｜土量",hint:"2断面の面積と、断面間の水平距離を入力します。",fields:[["a","第1断面積","m²"],["b","第2断面積","m²"],["d","断面間距離","m"]]},
+  geoid:{label:"GNSS｜楕円体高から標高",hint:"楕円体高とジオイド高を入力します。",fields:[["h","楕円体高","m"],["n","ジオイド高","m"]]},
+  dms:{label:"度分秒→十進角度",hint:"角度の「度・分・秒」を入力します。負角は度にマイナスを付けてください。",fields:[["d","度","°"],["m","分","′"],["s","秒","″"]]}
+};
+const FORMULAS={basic:"四則計算・平方根・三角関数（選択式）",level:"比高 = 後視 − 前視",slope:"水平成分 = 斜距離 × cos(仰角) / 高低差 = 斜距離 × sin(仰角)",rectangle:"面積 = 縦 × 横",distance:"距離 = √(ΔX² + ΔY²)",polygon:"面積 = |Σ(XᵢYᵢ₊₁ − Xᵢ₊₁Yᵢ)| / 2",curveLength:"CL = R × I × π / 180",tangent:"TL = R × tan(I/2)",photo:"縮尺分母 = 撮影高度(m) × 1000 / 焦点距離(mm)",map:"実距離(m) = 図上長(cm) × 縮尺分母 / 100",grade:"勾配(%) = 高低差 / 水平距離 × 100",volume:"土量 = (第1断面積 + 第2断面積) / 2 × 距離",geoid:"標高 ≒ 楕円体高 − ジオイド高",dms:"十進角 = 度 + 分/60 + 秒/3600"};
+const BASIC_OPS=[
+ ["plus","X ＋ Y"],["minus","X − Y"],["mul","X × Y"],["div","X ÷ Y"],
+ ["hypot","√(X² + Y²)"],["square","X²"],["sqrt","√X"],
+ ["sin","sin(X°)"],["cos","cos(X°)"],["tan","tan(X°)"],
+ ["atan","atan(X) → 度"]
+];
+const rad=x=>x*Math.PI/180;
+const formatNumber=x=>{
+ if(!Number.isFinite(x))throw Error("結果が計算できません。入力値を確認してください。");
+ if(x!==0 && Math.abs(x)<1e-8)return x.toExponential(8);
+ return (Math.round(x*1e10)/1e10).toLocaleString("ja-JP",{maximumFractionDigits:10});
+};
+// Allow Japanese full-width digits while rejecting expressions, arbitrary JS, and malformed numbers.
+function normalizedNumber(s){
+ const str=String(s).trim().replace(/[０-９．－＋]/g,c=>({"０":"0","１":"1","２":"2","３":"3","４":"4","５":"5","６":"6","７":"7","８":"8","９":"9","．":".","－":"-","＋":"+"})[c]);
+ if(!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(str))throw Error("数値を正しく入力してください。空欄や単位・カンマは使えません。");
+ const n=Number(str);if(!Number.isFinite(n))throw Error("入力数値が大きすぎます。");return n;
 }
-
-function answer(pick){
-  const q = QUESTIONS[order[idx]];
-  const ok = pick === q.a;
-  results.push({f:q.f, ok:ok});
-  const btns = document.querySelectorAll(".choice");
-  btns.forEach((b,i)=>{
-    b.disabled = true;
-    if(i === q.a) b.classList.add("is-correct");
-    if(i === pick && !ok) b.classList.add("is-wrong");
-  });
-  const last = idx === order.length - 1;
-  document.getElementById("verdict").innerHTML = `
-    <div class="verdict ${ok?"ok":"ng"}">
-      <div class="mark">${ok?"正解":"不正解　正解は "+(q.a+1)+"番"}</div>
-      <p>${q.e}</p>
-      <div class="actions" style="margin-top:18px">
-        <button class="btn" id="next">${last?"結果を見る":"次の問題へ"}</button>
-      </div>
-    </div>`;
-  const nx = document.getElementById("next");
-  nx.addEventListener("click",()=>{ idx++; last ? result() : render(); });
-  nx.focus();
+function finiteResult(value,label,unit){if(!Number.isFinite(value))throw Error("この入力では計算できません。");return `${label}：${formatNumber(value)}${unit}`}
+let activeCalcQuestion=null,lastCalcFocus=null;
+function configureCalculator(q){
+ closeCalculator();activeCalcQuestion=q;
+ const enabled=Boolean(q.calc&&CALC[q.calc]);
+ el("calcDock").classList.toggle("hide",!enabled);
+ el("calcEntry").classList.toggle("hide",!enabled);
+ el("calcChip").classList.add("hide");el("calcChip").textContent="";
+ if(enabled){el("calcProblem").textContent=q.text;el("calcMode").innerHTML=Object.entries(CALC).map(([k,v])=>`<option value="${k}">${escapeHTML(v.label)}</option>`).join("");el("calcMode").value=q.calc;renderCalcForm();}
 }
-
-function result(){
-  const hit = results.filter(r=>r.ok).length;
-  const total = results.length;
-  const rate = Math.round(hit/total*100);
-  let msg;
-  if(rate>=80) msg="この調子なら本番も戦えます。取りこぼした分野だけ潰しておけば十分です。";
-  else if(rate>=50) msg="半分は取れています。落とした分野に偏りがあるはずなので、そこから埋めるのが早道です。";
-  else msg="いまは知識の入り口です。分野ごとに区切って回すと、伸び方が変わります。";
-
-  document.getElementById("bar").innerHTML = order.map(()=>`<i class="done"></i>`).join("");
-  document.getElementById("stage").innerHTML = `
-    <div class="score">
-      <div class="label">結果</div>
-      <div class="big mono">${hit}<small> / ${total}　（${rate}％）</small></div>
-      <p>${msg}</p>
-      <p>より多くの問題で仕上げたい場合は、全240問・図解付きの予想問題集をnoteに置いています。8分野を分野別に並べてあるので、弱い箇所から潰せます。</p>
-      <a class="link" href="${NOTE_URL}" target="_blank" rel="noopener">noteの問題集を見る →</a>
-    </div>
-    <div class="card">
-      <div class="meta"><span class="qno mono">内訳</span></div>
-      <ul class="review">
-        ${results.map((r,i)=>`
-          <li><span class="mono ${r.ok?"r-ok":"r-ng"}">${r.ok?"○":"×"}</span>
-          <span>${i+1}問目　${r.f}</span></li>`).join("")}
-      </ul>
-      <div class="actions" style="margin-top:22px">
-        <button class="btn" id="again">もう一度（順番が変わります）</button>
-        <a class="btn ghost" href="https://nyantaro3588.github.io/sokuryo/" style="text-decoration:none">測点ノートに戻る</a>
-      </div>
-    </div>`;
-  document.getElementById("again").addEventListener("click",start);
-  window.scrollTo({top:0,behavior:"instant"});
+function openCalculator(){if(!activeCalcQuestion||!activeCalcQuestion.calc)return;lastCalcFocus=document.activeElement;el("calcPanel").classList.remove("hide");el("calcBackdrop").classList.remove("hide");document.body.classList.add("calc-lock");el("calcClose").focus()}
+function closeCalculator(){if(!el("calcPanel")||el("calcPanel").classList.contains("hide"))return;el("calcPanel").classList.add("hide");el("calcBackdrop").classList.add("hide");document.body.classList.remove("calc-lock");if(lastCalcFocus&&lastCalcFocus.isConnected)lastCalcFocus.focus();lastCalcFocus=null}
+function calcFieldHTML(k,label,unit){return `<div class="calc-field"><label for="calc_${k}">${escapeHTML(label)}${unit?`（${escapeHTML(unit)}）`:""}</label><input id="calc_${k}" data-key="${k}" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="数値を入力"></div>`}
+function renderPointRows(n=3){el("calcPoints").innerHTML=Array.from({length:n},(_,i)=>{
+const a=i+1;return `<div class="calc-point"><span>${a}</span>${calcFieldHTML(`x${i}`,`X${a}`,"m")}${calcFieldHTML(`y${i}`,`Y${a}`,"m")}<button type="button" aria-label="${a}番目の点を削除" class="calc-remove" data-at="${i}" ${n<=3?"disabled":""}>−</button></div>`}).join("");
 }
+function renderCalcForm(){const schema=CALC[el("calcMode").value];el("calcHint").textContent=schema.hint;el("calcFormula").textContent="使用する式："+FORMULAS[el("calcMode").value];el("calcOutput").classList.add("hide");
+ let content="";
+ if(schema.points){content=`<div class="calc-points" id="calcPoints"></div><button type="button" class="calc-add" id="calcAdd">＋ 点を追加（最大12点）</button>`;}
+ else {content=`<div class="calc-form">${schema.fields.map(([k,label,unit])=>calcFieldHTML(k,label,unit)).join("")}</div>`;
+ if(schema.ops)content+=`<label class="calc-label" for="calcOp" style="margin-top:14px">演算を選ぶ</label><select class="calc-select" id="calcOp">${BASIC_OPS.map(([v,l])=>`<option value="${v}">${escapeHTML(l)}</option>`).join("")}</select>`;}
+ el("calcFields").innerHTML=content;
+ if(schema.points){renderPointRows(3);el("calcAdd").onclick=()=>{
+ const old=[...el("calcPoints").querySelectorAll(".calc-point")].map(r=>[r.querySelector('[data-key^="x"]').value,r.querySelector('[data-key^="y"]').value]);
+ if(old.length>=12)return;
+ renderPointRows(old.length+1);old.forEach((p,i)=>{el(`calc_x${i}`).value=p[0];el(`calc_y${i}`).value=p[1]});attachPointRemovers();
+ };attachPointRemovers()}
+}
+function attachPointRemovers(){el("calcPoints").querySelectorAll(".calc-remove").forEach(b=>b.onclick=()=>{
+ const old=[...el("calcPoints").querySelectorAll(".calc-point")].map(r=>[r.querySelector('[data-key^="x"]').value,r.querySelector('[data-key^="y"]').value]);
+ if(old.length<=3)return;old.splice(Number(b.dataset.at),1);renderPointRows(old.length);old.forEach((p,i)=>{el(`calc_x${i}`).value=p[0];el(`calc_y${i}`).value=p[1]});attachPointRemovers()});}
+function calculateByMode(mode,input,operation="plus"){
+ const v=k=>{if(!(k in input))throw Error("必要な数値がありません。");return normalizedNumber(input[k])};
+ if(mode==="basic"){
+  const x=v("x"),unary=["square","sqrt","sin","cos","tan","atan"].includes(operation),y=unary?null:v("y");let result;
+  switch(operation){case "plus":result=x+y;break;case "minus":result=x-y;break;case "mul":result=x*y;break;case "div":if(y===0)throw Error("0では割れません。");result=x/y;break;
+  case "hypot":result=Math.hypot(x,y);break;case "square":result=x*x;break;case "sqrt":if(x<0)throw Error("負数の平方根はこのツールでは扱えません。");result=Math.sqrt(x);break;
+  case "sin":result=Math.sin(rad(x));break;case "cos":result=Math.cos(rad(x));break;case "tan":if(Math.abs(Math.cos(rad(x)))<1e-12)throw Error("この角度のtanは定義されません。");result=Math.tan(rad(x));break;case "atan":result=Math.atan(x)*180/Math.PI;break;
+  default:throw Error("演算を選択してください。");}
+  return finiteResult(result,"計算結果",operation==="atan"?"°":"");
+ }
+ if(mode==="level")return finiteResult(v("bs")-v("fs"),"比高","m");
+ if(mode==="slope"){const length=v("length"),angle=v("angle");if(length<0)throw Error("斜距離には0以上の値を入力してください。");return `${finiteResult(length*Math.cos(rad(angle)),"水平成分","m")} ／ ${finiteResult(length*Math.sin(rad(angle)),"高低差","m")}`}
+ if(mode==="rectangle")return finiteResult(v("width")*v("height"),"面積","m²");
+ if(mode==="distance")return finiteResult(Math.hypot(v("dx"),v("dy")),"水平距離","m");
+ if(mode==="polygon"){
+  const n=Number(input.count);if(n<3||n>12)throw Error("境界点は3〜12点にしてください。");let twice=0;
+  const p=Array.from({length:n},(_,i)=>[v(`x${i}`),v(`y${i}`)]);
+  for(let i=0;i<n;i++){const a=p[i],b=p[(i+1)%n];twice+=a[0]*b[1]-b[0]*a[1]}
+  return finiteResult(Math.abs(twice)/2,"面積","m²");
+ }
+ if(mode==="curveLength")return finiteResult(v("r")*rad(v("i")),"曲線長 CL","m");
+ if(mode==="tangent"){const half=rad(v("i")/2);if(Math.abs(Math.cos(half))<1e-12)throw Error("この交角では接線長が定義されません。");return finiteResult(v("r")*Math.tan(half),"接線長 TL","m")}
+ if(mode==="photo"){const f=v("f");if(f<=0)throw Error("焦点距離には正の値を入力してください。");return finiteResult(v("h")*1000/f,"縮尺分母 N（1/N）","")}
+ if(mode==="map")return finiteResult(v("cm")*v("n")/100,"実距離","m");
+ if(mode==="grade"){const d=v("d");if(d===0)throw Error("水平距離が0の場合は計算できません。");return finiteResult(v("h")/d*100,"勾配","％")}
+ if(mode==="volume")return finiteResult((v("a")+v("b"))/2*v("d"),"土量","m³");
+ if(mode==="geoid")return finiteResult(v("h")-v("n"),"標高（近似）","m");
+ if(mode==="dms"){
+  const raw=String(input.d??"").trim(),d=v("d"),m=v("m"),s=v("s");if(m<0||m>=60||s<0||s>=60)throw Error("分・秒は0以上60未満で入力してください。");const sign=(d<0||raw.startsWith("-" )||raw.startsWith("－"))?-1:1;
+  return finiteResult(sign*(Math.abs(d)+m/60+s/3600),"十進角度","°");
+ }
+ throw Error("計算方法が見つかりません。");
+}
+function calcCompute(){
+ const mode=el("calcMode").value, values={};el("calcFields").querySelectorAll("input[data-key]").forEach(x=>values[x.dataset.key]=x.value);
+ if(mode==="polygon")values.count=el("calcPoints").querySelectorAll(".calc-point").length;
+ const out=el("calcOutput");out.classList.remove("hide","calc-error");
+ try{const label=calculateByMode(mode,values,mode==="basic"?el("calcOp").value:undefined);out.textContent=label;
+  el("calcChip").classList.remove("hide");el("calcChip").textContent="🧮 "+label+"（入力値による計算結果）";
+ }catch(e){out.textContent="確認："+e.message;out.classList.add("calc-error")}
+}
+el("calcInline").onclick=openCalculator;el("calcDock").onclick=openCalculator;el("calcClose").onclick=closeCalculator;el("calcBackdrop").onclick=closeCalculator;
+el("calcMode").onchange=()=>{renderCalcForm();el("calcChip").classList.add("hide");el("calcChip").textContent=""};
+el("calcReset").onclick=()=>{renderCalcForm();el("calcChip").classList.add("hide");el("calcChip").textContent=""};
+el("calcRun").onclick=calcCompute;
+el("calcPanel").addEventListener("keydown",event=>{
+ if(event.key==="Escape"){event.preventDefault();closeCalculator();return}
+ if(event.key!=="Tab")return;
+ const focusable=[...el("calcPanel").querySelectorAll("button:not(:disabled),select,input")].filter(x=>x.getClientRects().length);
+ if(!focusable.length)return;const first=focusable[0],last=focusable[focusable.length-1];
+ if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+});
 
-start();
+el("start").onclick=start;el("quit").onclick=()=>{count();switchView("homeView")};el("back").onclick=()=>{count();switchView("homeView")};el("retry").onclick=start;chapters();count();
 </script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3d06a0c40e064a5098be8083400e707c"}'></script><!-- End Cloudflare Web Analytics -->
-</body>
-</html>
+</body></html>
