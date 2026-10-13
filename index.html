@@ -6,6 +6,12 @@
 <title>測量士補無料問題集240問｜分野別・スマホ計算ツール付き｜測点ノート</title>
 <meta name="description" content="測量士補のオリジナル練習問題240問（8分野・各30問）を無料で演習。スマホ用計算パネル・誤答復習・分野別ランダム出題。登録不要。">
 <link rel="canonical" href="https://nyantaro3588.github.io/sokuryo-quiz/">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#16324a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="測量士補240問">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <style>
 :root{--ink:#16324a;--muted:#4a6480;--bg:#edf1f4;--line:#c3d4e0;--paper:#fbfcfd;--gold:#c8952a;--red:#b4372f;--ok:#1f6f5c;--blue:#e7f0f6;--shadow:0 8px 25px #16324a0d}
 *{box-sizing:border-box} html{scroll-behavior:smooth}body{margin:0;background:var(--bg);background-image:linear-gradient(var(--line) .5px,transparent .5px),linear-gradient(90deg,var(--line) .5px,transparent .5px);background-size:30px 30px;color:var(--ink);font:16px/1.72 "Hiragino Sans","Yu Gothic",Meiryo,sans-serif}
@@ -46,12 +52,27 @@ body.calc-lock{overflow:hidden}
 @media(max-width:365px){.calc-form{grid-template-columns:1fr}.calc-point{grid-template-columns:28px minmax(0,1fr) minmax(0,1fr) 38px}.calc-point .calc-field input{padding:9px 6px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress>div{transition:none}}
 
+
+.pwa-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:15px 0 0}
+.pwa-install{min-height:48px;padding:10px 18px;background:#1f6f5c;color:#fff;border:2px solid #1f6f5c;border-radius:6px;font-weight:800}
+.pwa-install:hover{background:#165846}.pwa-install:disabled{opacity:.6}
+.pwa-install-note{font-size:.82rem;color:var(--muted);margin:0}
+.pwa-help{margin-top:12px;border:1px solid #b5ced5;background:#f7fafc;padding:13px 15px;border-radius:6px;font-size:.9rem;line-height:1.65}
+.pwa-help p{margin:0 0 5px}.pwa-help strong{display:block}
+.pwa-update{position:sticky;top:0;z-index:20;background:#fff8e2;border-bottom:2px solid var(--gold);padding:10px 16px;box-shadow:0 3px 14px #16324a19}
+.pwa-update .container{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.pwa-update .btn{min-height:44px}
+@media(max-width:630px){.pwa-actions{align-items:stretch;flex-direction:column}.pwa-install{width:100%}}
 </style>
 </head>
 <body>
 <header class="top"><div class="container topin"><a class="brand" href="#home">測点ノート <small>｜測量士補 問題集</small></a><span class="pill">全240問・無料</span></div></header>
 <main class="container" id="home">
-<section class="hero"><span class="eyebrow">SURVEY EXAM / PRACTICE</span><h1>分野を選び、<br>一問ずつ積み上げる。</h1><p>8分野・各30問のオリジナル予想問題を無料公開。解説・必要な図・復習履歴に加え、計算問題にはスマホ用の計算サポートを表示します。数値は自分で入力する仕組みです。</p><div class="caps"><span>本番設計：8分野 × 30問</span><span>登録不要</span><span>スマホ対応</span><span>問題ごとの計算パネル</span><span>進捗は端末内保存</span></div></section>
+<section class="hero"><span class="eyebrow">SURVEY EXAM / PRACTICE</span><h1>分野を選び、<br>一問ずつ積み上げる。</h1><p>8分野・各30問のオリジナル予想問題を無料公開。解説・必要な図・復習履歴に加え、計算問題にはスマホ用の計算サポートを表示します。数値は自分で入力する仕組みです。</p><div class="caps"><span>本番設計：8分野 × 30問</span><span>登録不要</span><span>スマホ対応</span><span>問題ごとの計算パネル</span><span>進捗は端末内保存</span></div>
+<div class="pwa-actions"><button type="button" class="pwa-install" id="pwaInstall">📲 アプリをインストール</button><p class="pwa-install-note" id="pwaStatus">初回はネット接続が必要。インストール後はオフライン学習に対応します。</p></div>
+<div class="pwa-help hide" id="pwaHelp" role="status" aria-live="polite"></div>
+</section>
+<div class="pwa-update hide" id="pwaUpdate" role="status" aria-live="polite"><div class="container"><span>アプリの新しい版があります。解答が終わってから更新できます。</span><button type="button" class="btn" id="pwaRefresh">新しい版に更新</button></div></div>
 <div class="notice"><b>ご利用にあたって：</b> この240問はオリジナルの学習用予想問題です。公式過去問ではありません。原稿の欠落解答7問を編集上補い、一部記述を修正しています。引き続き設問・法令の点検を進めていますので、最終確認は国土地理院の公式教材・最新法令とあわせて行ってください。</div>
 <div id="homeView">
 <section class="panel" aria-labelledby="heading-practice"><h2 id="heading-practice">演習メニュー</h2><div class="summary"><div class="stat"><b>240</b><small>収録した予想問題</small></div><div class="stat"><b>8</b><small>分野</small></div><div class="stat"><b id="attempts">0</b><small>このブラウザの解答履歴</small></div></div><p class="muted">全8分野から出題。短時間なら10問、まとめて学ぶなら30問や全問で練習できます。</p><div class="grid" id="chapters"></div><div class="controls"><label>出題範囲<select id="scope"><option value="all">全分野</option><option value="wrong">過去に間違えた問題</option></select></label><label>問題数<select id="limit"><option value="10">10問</option><option value="20" selected>20問</option><option value="30">30問</option><option value="all">選択範囲すべて</option></select></label><label>出題順<select id="order"><option value="random">ランダム</option><option value="fixed">章順</option></select></label><button type="button" class="btn" id="start">演習を開始する →</button></div></section>
@@ -78,6 +99,12 @@ body.calc-lock{overflow:hidden}
 <footer class="footer"><div class="container"><p>測点ノート｜測量士補オリジナル予想問題240問（無料）。<a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a> ・ <a href="intro20.html">入門20問</a></p><p>当サイトは学習支援を目的としています。アフィリエイト広告は準備中で、現在は表示していません。</p></div></footer>
 <script>
 "use strict";
+
+// Privacy-safe event hooks. GA4 sends events ONLY after a dedicated measurement ID is configured.
+// Never transmit problem statements, entered calculator values, or question answers.
+function trackStudy(name, params={}) {
+  if (typeof window.gtag === "function") window.gtag("event", name, params);
+}
 const SUBJECTS=[
  ["law","測量に関する法規"], ["gnss","GNSS測量"], ["traverse","多角測量・基準点測量"], ["level","水準測量"],
  ["photo","写真測量"], ["maps","地図編集"], ["terrain","地形測量"], ["applied","応用測量"]
@@ -111,10 +138,10 @@ function diagram(f){
  else return '';
  return `<figure class="figure"><svg viewBox="0 0 400 192" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeHTML(label)}"><g fill="#16324a" font-family="sans-serif" font-size="15">${shape}</g></svg><figcaption>${escapeHTML(label)}（模式図・縮尺は正確ではありません）</figcaption></figure>`;
 }
-function start(){let qs=selected==="all"?Q.slice():Q.filter(q=>q.cat===selected);if(el("scope").value==="wrong")qs=qs.filter(q=>history[q.id]?.lastWrong);if(!qs.length){alert("この条件の問題はありません。別の範囲を選んでください。");return}if(el("order").value==="random")shuffle(qs);const limit=el("limit").value;deck=limit==="all"?qs:qs.slice(0,Number(limit));pos=0;answers=[];switchView("quizView");render()}
+function start(){let qs=selected==="all"?Q.slice():Q.filter(q=>q.cat===selected);if(el("scope").value==="wrong")qs=qs.filter(q=>history[q.id]?.lastWrong);if(!qs.length){alert("この条件の問題はありません。別の範囲を選んでください。");return}if(el("order").value==="random")shuffle(qs);const limit=el("limit").value;deck=limit==="all"?qs:qs.slice(0,Number(limit));pos=0;answers=[];trackStudy("quiz_start",{subject:selected,question_count:deck.length});switchView("quizView");render()}
 function render(){const q=deck[pos];const name=SUBJECTS.find(s=>s[0]===q.cat)?.[1]||"";el("qcat").textContent=name;el("qnum").textContent=`${pos+1} / ${deck.length} 問`;el("question").textContent=q.text;el("bar").setAttribute("aria-valuenow",String(Math.round(pos/deck.length*100)));el("barIn").style.width=`${pos/deck.length*100}%`;el("choices").innerHTML=q.choices.map((c,i)=>`<button type="button" class="opt" data-pick="${i}"><span class="mark">${["①","②","③","④"][i]}</span><span>${escapeHTML(c)}</span></button>`).join("");el("feedback").innerHTML="";el("choices").querySelectorAll("button").forEach(b=>b.onclick=()=>answer(Number(b.dataset.pick)));configureCalculator(q);el("quizView").scrollIntoView({block:"start",behavior:"instant"})}
 function answer(pick){const q=deck[pos],ok=pick===q.answer;closeCalculator();el("calcDock").classList.add("hide");el("calcEntry").classList.add("hide");answers.push({q,ok});const h=history[q.id]||{attempts:0,correct:0};h.attempts++;h.correct+=ok?1:0;h.lastWrong=!ok;history[q.id]=h;try{localStorage.setItem(store,JSON.stringify(history))}catch{};el("choices").querySelectorAll("button").forEach((b,i)=>{b.disabled=true;if(i===q.answer)b.classList.add("right");if(i===pick&&!ok)b.classList.add("wrong")});el("feedback").innerHTML=`<section class="answer"><b class="${ok?"ok":"ng"}">${ok?"正解！":"不正解"} ／ 正解は${["①","②","③","④"][q.answer]}</b><p>${escapeHTML(q.explain)}</p>${diagram(q.figure)}<button class="btn" id="next" type="button">${pos===deck.length-1?"結果を見る":"次の問題へ →"}</button></section>`;el("next").onclick=()=>{pos++;if(pos===deck.length)end();else render()};el("next").focus()}
-function end(){const hit=answers.filter(x=>x.ok).length;el("score").textContent=`${hit} / ${answers.length}`;el("summary").textContent=`正答率 ${Math.round(hit/answers.length*100)}％　｜　各分野のつまずきを復習しましょう。`;const missed=answers.filter(x=>!x.ok);el("errors").innerHTML=missed.length?`<h3>今回間違えた問題</h3><ol>${missed.map(x=>`<li>${escapeHTML(x.q.text)}</li>`).join("")}</ol>`:`<p class="endnote">全問正解！ 継続して定着させましょう。</p>`;count();switchView("resultView")}
+function end(){const hit=answers.filter(x=>x.ok).length;el("score").textContent=`${hit} / ${answers.length}`;el("summary").textContent=`正答率 ${Math.round(hit/answers.length*100)}％　｜　各分野のつまずきを復習しましょう。`;const missed=answers.filter(x=>!x.ok);el("errors").innerHTML=missed.length?`<h3>今回間違えた問題</h3><ol>${missed.map(x=>`<li>${escapeHTML(x.q.text)}</li>`).join("")}</ol>`:`<p class="endnote">全問正解！ 継続して定着させましょう。</p>`;count();trackStudy("quiz_complete",{subject:selected,question_count:answers.length});switchView("resultView")}
 
 // Formula catalog: inputs are always manual and start blank for every question.
 // All formulas are transparent, finite-number checked, and evaluated WITHOUT eval/Function.
@@ -163,7 +190,7 @@ function configureCalculator(q){
  el("calcChip").classList.add("hide");el("calcChip").textContent="";
  if(enabled){el("calcProblem").textContent=q.text;el("calcMode").innerHTML=Object.entries(CALC).map(([k,v])=>`<option value="${k}">${escapeHTML(v.label)}</option>`).join("");el("calcMode").value=q.calc;renderCalcForm();}
 }
-function openCalculator(){if(!activeCalcQuestion||!activeCalcQuestion.calc)return;lastCalcFocus=document.activeElement;el("calcPanel").classList.remove("hide");el("calcBackdrop").classList.remove("hide");document.body.classList.add("calc-lock");el("calcClose").focus()}
+function openCalculator(){if(!activeCalcQuestion||!activeCalcQuestion.calc)return;trackStudy("calculator_open",{calculator_type:activeCalcQuestion.calc});lastCalcFocus=document.activeElement;el("calcPanel").classList.remove("hide");el("calcBackdrop").classList.remove("hide");document.body.classList.add("calc-lock");el("calcClose").focus()}
 function closeCalculator(){if(!el("calcPanel")||el("calcPanel").classList.contains("hide"))return;el("calcPanel").classList.add("hide");el("calcBackdrop").classList.add("hide");document.body.classList.remove("calc-lock");if(lastCalcFocus&&lastCalcFocus.isConnected)lastCalcFocus.focus();lastCalcFocus=null}
 function calcFieldHTML(k,label,unit){return `<div class="calc-field"><label for="calc_${k}">${escapeHTML(label)}${unit?`（${escapeHTML(unit)}）`:""}</label><input id="calc_${k}" data-key="${k}" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="数値を入力"></div>`}
 function renderPointRows(n=3){el("calcPoints").innerHTML=Array.from({length:n},(_,i)=>{
@@ -221,7 +248,7 @@ function calcCompute(){
  const mode=el("calcMode").value, values={};el("calcFields").querySelectorAll("input[data-key]").forEach(x=>values[x.dataset.key]=x.value);
  if(mode==="polygon")values.count=el("calcPoints").querySelectorAll(".calc-point").length;
  const out=el("calcOutput");out.classList.remove("hide","calc-error");
- try{const label=calculateByMode(mode,values,mode==="basic"?el("calcOp").value:undefined);out.textContent=label;
+ try{const label=calculateByMode(mode,values,mode==="basic"?el("calcOp").value:undefined);out.textContent=label;trackStudy("calculator_use",{calculator_type:mode});
   el("calcChip").classList.remove("hide");el("calcChip").textContent="🧮 "+label+"（入力値による計算結果）";
  }catch(e){out.textContent="確認："+e.message;out.classList.add("calc-error")}
 }
@@ -238,6 +265,85 @@ el("calcPanel").addEventListener("keydown",event=>{
 });
 
 el("start").onclick=start;el("quit").onclick=()=>{count();switchView("homeView")};el("back").onclick=()=>{count();switchView("homeView")};el("retry").onclick=start;chapters();count();
+
+// Installable PWA. An actual installation prompt appears where the browser supports it.
+// On iOS, installation uses the OS share menu instead of beforeinstallprompt.
+let installPrompt=null;
+let reloadAfterUpdate=false;
+const pwaInstallButton=document.getElementById("pwaInstall");
+const pwaStatus=document.getElementById("pwaStatus");
+const pwaHelp=document.getElementById("pwaHelp");
+const pwaUpdate=document.getElementById("pwaUpdate");
+const installed=()=>matchMedia("(display-mode: standalone)").matches || navigator.standalone===true;
+function refreshPWAStatus(){
+  if(installed()){
+    pwaInstallButton.classList.add("hide");
+    pwaHelp.classList.add("hide");
+    pwaStatus.textContent="インストール済み：アプリとして利用中";
+  }else{
+    pwaInstallButton.classList.remove("hide");
+  }
+}
+window.addEventListener("beforeinstallprompt",event=>{
+  event.preventDefault();
+  installPrompt=event;
+  if(!installed())pwaStatus.textContent="インストールできます。ボタンを押して確認してください。";
+});
+window.addEventListener("appinstalled",()=>{
+  installPrompt=null;
+  trackStudy("app_installed");
+  refreshPWAStatus();
+});
+pwaInstallButton.addEventListener("click",async()=>{
+  if(installed()){refreshPWAStatus();return;}
+  if(installPrompt){
+    const prompt=installPrompt;
+    installPrompt=null;
+    pwaHelp.classList.add("hide");
+    trackStudy("app_install_clicked");
+    try{await prompt.prompt();await prompt.userChoice;}catch(err){console.info("Install was not completed",err);}
+    refreshPWAStatus();
+    return;
+  }
+  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent);
+  const android=/Android/.test(navigator.userAgent);
+  pwaHelp.textContent=ios
+   ?"iPhoneではOSの仕様上、共有メニュー→「ホーム画面に追加」→「Webアプリとして開く」を有効にして追加する方法がインストール操作です。Androidのような直接インストールのボタンは使えません。"
+   :android
+   ?"Android Chromeではブラウザ右上の︙メニューから「アプリをインストール」を選んでください。表示されない場合はページを一度再読み込みし、少し操作してから確認してください。"
+   :"対応するChromeまたはEdgeのアドレスバー／メニューで「アプリをインストール」を選んでください。ブラウザにより対応状況が異なります。";
+  pwaHelp.classList.remove("hide");
+});
+refreshPWAStatus();
+if("serviceWorker" in navigator){
+  window.addEventListener("load",async()=>{
+    try{
+      const reg=await navigator.serviceWorker.register("./sw.js",{scope:"./"});
+      const showUpdate=()=>{if(navigator.serviceWorker.controller&&reg.waiting)pwaUpdate.classList.remove("hide");};
+      showUpdate();
+      reg.addEventListener("updatefound",()=>{
+        const candidate=reg.installing;
+        if(candidate)candidate.addEventListener("statechange",()=>{
+          if(candidate.state==="installed")showUpdate();
+        });
+      });
+      navigator.serviceWorker.addEventListener("controllerchange",()=>{
+        if(reloadAfterUpdate){reloadAfterUpdate=false;location.reload();}
+      });
+      document.getElementById("pwaRefresh").addEventListener("click",()=>{
+        if(!reg.waiting)return;
+        reloadAfterUpdate=true;
+        reg.waiting.postMessage({type:"SKIP_WAITING"});
+      });
+      document.addEventListener("visibilitychange",()=>{
+        if(!document.hidden)reg.update().catch(()=>{});
+      });
+    }catch(error){
+      console.warn("Offline registration unavailable",error);
+      pwaStatus.textContent="現在オフライン保存を準備できませんでした。ネット接続をご確認ください。";
+    }
+  });
+}
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f097692fd8bf4500bed2fdbecf0c93d3"}'></script><!-- End Cloudflare Web Analytics -->
 </body></html>
