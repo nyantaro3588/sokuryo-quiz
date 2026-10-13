@@ -43,5 +43,5 @@ GitHub Pages は `main` / `(root)` から公開します。2026-10-13 更新。
 ## アクセス解析
 
 - Cloudflare Web Analytics：現行のサイトアクセス解析として設置済み。
-- GA4：新しい測点ノート専用Webデータストリームの測定ID（`G-...`）が**未取得のため、現時点では送信を行っていません**。データ収集を開始するにはIDを受け取り、各HTMLにGoogleタグを設置してプライバシーポリシーを更新してください。
+- GA4：2026-10-13、測点ノート専用Webデータストリーム（測定ID `G-BCL3C7M6H5`）のGoogleタグを設置しました。Cloudflareと併用します。プライバシーポリシーにも反映済みです。
 - `index.html` には `quiz_start`、`quiz_complete`、`calculator_open`、`calculator_use`、`app_install_clicked`、`app_installed` のイベント呼び出しを用意済み。問題文・選択した解答・入力した計算数値はイベントに含めません。
