@@ -234,11 +234,13 @@ body{
 <div class="summary" aria-label="問題集の概要"><div class="stat primary-stat"><b>480</b><small>収録問題</small></div><div class="stat"><b>8</b><small>分野</small></div><div class="stat"><b id="attempts">0</b><small>累計解答</small></div></div>
 <details class="chapter-picker" id="chapterPicker"><summary><span class="chapter-picker-text"><span class="chapter-picker-label">学習する分野</span><strong id="chapterLabel">全8分野から出題</strong></span><span class="chapter-picker-chevron" aria-hidden="true">⌄</span></summary><div class="chapter-picker-inner"><p class="muted">分野を選ぶと、その分野の問題だけを出題します。もう一度選ぶと全分野に戻せます。</p><div class="grid" id="chapters"></div></div></details>
 <div class="controls"><label>出題範囲<select id="scope"><option value="all">全分野</option><option value="wrong">過去に間違えた問題</option></select></label><label>問題数<select id="limit"><option value="20" selected>20問</option></select></label><label>出題順<select id="order"><option value="random">ランダム</option><option value="fixed">章順</option></select></label><button type="button" class="btn" id="start">この条件で演習を始める <span aria-hidden="true">→</span></button></div>
-<p class="practice-hint">短い休憩には10問、じっくり取り組む日は60問から。</p></section>
+<p class="practice-hint">短い休憩には10問、じっくり取り組む日は60問から。</p>
+<button class="lesson-entry" id="homeLesson" type="button"><span class="lesson-entry-symbol" aria-hidden="true">▤</span><span><strong>分野別ミニテキスト</strong><small>8分野の基礎を、演習前に確認する</small></span><span class="lesson-entry-arrow" aria-hidden="true">→</span></button></section>
 <aside class="ad hide" aria-label="PR枠"><b>PR｜関連教材</b><p>ここに関連テキスト・参考書の紹介を設置予定。広告を正式に導入した場合に限り、実際のリンクと適切な広告表示を掲載します。</p><small>問題演習中や選択肢の直近には表示しません。</small></aside>
 <section class="more-info" aria-label="アプリについて">
 <details class="info-details"><summary>使い方と学習データについて <span aria-hidden="true">＋</span></summary><div class="info-details-body"><p>分野と問題数を選んで4択に回答すると、正誤と解説を確認できます。計算ツールは数値を自分で入力する方式。解答回数や誤答履歴は端末内に保存され、ほかの端末とは同期されません。</p><p><a href="https://nyantaro3588.github.io/sokuryo/">測点ノートの教材一覧へ →</a></p></div></details>
-<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v4 ・ 2026.10.14</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v5 ・ 2026.10.14</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<li><time datetime="2026-10-14">2026.10.14</time><div><strong>v5｜ミニテキストと用語解説</strong><p>全8分野の要点テキストと、問題文から呼び出せる用語辞典を追加しました。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v4｜画面デザインを刷新</strong><p>演習への導線を短縮。分野選択を折りたたみ式にし、情報表示を整理しました。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v3｜問題数を480問に拡張</strong><p>全8分野・各60問に増量。計算ツール対応問題を148問に拡充。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v2｜スマホ操作を改善</strong><p>設定欄のはみ出しを修正。出題数の選択肢を拡張しました。</p></div></li>
@@ -246,11 +248,16 @@ body{
 </ol></div></details>
 </section>
 </div>
-<section class="panel hide" id="quizView"><div class="qheader"><span class="eyebrow" id="qcat"></span><span class="muted" id="qnum"></span></div><div class="progress" role="progressbar" aria-label="解答進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><div id="barIn"></div></div><h2 class="qtitle" id="question"></h2><div class="calc-entry hide" id="calcEntry"><button type="button" class="btn" id="calcInline">🧮 計算ツールを開く</button><p>数値は自分で入力。計算結果は問題画面に残せます。</p></div><div class="calc-chip hide" id="calcChip" aria-live="polite"></div><div class="opts" id="choices"></div><div id="feedback" aria-live="polite"></div><div class="float" style="margin-top:18px"><button type="button" class="btn secondary" id="quit">メニューへ戻る</button><span class="muted">選択肢を選ぶと解説が表示されます。</span></div></section>
+<section class="panel hide" id="quizView"><div class="qheader"><span class="eyebrow" id="qcat"></span><span class="muted" id="qnum"></span></div><div class="progress" role="progressbar" aria-label="解答進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><div id="barIn"></div></div><h2 class="qtitle" id="question"></h2><div class="question-help-row"><span id="termHint" class="term-hint hide">点線の用語をタップして意味を確認できます</span><button id="quizLesson" class="quiz-lesson" type="button">▤ この分野のテキスト</button></div><div class="calc-entry hide" id="calcEntry"><button type="button" class="btn" id="calcInline">🧮 計算ツールを開く</button><p>数値は自分で入力。計算結果は問題画面に残せます。</p></div><div class="calc-chip hide" id="calcChip" aria-live="polite"></div><div class="opts" id="choices"></div><div id="feedback" aria-live="polite"></div><div class="float" style="margin-top:18px"><button type="button" class="btn secondary" id="quit">メニューへ戻る</button><span class="muted">選択肢を選ぶと解説が表示されます。</span></div></section>
 <section class="panel hide" id="resultView" aria-live="polite"><h2>今回の結果</h2><div class="result-big" id="score"></div><p id="summary"></p><div id="errors"></div><div class="float"><button class="btn" id="retry">同じ範囲をもう一度</button><button class="btn secondary" id="back">メニューへ戻る</button></div></section>
 <aside class="ad hide" id="endAd"><b>PR｜関連教材</b><p>学習結果の下で、分野に合った学習書などを案内する枠。本番用の広告リンクは未設定です。</p></aside>
 <button type="button" class="calc-dock hide" id="calcDock" aria-label="この問題の計算ツールを開く">🧮 計算ツール</button>
 </main>
+<div class="study-backdrop hide" id="studyBackdrop" aria-hidden="true"></div>
+<section class="study-sheet hide" id="studySheet" role="dialog" aria-modal="true" aria-labelledby="studyTitle" tabindex="-1">
+  <div class="study-sheet-head"><div><span class="study-sheet-kicker" id="studyKind">学習ノート</span><h2 id="studyTitle">ミニテキスト</h2></div><button id="studyClose" type="button" class="study-close" aria-label="学習ノートを閉じる">✕</button></div>
+  <div id="studyBody" class="study-sheet-body"></div>
+</section>
 <div class="calc-backdrop hide" id="calcBackdrop" aria-hidden="true"></div>
 <section class="calc-panel hide" id="calcPanel" role="dialog" aria-modal="true" aria-labelledby="calcPanelTitle">
   <div class="calc-head"><div class="calc-head-top"><strong id="calcPanelTitle">🧮 計算サポート</strong><button type="button" id="calcClose" class="calc-close" aria-label="計算ツールを閉じる">✕</button></div><p class="calc-question" id="calcProblem"></p></div>
@@ -264,6 +271,9 @@ body{
   </div>
 </section>
 <footer class="footer"><div class="container"><div class="footer-brand">測点ノート <span>／ 測量士補 問題集</span></div><nav aria-label="フッターリンク"><a href="https://nyantaro3588.github.io/sokuryo/">教材一覧</a><a href="intro20.html">入門20問</a><a href="#updates">更新履歴</a><a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a></nav><p>© 測点ノート｜オリジナル無料学習教材</p></div></footer>
+<script src="./data/chapters.js"></script>
+<script src="./data/glossary-a.js"></script>
+<script src="./data/glossary-b.js"></script>
 <script>
 "use strict";
 
