@@ -1,6 +1,6 @@
 /* Offline-first practice app: versioned, same-origin cache only. */
-const VERSION = "sokuryo-quiz-v5-20261014";
-const CORE = ["./", "./index.html", "./intro20.html", "./manifest.webmanifest", "./data/chapters.js", "./data/glossary-a.js", "./data/glossary-b.js", "./icons/icon-192.png", "./icons/icon-512.png"];
+const VERSION = "sokuryo-quiz-v5-20261014-ready";
+const CORE = ["./", "./index.html", "./intro20.html", "./manifest.webmanifest", "./data/chapters.js", "./data/glossary-a.js", "./data/glossary-b.js", "./data/glossary-c.js", "./icons/icon-192.png", "./icons/icon-512.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(VERSION).then(cache => cache.addAll(CORE)));
 });
