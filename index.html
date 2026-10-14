@@ -392,6 +392,105 @@ function diagram(f){
  else return '';
  return `<figure class="figure"><svg viewBox="0 0 400 192" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeHTML(label)}"><g fill="#16324a" font-family="sans-serif" font-size="15">${shape}</g></svg><figcaption>${escapeHTML(label)}（模式図・縮尺は正確ではありません）</figcaption></figure>`;
 }
+
+/* v5 learning: optional inline glossary and chapter mini-texts. No auto-answer. */
+const STUDY_CHAPTERS=Array.isArray(window.SOKUTEN_CHAPTERS)?window.SOKUTEN_CHAPTERS:[];
+const STUDY_TERMS=Array.isArray(window.SOKUTEN_TERMS)?window.SOKUTEN_TERMS:[];
+const STUDY_WORDS=STUDY_TERMS.slice().sort((a,b)=>b.t.length-a.t.length);
+const STUDY_DICTIONARY=new Map(STUDY_TERMS.map(x=>[x.t,x.d]));
+let studyReturnFocus=null;
+function markQuestionTerms(raw){
+  const text=String(raw),selectedTerms=[];
+  for(const item of STUDY_WORDS){
+    if(selectedTerms.length>=4)break;
+    let from=0;
+    while(selectedTerms.length<4){
+      const i=text.indexOf(item.t,from);
+      if(i<0)break;
+      const end=i+item.t.length;
+      if(!selectedTerms.some(m=>i<m.end&&end>m.start)){
+        selectedTerms.push({start:i,end,term:item.t});
+      }
+      from=end;
+    }
+  }
+  selectedTerms.sort((a,b)=>a.start-b.start);
+  let out="",at=0;
+  for(const m of selectedTerms){
+    out+=escapeHTML(text.slice(at,m.start));
+    out+='<button type="button" class="term-link" data-term="'+escapeHTML(m.term)+'" aria-label="用語「'+escapeHTML(m.term)+'」の説明を開く">'+escapeHTML(m.term)+'</button>';
+    at=m.end;
+  }
+  out+=escapeHTML(text.slice(at));
+  return {html:out,count:selectedTerms.length};
+}
+function openStudySheet(trigger){
+  if(!el("calcPanel").classList.contains("hide"))closeCalculator();
+  studyReturnFocus=trigger||document.activeElement;
+  el("studyBackdrop").classList.remove("hide");
+  el("studySheet").classList.remove("hide");
+  document.body.classList.add("study-lock");
+  el("studyClose").focus();
+}
+function closeStudySheet(){
+  el("studyBackdrop").classList.add("hide");
+  el("studySheet").classList.add("hide");
+  document.body.classList.remove("study-lock");
+  if(studyReturnFocus&&document.contains(studyReturnFocus))studyReturnFocus.focus();
+  studyReturnFocus=null;
+}
+function showTermNote(term,trigger){
+  const definition=STUDY_DICTIONARY.get(term);
+  if(!definition)return;
+  el("studyKind").textContent="用語の解説";
+  el("studyTitle").textContent=term;
+  el("studyBody").innerHTML='<p class="study-definition">'+escapeHTML(definition)+'</p>'+
+   '<p class="study-hint-notice">用語の説明には、設問を考えるヒントが含まれる場合があります。</p>';
+  openStudySheet(trigger);
+}
+function paintStudyChapter(cat){
+  const c=STUDY_CHAPTERS.find(x=>x.cat===cat)||STUDY_CHAPTERS[0];
+  if(!c){
+    el("studyTitle").textContent="ミニテキスト";
+    el("studyBody").textContent="テキストを読み込めませんでした。通信状況をご確認ください。";
+    return;
+  }
+  el("studyKind").textContent="分野別ミニテキスト";
+  el("studyTitle").textContent=c.title;
+  const options=STUDY_CHAPTERS.map(x=>'<option value="'+escapeHTML(x.cat)+'"'+(x.cat===c.cat?' selected':'')+'>'+escapeHTML(x.title)+'</option>').join("");
+  const sections=c.sections.map(x=>'<section class="study-section"><h3>'+escapeHTML(x[0])+'</h3><p>'+escapeHTML(x[1])+'</p></section>').join("");
+  el("studyBody").innerHTML='<label class="calc-label" for="studyChapterSelect">読む分野を切り替える</label>'+
+   '<select id="studyChapterSelect" class="study-select">'+options+'</select>'+
+   '<p class="study-guide-lead">'+escapeHTML(c.lead)+'</p>'+sections+
+   '<div class="study-memo"><strong>覚えておきたいポイント</strong><p>'+escapeHTML(c.tip)+'</p></div>'+
+   '<p class="study-source">本テキストは学習用の要約です。法令・測量基準の最新内容は、<a href="https://www.gsi.go.jp/gijyutukanri/gijyutukanri41018.html" target="_blank" rel="noopener noreferrer">国土地理院の公式資料</a>で確認してください。学びやすさのため8分野に分類しており、現行試験の公式科目名とは異なる部分があります。</p>';
+  el("studyChapterSelect").addEventListener("change",event=>paintStudyChapter(event.target.value));
+}
+function showChapterNote(cat,trigger){
+  paintStudyChapter(cat);
+  openStudySheet(trigger);
+}
+el("homeLesson").addEventListener("click",event=>showChapterNote(selected==="all"?"law":selected,event.currentTarget));
+el("quizLesson").addEventListener("click",event=>showChapterNote(deck[pos]?.cat||"law",event.currentTarget));
+for(const target of ["question","feedback"]){
+  el(target).addEventListener("click",event=>{
+    const button=event.target.closest(".term-link[data-term]");
+    if(button)showTermNote(button.dataset.term,button);
+  });
+}
+el("studyClose").addEventListener("click",closeStudySheet);
+el("studyBackdrop").addEventListener("click",closeStudySheet);
+document.addEventListener("keydown",event=>{
+  if(el("studySheet").classList.contains("hide"))return;
+  if(event.key==="Escape"){event.preventDefault();closeStudySheet();return;}
+  if(event.key!=="Tab")return;
+  const focusable=Array.from(el("studySheet").querySelectorAll('button:not([disabled]),select:not([disabled]),a[href]')).filter(node=>node.getClientRects().length>0);
+  if(!focusable.length)return;
+  const first=focusable[0],last=focusable[focusable.length-1];
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+});
+
 function start(){let qs=eligibleQuestions().slice();if(!qs.length){alert("この条件の問題はありません。別の範囲を選んでください。");return}if(el("order").value==="random")shuffle(qs);else qs.sort((a,b)=>a.chapter-b.chapter||Number(a.id.split("Q")[1])-Number(b.id.split("Q")[1]));const limit=el("limit").value;const count=limit==="all"?qs.length:Math.min(Number(limit)||qs.length,qs.length);deck=qs.slice(0,count);pos=0;answers=[];trackStudy("quiz_start",{subject:selected,question_count:deck.length});switchView("quizView");render()}
 function render(){const q=deck[pos];const name=SUBJECTS.find(s=>s[0]===q.cat)?.[1]||"";el("qcat").textContent=name;el("qnum").textContent=`${pos+1} / ${deck.length} 問`;el("question").textContent=q.text;el("bar").setAttribute("aria-valuenow",String(Math.round(pos/deck.length*100)));el("barIn").style.width=`${pos/deck.length*100}%`;el("choices").innerHTML=q.choices.map((c,i)=>`<button type="button" class="opt" data-pick="${i}"><span class="mark">${["①","②","③","④"][i]}</span><span>${escapeHTML(c)}</span></button>`).join("");el("feedback").innerHTML="";el("choices").querySelectorAll("button").forEach(b=>b.onclick=()=>answer(Number(b.dataset.pick)));configureCalculator(q);el("quizView").scrollIntoView({block:"start",behavior:"instant"})}
 function answer(pick){const q=deck[pos],ok=pick===q.answer;closeCalculator();el("calcDock").classList.add("hide");el("calcEntry").classList.add("hide");answers.push({q,ok});const h=history[q.id]||{attempts:0,correct:0};h.attempts++;h.correct+=ok?1:0;h.lastWrong=!ok;history[q.id]=h;try{localStorage.setItem(store,JSON.stringify(history))}catch{};el("choices").querySelectorAll("button").forEach((b,i)=>{b.disabled=true;if(i===q.answer)b.classList.add("right");if(i===pick&&!ok)b.classList.add("wrong")});el("feedback").innerHTML=`<section class="answer"><b class="${ok?"ok":"ng"}">${ok?"正解！":"不正解"} ／ 正解は${["①","②","③","④"][q.answer]}</b><p>${escapeHTML(q.explain)}</p>${diagram(q.figure)}<button class="btn" id="next" type="button">${pos===deck.length-1?"結果を見る":"次の問題へ →"}</button></section>`;el("next").onclick=()=>{pos++;if(pos===deck.length)end();else render()};el("next").focus()}
