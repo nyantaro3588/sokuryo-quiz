@@ -78,18 +78,31 @@ body.calc-lock{overflow:hidden}
 <!-- /Google Analytics 4 -->
 </head>
 <body>
-<header class="top"><div class="container topin"><a class="brand" href="#home">測点ノート <small>｜測量士補 問題集</small></a><span class="pill">全480問・無料</span></div></header>
+<header class="top"><div class="container topin"><a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">◈</span> 測点ノート <small>測量士補 問題集</small></a><a class="top-meta" href="#heading-practice">演習を始める <span aria-hidden="true">↗</span></a></div></header>
 <main class="container" id="home">
-<section class="hero"><span class="eyebrow">SURVEY EXAM / PRACTICE</span><h1>分野を選び、<br>一問ずつ積み上げる。</h1><p>8分野・各60問のオリジナル予想問題を無料公開。解説・必要な図・復習履歴に加え、計算問題にはスマホ用の計算サポートを表示します。数値は自分で入力する仕組みです。</p><div class="caps"><span>収録数：8分野 × 60問</span><span>登録不要</span><span>スマホ対応</span><span>問題ごとの計算パネル</span><span>進捗は端末内保存</span></div>
+<section class="hero"><div class="hero-kicker"><span class="hero-line" aria-hidden="true"></span> 測量士補・無料問題演習</div><h1>学ぶ時間を、<br>もっと身近に。</h1><p>8分野・480問。解いて、確かめて、繰り返す。<br class="desktop-break">計算問題は、数値を自分で入力する計算ツールと一緒に。</p>
 <div class="pwa-actions"><button type="button" class="pwa-install" id="pwaInstall">📲 アプリをインストール</button><p class="pwa-install-note" id="pwaStatus">初回はネット接続が必要。インストール後はオフライン学習に対応します。</p></div>
 <div class="pwa-help hide" id="pwaHelp" role="status" aria-live="polite"></div>
 </section>
 <div class="pwa-update hide" id="pwaUpdate" role="status" aria-live="polite"><div class="container"><span>アプリの新しい版があります。解答が終わってから更新できます。</span><button type="button" class="btn" id="pwaRefresh">新しい版に更新</button></div></div>
-<div class="notice"><b>ご利用にあたって：</b> この480問はオリジナルの学習用練習・予想問題であり、公式過去問ではありません。旧原稿の欠落解答7問を暫定的に補ったほか、追加240問は基礎用語・基本計算を中心に新規作成しました。引き続き設問・法令の点検を進めていますので、最終確認は国土地理院の公式教材・最新法令とあわせて行ってください。</div>
+<p class="study-disclaimer"><span class="study-disclaimer-icon" aria-hidden="true">ⓘ</span> オリジナル学習問題です。公式過去問ではありません。内容は随時見直しています。<a href="https://www.gsi.go.jp/LAW/SHIKEN/past.html" target="_blank" rel="noopener noreferrer">公式過去問</a>も併用してください。</p>
 <div id="homeView">
-<section class="panel" aria-labelledby="heading-practice"><h2 id="heading-practice">演習メニュー</h2><div class="summary"><div class="stat"><b>480</b><small>収録した予想問題</small></div><div class="stat"><b>8</b><small>分野</small></div><div class="stat"><b id="attempts">0</b><small>このブラウザの解答履歴</small></div></div><p class="muted">全8分野から出題。短時間なら10問、まとめて学ぶなら30問や全問で練習できます。</p><div class="grid" id="chapters"></div><div class="controls"><label>出題範囲<select id="scope"><option value="all">全分野</option><option value="wrong">過去に間違えた問題</option></select></label><label>問題数<select id="limit"><option value="20" selected>20問</option></select></label><label>出題順<select id="order"><option value="random">ランダム</option><option value="fixed">章順</option></select></label><button type="button" class="btn" id="start">演習を開始する →</button></div></section>
+<section class="panel practice-panel" aria-labelledby="heading-practice">
+<div class="section-heading"><div><span class="section-kicker">PRACTICE</span><h2 id="heading-practice">今日の演習</h2></div><span class="version-label">480 QUESTIONS</span></div>
+<div class="summary" aria-label="問題集の概要"><div class="stat primary-stat"><b>480</b><small>収録問題</small></div><div class="stat"><b>8</b><small>分野</small></div><div class="stat"><b id="attempts">0</b><small>累計解答</small></div></div>
+<details class="chapter-picker" id="chapterPicker"><summary><span class="chapter-picker-text"><span class="chapter-picker-label">学習する分野</span><strong id="chapterLabel">全8分野から出題</strong></span><span class="chapter-picker-chevron" aria-hidden="true">⌄</span></summary><div class="chapter-picker-inner"><p class="muted">分野を選ぶと、その分野の問題だけを出題します。もう一度選ぶと全分野に戻せます。</p><div class="grid" id="chapters"></div></div></details>
+<div class="controls"><label>出題範囲<select id="scope"><option value="all">全分野</option><option value="wrong">過去に間違えた問題</option></select></label><label>問題数<select id="limit"><option value="20" selected>20問</option></select></label><label>出題順<select id="order"><option value="random">ランダム</option><option value="fixed">章順</option></select></label><button type="button" class="btn" id="start">この条件で演習を始める <span aria-hidden="true">→</span></button></div>
+<p class="practice-hint">短い休憩には10問、じっくり取り組む日は60問から。</p></section>
 <aside class="ad hide" aria-label="PR枠"><b>PR｜関連教材</b><p>ここに関連テキスト・参考書の紹介を設置予定。広告を正式に導入した場合に限り、実際のリンクと適切な広告表示を掲載します。</p><small>問題演習中や選択肢の直近には表示しません。</small></aside>
-<section class="panel"><h2>サイトの使い方</h2><p>分野別・全分野から問題を選択し、4択を回答。計算問題は途中でツールを開いて自分で数値を入力し、答えを検討できます。正誤・解説を確認したら次の問題に進みます。解答履歴はこのブラウザ内に保存され、他の端末には送信しません。</p><p class="muted"><a href="intro20.html">旧20問のランダム練習に戻る</a> ／ <a href="https://nyantaro3588.github.io/sokuryo/">測点ノートへ</a></p></section>
+<section class="more-info" aria-label="アプリについて">
+<details class="info-details"><summary>使い方と学習データについて <span aria-hidden="true">＋</span></summary><div class="info-details-body"><p>分野と問題数を選んで4択に回答すると、正誤と解説を確認できます。計算ツールは数値を自分で入力する方式。解答回数や誤答履歴は端末内に保存され、ほかの端末とは同期されません。</p><p><a href="https://nyantaro3588.github.io/sokuryo/">測点ノートの教材一覧へ →</a></p></div></details>
+<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v4 ・ 2026.10.14</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<li><time datetime="2026-10-14">2026.10.14</time><div><strong>v4｜画面デザインを刷新</strong><p>演習への導線を短縮。分野選択を折りたたみ式にし、情報表示を整理しました。</p></div></li>
+<li><time datetime="2026-10-14">2026.10.14</time><div><strong>v3｜問題数を480問に拡張</strong><p>全8分野・各60問に増量。計算ツール対応問題を148問に拡充。</p></div></li>
+<li><time datetime="2026-10-14">2026.10.14</time><div><strong>v2｜スマホ操作を改善</strong><p>設定欄のはみ出しを修正。出題数の選択肢を拡張しました。</p></div></li>
+<li><time datetime="2026-10-13">2026.10.13</time><div><strong>v1｜アプリ対応</strong><p>インストール、オフライン学習、アプリ内アップデートに対応しました。</p></div></li>
+</ol></div></details>
+</section>
 </div>
 <section class="panel hide" id="quizView"><div class="qheader"><span class="eyebrow" id="qcat"></span><span class="muted" id="qnum"></span></div><div class="progress" role="progressbar" aria-label="解答進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><div id="barIn"></div></div><h2 class="qtitle" id="question"></h2><div class="calc-entry hide" id="calcEntry"><button type="button" class="btn" id="calcInline">🧮 計算ツールを開く</button><p>数値は自分で入力。計算結果は問題画面に残せます。</p></div><div class="calc-chip hide" id="calcChip" aria-live="polite"></div><div class="opts" id="choices"></div><div id="feedback" aria-live="polite"></div><div class="float" style="margin-top:18px"><button type="button" class="btn secondary" id="quit">メニューへ戻る</button><span class="muted">選択肢を選ぶと解説が表示されます。</span></div></section>
 <section class="panel hide" id="resultView" aria-live="polite"><h2>今回の結果</h2><div class="result-big" id="score"></div><p id="summary"></p><div id="errors"></div><div class="float"><button class="btn" id="retry">同じ範囲をもう一度</button><button class="btn secondary" id="back">メニューへ戻る</button></div></section>
@@ -108,7 +121,7 @@ body.calc-lock{overflow:hidden}
     <p class="calc-subnotes">※問題の数字は自動入力しません。正解を判定する機能ではなく、計算の補助です。結果は学習用の参考値です。計算欄の数値は次の問題へ持ち越しません。</p>
   </div>
 </section>
-<footer class="footer"><div class="container"><p>測点ノート｜測量士補オリジナル練習問題480問（無料）。<a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a> ・ <a href="intro20.html">入門20問</a></p><p>当サイトは学習支援を目的としています。アフィリエイト広告は準備中で、現在は表示していません。</p></div></footer>
+<footer class="footer"><div class="container"><div class="footer-brand">測点ノート <span>／ 測量士補 問題集</span></div><nav aria-label="フッターリンク"><a href="https://nyantaro3588.github.io/sokuryo/">教材一覧</a><a href="intro20.html">入門20問</a><a href="#updates">更新履歴</a><a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a></nav><p>© 測点ノート｜オリジナル無料学習教材</p></div></footer>
 <script>
 "use strict";
 
@@ -152,11 +165,14 @@ function refreshLimitOptions(){
   return total;
 }
 function chapters(){
-  el("chapters").innerHTML=SUBJECTS.map(([id,label],i)=>`<button class="chapter ${selected===id?"active":""}" data-cat="${id}" aria-pressed="${selected===id}"><span class="chap-id">CH ${String(i+1).padStart(2,"0")}</span><span><strong>${escapeHTML(label)}</strong><small>60問収録</small></span></button>`).join("");
+  el("chapters").innerHTML=SUBJECTS.map(([id,label],i)=>`<button type="button" class="chapter ${selected===id?"active":""}" data-cat="${id}" aria-pressed="${selected===id}"><span class="chap-id">CH ${String(i+1).padStart(2,"0")}</span><span><strong>${escapeHTML(label)}</strong><small>60問</small></span></button>`).join("");
+  const subject=SUBJECTS.find(([id])=>id===selected);
+  el("chapterLabel").textContent=subject?subject[1]+"（60問）":"全8分野から出題";
   el("chapters").querySelectorAll("button").forEach(b=>b.onclick=()=>{
     selected=selected===b.dataset.cat?"all":b.dataset.cat;
     chapters();
     refreshLimitOptions();
+    el("chapterPicker").open=false;
   });
 }
 function switchView(target){if(target!=="quizView"){closeCalculator();el("calcDock").classList.add("hide")}for(const id of ["homeView","quizView","resultView","endAd"])el(id).classList.toggle("hide",id!==target);/* Ads inactive until configured with a real affiliate ID and disclosure. */scrollTo({top:0,behavior:"smooth"})}
@@ -321,9 +337,13 @@ function refreshPWAStatus(){
   if(installed()){
     pwaInstallButton.classList.add("hide");
     pwaHelp.classList.add("hide");
-    pwaStatus.textContent="インストール済み：アプリとして利用中";
+    pwaStatus.textContent="";
+    pwaStatus.classList.add("hide");
+    document.querySelector(".pwa-actions").classList.add("hide");
   }else{
     pwaInstallButton.classList.remove("hide");
+    pwaStatus.classList.remove("hide");
+    document.querySelector(".pwa-actions").classList.remove("hide");
   }
 }
 window.addEventListener("beforeinstallprompt",event=>{
