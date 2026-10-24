@@ -252,6 +252,23 @@ body.study-lock{overflow:hidden}
  .term-link{text-underline-offset:4px}
  .question-help-row{margin-bottom:15px}
 }
+
+/* v6 / unobtrusive, clearly marked and approval-gated affiliate cards */
+.affiliate-slot{margin:17px 0;padding:19px;background:#fff;border:1px solid #dce7ec;border-radius:15px;box-shadow:0 5px 24px rgba(13,41,60,.04)}
+.affiliate-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.affiliate-kicker{font-size:.71rem;color:#927044;letter-spacing:.08em;font-weight:800}
+.affiliate-heading h3{font-size:1rem;color:#244259;margin:0}
+.affiliate-disclosure{font-size:.72rem;color:#69808f;line-height:1.7;margin:8px 0 13px}
+.affiliate-link{display:flex;gap:12px;align-items:center;min-height:82px;padding:13px 12px;margin:9px 0 0;background:#fafcfd;border:1px solid #e0e8ed;border-radius:11px;text-decoration:none;color:#223d52}
+.affiliate-link:hover{background:#f1f6f9;border-color:#b5cbd7}
+.affiliate-link:focus-visible{outline:3px solid #be9656;outline-offset:2px}
+.affiliate-book{display:grid;place-items:center;width:41px;height:48px;flex-shrink:0;background:#eaf2f6;border-radius:9px;color:#6a8b9d;font:1.7rem serif}
+.affiliate-copy{display:flex;flex:1;flex-direction:column;gap:1px;min-width:0}
+.affiliate-copy small{font-size:.7rem;color:#748b98}
+.affiliate-copy strong{font-size:.9rem;line-height:1.45;overflow-wrap:anywhere}
+.affiliate-copy span{font-size:.77rem;color:#607788;line-height:1.55;overflow-wrap:anywhere}
+.affiliate-arrow{color:#7f94a2}
+@media(max-width:630px){.affiliate-slot{margin:15px 0;padding:15px 13px}.affiliate-link{padding:12px 10px}}
 </style>
 <!-- Google Analytics 4: 測点ノート (Cloudflare Web Analytics と併用) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BCL3C7M6H5"></script>
@@ -280,10 +297,11 @@ body.study-lock{overflow:hidden}
 <div class="controls"><label>出題範囲<select id="scope"><option value="all">全分野</option><option value="wrong">過去に間違えた問題</option></select></label><label>問題数<select id="limit"><option value="20" selected>20問</option></select></label><label>出題順<select id="order"><option value="random">ランダム</option><option value="fixed">章順</option></select></label><button type="button" class="btn" id="start">この条件で演習を始める <span aria-hidden="true">→</span></button></div>
 <p class="practice-hint">短い休憩には10問、じっくり取り組む日は60問から。</p>
 <button class="lesson-entry" id="homeLesson" type="button"><span class="lesson-entry-symbol" aria-hidden="true">▤</span><span><strong>分野別ミニテキスト</strong><small>8分野の基礎を、演習前に確認する</small></span><span class="lesson-entry-arrow" aria-hidden="true">→</span></button></section>
-<aside class="ad hide" aria-label="PR枠"><b>PR｜関連教材</b><p>ここに関連テキスト・参考書の紹介を設置予定。広告を正式に導入した場合に限り、実際のリンクと適切な広告表示を掲載します。</p><small>問題演習中や選択肢の直近には表示しません。</small></aside>
+<aside class="affiliate-slot hide" id="affiliateHome" aria-label="学習教材・広告"></aside>
 <section class="more-info" aria-label="アプリについて">
 <details class="info-details"><summary>使い方と学習データについて <span aria-hidden="true">＋</span></summary><div class="info-details-body"><p>分野と問題数を選んで4択に回答すると、正誤と解説を確認できます。計算ツールは数値を自分で入力する方式。解答回数や誤答履歴は端末内に保存され、ほかの端末とは同期されません。</p><p><a href="https://nyantaro3588.github.io/sokuryo/">測点ノートの教材一覧へ →</a></p></div></details>
-<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v5 ・ 2026.10.14</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v6 ・ 2026.10.24</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<li><time datetime="2026-10-24">2026.10.24</time><div><strong>v6｜教材紹介枠の準備</strong><p>ホームと結果画面の紹介枠を整備。広告は媒体・提携先の承認が完了するまで表示しません。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v5｜ミニテキストと用語解説</strong><p>全8分野の要点テキストと、問題文から呼び出せる用語辞典を追加しました。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v4｜画面デザインを刷新</strong><p>演習への導線を短縮。分野選択を折りたたみ式にし、情報表示を整理しました。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v3｜問題数を480問に拡張</strong><p>全8分野・各60問に増量。計算ツール対応問題を148問に拡充。</p></div></li>
@@ -294,7 +312,7 @@ body.study-lock{overflow:hidden}
 </div>
 <section class="panel hide" id="quizView"><div class="qheader"><span class="eyebrow" id="qcat"></span><span class="muted" id="qnum"></span></div><div class="progress" role="progressbar" aria-label="解答進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><div id="barIn"></div></div><h2 class="qtitle" id="question"></h2><div class="question-help-row"><span id="termHint" class="term-hint hide">点線の用語をタップして意味を確認できます</span><button id="quizLesson" class="quiz-lesson" type="button">▤ この分野のテキスト</button></div><div class="calc-entry hide" id="calcEntry"><button type="button" class="btn" id="calcInline">🧮 計算ツールを開く</button><p>数値は自分で入力。計算結果は問題画面に残せます。</p></div><div class="calc-chip hide" id="calcChip" aria-live="polite"></div><div class="opts" id="choices"></div><div id="feedback" aria-live="polite"></div><div class="float" style="margin-top:18px"><button type="button" class="btn secondary" id="quit">メニューへ戻る</button><span class="muted">選択肢を選ぶと解説が表示されます。</span></div></section>
 <section class="panel hide" id="resultView" aria-live="polite"><h2>今回の結果</h2><div class="result-big" id="score"></div><p id="summary"></p><div id="errors"></div><div class="float"><button class="btn" id="retry">同じ範囲をもう一度</button><button class="btn secondary" id="back">メニューへ戻る</button></div></section>
-<aside class="ad hide" id="endAd"><b>PR｜関連教材</b><p>学習結果の下で、分野に合った学習書などを案内する枠。本番用の広告リンクは未設定です。</p></aside>
+<aside class="affiliate-slot hide" id="affiliateResult" aria-label="学習教材・広告"></aside>
 <button type="button" class="calc-dock hide" id="calcDock" aria-label="この問題の計算ツールを開く">🧮 計算ツール</button>
 </main>
 <div class="study-backdrop hide" id="studyBackdrop" aria-hidden="true"></div>
@@ -319,6 +337,7 @@ body.study-lock{overflow:hidden}
 <script src="./data/glossary-a.js"></script>
 <script src="./data/glossary-b.js"></script>
 <script src="./data/glossary-c.js"></script>
+<script src="./data/affiliate.js"></script>
 <script>
 "use strict";
 
@@ -327,6 +346,49 @@ body.study-lock{overflow:hidden}
 function trackStudy(name, params={}) {
   if (typeof window.gtag === "function") window.gtag("event", name, params);
 }
+
+/* Approval-gated recommendations: no advertiser links before PWA approval. */
+const AFFILIATE=window.SOKUTEN_AFFILIATE||{};
+function approvedAffiliateUrl(raw){
+ if(typeof raw!=="string"||!raw)return null;
+ try{const u=new URL(raw);return u.protocol==="https:"&&u.hostname&&!u.username&&!u.password?raw:null}
+ catch(_){return null}
+}
+function renderAffiliateSlot(position,visible=true){
+ const mount=el(position==="home"?"affiliateHome":"affiliateResult");
+ if(!mount)return;
+ mount.classList.add("hide");
+ mount.replaceChildren();
+ if(!visible||AFFILIATE.enabled!==true||AFFILIATE.approvedForPwa!==true||!Array.isArray(AFFILIATE.offers)
+   ||typeof AFFILIATE.provider!=="string"||!AFFILIATE.provider.trim()
+   ||typeof AFFILIATE.disclosure!=="string"||!AFFILIATE.disclosure.trim())return;
+ const offers=AFFILIATE.offers.filter(o=>o&&["both",position].includes(o.placement)
+   &&["id","title","description"].every(k=>typeof o[k]==="string"&&o[k].trim())
+   &&approvedAffiliateUrl(o.url)).slice(0,2);
+ if(!offers.length)return;
+ const heading=document.createElement("div");heading.className="affiliate-heading";
+ const kicker=document.createElement("span");kicker.className="affiliate-kicker";kicker.textContent="PR · 学習教材";
+ const h3=document.createElement("h3");h3.textContent="学習を深める参考書";
+ heading.append(kicker,h3);
+ const disclosure=document.createElement("p");disclosure.className="affiliate-disclosure";disclosure.textContent=AFFILIATE.disclosure;
+ mount.append(heading,disclosure);
+ for(const o of offers){
+  const link=document.createElement("a");link.className="affiliate-link";
+  link.href=o.url;link.target="_blank";link.rel="sponsored noopener noreferrer";
+  const emblem=document.createElement("span");emblem.className="affiliate-book";emblem.textContent="▤";emblem.setAttribute("aria-hidden","true");
+  const copy=document.createElement("span");copy.className="affiliate-copy";
+  const category=document.createElement("small");category.textContent=o.category||"参考書";
+  const title=document.createElement("strong");title.textContent=o.title;
+  const description=document.createElement("span");description.textContent=o.description;
+  copy.append(category,title,description);
+  const arrow=document.createElement("span");arrow.className="affiliate-arrow";arrow.textContent="↗";arrow.setAttribute("aria-hidden","true");
+  link.append(emblem,copy,arrow);
+  link.addEventListener("click",()=>trackStudy("affiliate_click",{placement:position,offer_id:o.id,partner:AFFILIATE.provider}));
+  mount.append(link);
+ }
+ mount.classList.remove("hide");
+}
+
 const SUBJECTS=[
  ["law","測量に関する法規"], ["gnss","GNSS測量"], ["traverse","多角測量・基準点測量"], ["level","水準測量"],
  ["photo","写真測量"], ["maps","地図編集"], ["terrain","地形測量"], ["applied","応用測量"]
@@ -372,7 +434,7 @@ function chapters(){
     el("chapterPicker").open=false;
   });
 }
-function switchView(target){if(target!=="quizView"){closeCalculator();el("calcDock").classList.add("hide")}for(const id of ["homeView","quizView","resultView","endAd"])el(id).classList.toggle("hide",id!==target);/* Ads inactive until configured with a real affiliate ID and disclosure. */scrollTo({top:0,behavior:"smooth"})}
+function switchView(target){if(target!=="quizView"){closeCalculator();el("calcDock").classList.add("hide")}for(const id of ["homeView","quizView","resultView"])el(id).classList.toggle("hide",id!==target);renderAffiliateSlot("home");renderAffiliateSlot("result",target==="resultView");scrollTo({top:0,behavior:"smooth"})}
 function diagram(f){
  if(!f)return "";
  const type=f.type;
@@ -618,7 +680,7 @@ el("calcPanel").addEventListener("keydown",event=>{
  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
 });
 
-el("start").onclick=start;el("quit").onclick=()=>{count();switchView("homeView")};el("back").onclick=()=>{count();switchView("homeView")};el("retry").onclick=start;el("scope").addEventListener("change",refreshLimitOptions);chapters();refreshLimitOptions();count();
+el("start").onclick=start;el("quit").onclick=()=>{count();switchView("homeView")};el("back").onclick=()=>{count();switchView("homeView")};el("retry").onclick=start;el("scope").addEventListener("change",refreshLimitOptions);chapters();refreshLimitOptions();count();renderAffiliateSlot("home");
 
 // Installable PWA. An actual installation prompt appears where the browser supports it.
 // On iOS, installation uses the OS share menu instead of beforeinstallprompt.
