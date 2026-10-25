@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>座標法の面積計算・方向角と距離の逆算｜測点ノート</title>
+<meta name="description" content="座標を入れるだけで、座標法による面積と、2点間の方向角・距離を計算します。計算過程も表示するので手計算の答え合わせに使えます。無料・登録不要。">
+<meta property="og:title" content="座標法の面積計算・方向角と距離の逆算｜測点ノート">
+<meta property="og:description" content="手計算の答え合わせ用。計算過程も表示します。">
+<style>
+:root{
+  --ink:#16324A; --ink-soft:#4A6480; --paper:#EDF1F4;
+  --rule:#C3D4E0; --vermilion:#B4372F; --stake:#C8952A;
+  --white:#FBFCFD; --correct:#1F6F5C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  line-height:1.8; font-size:16px;
+  background-image:
+    linear-gradient(var(--rule) .5px,transparent .5px),
+    linear-gradient(90deg,var(--rule) .5px,transparent .5px);
+  background-size:28px 28px; background-position:-.5px -.5px;
+}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho",YuMincho,serif}
+.mono{font-family:"SFMono-Regular",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+
+.masthead{border-bottom:1px solid var(--rule);background:rgba(251,252,253,.88)}
+.masthead .wrap{display:flex;align-items:baseline;gap:12px;padding:14px 20px}
+.masthead a{color:var(--ink);text-decoration:none;font-size:17px;font-weight:600;letter-spacing:.12em}
+.masthead .here{font-size:11px;letter-spacing:.2em;color:var(--ink-soft)}
+
+.head{padding:36px 0 24px}
+.eyebrow{display:inline-block;font-size:11px;letter-spacing:.26em;color:var(--vermilion);
+  border-bottom:1px solid var(--vermilion);padding-bottom:3px;margin-bottom:16px}
+h1{font-size:clamp(22px,5vw,31px);line-height:1.5;font-weight:600}
+.lede{margin-top:14px;font-size:14px;color:var(--ink-soft);max-width:34em}
+
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--ink);margin-bottom:26px}
+.tab{
+  font:inherit;font-size:14px;letter-spacing:.04em;padding:11px 18px;cursor:pointer;
+  background:transparent;border:1px solid var(--rule);border-bottom:none;color:var(--ink-soft);
+  margin-bottom:-1px;
+}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.card{background:var(--white);border:1px solid var(--rule);padding:24px 22px;margin-bottom:18px}
+.card h2{font-size:16px;font-weight:600;letter-spacing:.06em;margin-bottom:6px}
+.card .hint{font-size:13px;color:var(--ink-soft);margin-bottom:20px}
+
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{font-size:11px;letter-spacing:.14em;color:var(--ink-soft);font-weight:400;text-align:left;
+  padding:0 8px 7px;border-bottom:1px solid var(--rule)}
+td{padding:5px 4px}
+input[type="number"],input[type="date"]{
+  width:100%;font:inherit;font-size:15px;padding:8px 10px;
+  border:1px solid var(--rule);background:var(--white);color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+input:focus{outline:2px solid var(--vermilion);outline-offset:-1px;border-color:var(--vermilion)}
+.pt-label{font-size:13px;color:var(--ink-soft);text-align:center;width:38px}
+.del{font:inherit;font-size:14px;line-height:1;padding:7px 10px;cursor:pointer;
+  background:transparent;border:1px solid var(--rule);color:var(--ink-soft)}
+.del:hover{border-color:var(--vermilion);color:var(--vermilion)}
+
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.btn{font:inherit;font-size:14px;letter-spacing:.05em;padding:10px 20px;cursor:pointer;
+  background:var(--ink);color:var(--paper);border:1px solid var(--ink)}
+.btn:hover{background:#0E2537}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:rgba(22,50,74,.06)}
+
+.out{background:var(--ink);color:var(--paper);padding:26px 24px;margin-bottom:18px}
+.out .label{font-size:11px;letter-spacing:.24em;color:var(--stake);margin-bottom:10px}
+.out .big{font-size:clamp(28px,7vw,40px);font-weight:600;line-height:1.15}
+.out .big small{font-size:16px;font-weight:400;color:var(--rule);letter-spacing:.04em}
+.out .sub{margin-top:14px;font-size:14px;color:#C3D4E0;display:grid;gap:4px}
+.out .err{color:#F0B9B4;font-size:14px}
+
+.work{font-size:13px;color:var(--ink-soft);overflow-x:auto}
+.work table{font-size:13px;min-width:420px}
+.work td{padding:4px 8px;border-bottom:1px solid var(--rule)}
+.work td:first-child{color:var(--ink)}
+.work .sum td{border-bottom:none;border-top:1px solid var(--ink);color:var(--ink);font-weight:600}
+.formula{font-size:13px;color:var(--ink-soft);margin-bottom:14px;line-height:1.9}
+
+footer{border-top:1px solid var(--rule);margin-top:44px;padding:22px 0 40px;font-size:12px;color:var(--ink-soft)}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:var(--ink-soft)}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--vermilion);outline-offset:2px}
+@media (max-width:520px){
+  .card{padding:20px 15px}
+  .tab{padding:10px 13px;font-size:13px}
+  input[type="number"]{padding:7px 8px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<link rel="canonical" href="https://nyantaro3588.github.io/sokuryo-calc/">
+<!-- Google Analytics 4: 測点ノート (Cloudflare Web Analytics と併用) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BCL3C7M6H5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-BCL3C7M6H5');
+</script>
+<!-- /Google Analytics 4 -->
+<link rel="canonical" href="https://nyantaro3588.github.io/sokuryo-quiz/tools/coordinates.html"></head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="mincho" href="../">測点ノート</a>
+    <span class="here mono">T-2 / COORDINATE CALC</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="head">
+    <span class="eyebrow">座標計算</span>
+    <h1 class="mincho">座標を入れれば、<br>過程ごと出します。</h1>
+    <p class="lede">座標法による面積と、2点間の方向角・距離の逆算。答えだけでなく計算過程も並べますので、どこで間違えたかが分かります。X は北方向、Y は東方向として扱います。</p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-area" aria-selected="true" aria-controls="p-area">面積（座標法）</button>
+    <button class="tab" role="tab" id="tab-inv" aria-selected="false" aria-controls="p-inv">方向角・距離の逆算</button>
+  </div>
+
+  <!-- ===== 面積 ===== -->
+  <div id="p-area" role="tabpanel" aria-labelledby="tab-area">
+    <div class="card">
+      <h2>境界点の座標</h2>
+      <p class="hint">多角形の頂点を、右回りでも左回りでも構いませんので順番どおりに入れてください。3点以上で計算できます。</p>
+      <table>
+        <thead><tr><th></th><th>X（北）m</th><th>Y（東）m</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="actions">
+        <button class="btn ghost" id="addRow">＋ 点を追加</button>
+        <button class="btn ghost" id="sample">例を入れる</button>
+        <button class="btn" id="calcArea">面積を計算</button>
+      </div>
+    </div>
+    <div id="areaOut"></div>
+  </div>
+
+  <!-- ===== 逆算 ===== -->
+  <div id="p-inv" role="tabpanel" aria-labelledby="tab-inv" hidden>
+    <div class="card">
+      <h2>始点と終点の座標</h2>
+      <p class="hint">始点から終点を見たときの方向角と、2点間の水平距離を求めます。方向角は X 軸の正方向（北）から右回りで表します。</p>
+      <table>
+        <thead><tr><th></th><th>X（北）m</th><th>Y（東）m</th></tr></thead>
+        <tbody>
+          <tr><td class="pt-label mono">始点</td>
+            <td><input type="number" step="any" id="x1" inputmode="decimal"></td>
+            <td><input type="number" step="any" id="y1" inputmode="decimal"></td></tr>
+          <tr><td class="pt-label mono">終点</td>
+            <td><input type="number" step="any" id="x2" inputmode="decimal"></td>
+            <td><input type="number" step="any" id="y2" inputmode="decimal"></td></tr>
+        </tbody>
+      </table>
+      <div class="actions">
+        <button class="btn ghost" id="sample2">例を入れる</button>
+        <button class="btn" id="calcInv">逆算する</button>
+      </div>
+    </div>
+    <div id="invOut"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span><a href="../">← 測点ノートに戻る</a>　<a href="../privacy.html">プライバシーポリシー</a></span>
+    <span class="mono">T-2</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- tabs ---------- */
+const tabs = [["tab-area","p-area"],["tab-inv","p-inv"]];
+tabs.forEach(([t,p])=>{
+  document.getElementById(t).addEventListener("click",()=>{
+    tabs.forEach(([tt,pp])=>{
+      const on = tt===t;
+      document.getElementById(tt).setAttribute("aria-selected", on);
+      document.getElementById(pp).hidden = !on;
+    });
+  });
+});
+
+/* ---------- helpers ---------- */
+const fx = (n,d=3)=> n.toLocaleString("ja-JP",{minimumFractionDigits:d,maximumFractionDigits:d});
+const TSUBO = 400/121;
+function dms(deg){
+  let d = Math.floor(deg);
+  let m0 = (deg-d)*60;
+  let m = Math.floor(m0);
+  let s = (m0-m)*60;
+  if(s>=59.995){s=0;m+=1;}
+  if(m>=60){m=0;d+=1;}
+  return `${d}度${String(m).padStart(2,"0")}分${s.toFixed(2)}秒`;
+}
+
+/* ---------- 面積 ---------- */
+const rows = document.getElementById("rows");
+function addRow(x="",y=""){
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td class="pt-label mono"></td>
+    <td><input type="number" step="any" inputmode="decimal" value="${x}"></td>
+    <td><input type="number" step="any" inputmode="decimal" value="${y}"></td>
+    <td><button class="del" title="この行を削除">×</button></td>`;
+  tr.querySelector(".del").addEventListener("click",()=>{ tr.remove(); relabel(); });
+  rows.appendChild(tr); relabel();
+}
+function relabel(){
+  [...rows.children].forEach((tr,i)=>{
+    tr.querySelector(".pt-label").textContent = String.fromCharCode(65+i%26);
+  });
+}
+for(let i=0;i<4;i++) addRow();
+document.getElementById("addRow").addEventListener("click",()=>addRow());
+document.getElementById("sample").addEventListener("click",()=>{
+  rows.innerHTML="";
+  [[0,0],[20,0],[20,30],[0,15]].forEach(([x,y])=>addRow(x,y));
+});
+
+document.getElementById("calcArea").addEventListener("click",()=>{
+  const pts=[]; let bad=false;
+  [...rows.children].forEach(tr=>{
+    const [xi,yi] = tr.querySelectorAll("input");
+    if(xi.value===""&&yi.value==="") return;
+    const x=parseFloat(xi.value), y=parseFloat(yi.value);
+    if(!isFinite(x)||!isFinite(y)){bad=true;return;}
+    pts.push({x,y});
+  });
+  const out = document.getElementById("areaOut");
+  if(bad){ out.innerHTML=`<div class="out"><p class="err">X と Y の両方が埋まっていない行があります。空欄の行は削除するか、数値を入れてください。</p></div>`; return; }
+  if(pts.length<3){ out.innerHTML=`<div class="out"><p class="err">3点以上の座標が必要です。</p></div>`; return; }
+
+  const n = pts.length;
+  let twice = 0; const work=[];
+  for(let i=0;i<n;i++){
+    const prev = pts[(i-1+n)%n], next = pts[(i+1)%n];
+    const dy = next.y - prev.y;
+    const term = pts[i].x * dy;
+    twice += term;
+    work.push({name:String.fromCharCode(65+i%26), x:pts[i].x, dy:dy, term:term});
+  }
+  const area = Math.abs(twice)/2;
+  out.innerHTML = `
+    <div class="out">
+      <div class="label">面積</div>
+      <div class="big mono">${fx(area,3)}<small> 平方メートル</small></div>
+      <div class="sub">
+        <span>${fx(area/TSUBO,3)} 坪　／　${fx(area/10000,5)} ヘクタール</span>
+        <span>点の数 ${n}　倍面積 ${fx(Math.abs(twice),3)}</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>計算過程</h2>
+      <p class="formula">座標法：2A ＝ Σ X<sub>i</sub> ×（Y<sub>i+1</sub> − Y<sub>i−1</sub>）<br>
+      各点の X に、前後の点の Y の差を掛けて合計し、絶対値を 2 で割ります。</p>
+      <div class="work">
+        <table>
+          <tr><th>点</th><th>X</th><th>Y(次) − Y(前)</th><th>積</th></tr>
+          ${work.map(w=>`<tr>
+            <td class="mono">${w.name}</td>
+            <td class="mono">${fx(w.x,3)}</td>
+            <td class="mono">${fx(w.dy,3)}</td>
+            <td class="mono">${fx(w.term,3)}</td></tr>`).join("")}
+          <tr class="sum"><td colspan="3">合計（2A）</td><td class="mono">${fx(twice,3)}</td></tr>
+          <tr class="sum"><td colspan="3">面積 A</td><td class="mono">${fx(area,3)}</td></tr>
+        </table>
+      </div>
+    </div>`;
+});
+
+/* ---------- 逆算 ---------- */
+document.getElementById("sample2").addEventListener("click",()=>{
+  x1.value=100; y1.value=200; x2.value=150; y2.value=250;
+});
+document.getElementById("calcInv").addEventListener("click",()=>{
+  const v = id => parseFloat(document.getElementById(id).value);
+  const X1=v("x1"), Y1=v("y1"), X2=v("x2"), Y2=v("y2");
+  const out = document.getElementById("invOut");
+  if(![X1,Y1,X2,Y2].every(isFinite)){
+    out.innerHTML=`<div class="out"><p class="err">4つの座標をすべて入れてください。</p></div>`; return;
+  }
+  const dX = X2-X1, dY = Y2-Y1;
+  const dist = Math.hypot(dX,dY);
+  if(dist===0){
+    out.innerHTML=`<div class="out"><p class="err">始点と終点が同一です。方向角は定まりません。</p></div>`; return;
+  }
+  let deg = Math.atan2(dY,dX)*180/Math.PI;
+  if(deg<0) deg+=360;
+  out.innerHTML = `
+    <div class="out">
+      <div class="label">方向角と距離</div>
+      <div class="big mono">${dms(deg)}</div>
+      <div class="sub">
+        <span>水平距離 ${fx(dist,3)} m</span>
+        <span>十進度 ${fx(deg,6)} 度</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>計算過程</h2>
+      <p class="formula">
+        ΔX ＝ X<sub>2</sub> − X<sub>1</sub> ＝ ${fx(dX,3)} m<br>
+        ΔY ＝ Y<sub>2</sub> − Y<sub>1</sub> ＝ ${fx(dY,3)} m<br>
+        距離 ＝ √(ΔX² ＋ ΔY²) ＝ ${fx(dist,3)} m<br>
+        方向角 ＝ tan⁻¹(ΔY ／ ΔX) を象限で補正 ＝ ${dms(deg)}
+      </p>
+      <div class="work">
+        <table>
+          <tr><td>象限</td><td class="mono">${dX>=0?(dY>=0?"第1（北東）":"第4（北西）"):(dY>=0?"第2（南東）":"第3（南西）")}</td></tr>
+          <tr><td>逆方向角（終点→始点）</td><td class="mono">${dms((deg+180)%360)}</td></tr>
+        </table>
+      </div>
+      <p class="hint" style="margin:14px 0 0">電卓の tan⁻¹ はマイナスの角も返すため、ΔX と ΔY の符号で象限を判断して 180 度または 360 度を足す必要があります。この補正忘れが失点の定番です。</p>
+    </div>`;
+});
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f097692fd8bf4500bed2fdbecf0c93d3"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
