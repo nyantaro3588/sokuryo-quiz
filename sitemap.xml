@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://nyantaro3588.github.io/sokuryo-quiz/</loc>
-  </url>
-  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/intro20.html</loc></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/guide/</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/guide/a1.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/guide/a2.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/guide/a3.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/guide/a4.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/guide/gnss.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/tools/coordinates.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/tools/pace.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/intro20.html</loc><lastmod>2026-10-25</lastmod></url>
+  <url><loc>https://nyantaro3588.github.io/sokuryo-quiz/privacy.html</loc><lastmod>2026-10-25</lastmod></url>
 </urlset>
