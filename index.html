@@ -269,6 +269,25 @@ body.study-lock{overflow:hidden}
 .affiliate-copy span{font-size:.77rem;color:#607788;line-height:1.55;overflow-wrap:anywhere}
 .affiliate-arrow{color:#7f94a2}
 @media(max-width:630px){.affiliate-slot{margin:15px 0;padding:15px 13px}.affiliate-link{padding:12px 10px}}
+
+/* v7 unified learning library */
+.learning-hub{background:#fff;border:1px solid #dfe8ed;box-shadow:0 6px 27px #0e283a0e;border-radius:18px;padding:24px;margin:18px 0}
+.learning-head{display:flex;align-items:end;gap:12px;justify-content:space-between;margin-bottom:8px}
+.learning-head h2{font:700 1.34rem/1.4 "Yu Mincho",serif;margin:0}
+.learning-more{font-size:.76rem;color:#4a6c83;white-space:nowrap;text-decoration:none}
+.learning-more:hover{text-decoration:underline}
+.learning-intro{font-size:.81rem;line-height:1.85;color:#647c8e;margin:0 0 15px}
+.learning-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.learning-list a{display:flex;align-items:center;gap:10px;padding:12px 11px;min-width:0;background:#fafcfd;border:1px solid #e2e9ee;border-radius:10px;color:#29485e;text-decoration:none;min-height:56px}
+.learning-list a:hover,.learning-tools a:hover{background:#f0f6f9;border-color:#b8cbd7}
+.learning-list small{font:700 .83rem Georgia,serif;color:#ad8650}
+.learning-list a>span:nth-child(2){flex:1;font-size:.8rem;line-height:1.45;font-weight:650}
+.learning-list a>span:last-child{color:#8c9eaa}
+.learning-tools{border-top:1px solid #e6edf0;margin-top:18px;padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.learning-tools a{display:flex;align-items:center;gap:13px;background:#f2f7f9;border:1px solid #deebef;border-radius:11px;padding:12px 14px;color:#28495f;text-decoration:none}
+.learning-tools a>span:first-child{font:1.5rem Georgia,serif;color:#688da1}
+.learning-tools strong,.learning-tools small{display:block}.learning-tools strong{font-size:.81rem}.learning-tools small{font-size:.72rem;color:#718795}
+@media(max-width:630px){.learning-hub{padding:17px 15px;border-radius:15px;margin:16px 0}.learning-head{align-items:start;flex-direction:column;gap:5px;margin-bottom:10px}.learning-head h2{font-size:1.23rem}.learning-list{grid-template-columns:1fr}.learning-list a{min-height:51px;padding:11px}.learning-tools{grid-template-columns:1fr;gap:8px}.learning-intro{font-size:.79rem}}
 </style>
 <!-- Google Analytics 4: 測点ノート (Cloudflare Web Analytics と併用) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BCL3C7M6H5"></script>
@@ -298,9 +317,23 @@ body.study-lock{overflow:hidden}
 <p class="practice-hint">短い休憩には10問、じっくり取り組む日は60問から。</p>
 <button class="lesson-entry" id="homeLesson" type="button"><span class="lesson-entry-symbol" aria-hidden="true">▤</span><span><strong>分野別ミニテキスト</strong><small>8分野の基礎を、演習前に確認する</small></span><span class="lesson-entry-arrow" aria-hidden="true">→</span></button></section>
 <aside class="affiliate-slot hide" id="affiliateHome" aria-label="学習教材・広告"></aside>
+<section class="learning-hub" aria-labelledby="learningHubTitle">
+<div class="learning-head"><div><span class="section-kicker">LEARNING LIBRARY</span><h2 id="learningHubTitle">学習ガイドと計算ツール</h2></div><a class="learning-more" href="guide/">ガイド一覧を見る →</a></div>
+<p class="learning-intro">つまずいた分野は、解説を読んでから480問で確かめましょう。5本の独立した解説と便利な計算ツールをまとめました。</p>
+<div class="learning-list">
+<a href="guide/a1.html"><small>01</small><span>座標法による面積計算</span><span aria-hidden="true">↗</span></a>
+<a href="guide/a2.html"><small>02</small><span>方向角と象限補正</span><span aria-hidden="true">↗</span></a>
+<a href="guide/a3.html"><small>03</small><span>水準測量の器高式・昇降式</span><span aria-hidden="true">↗</span></a>
+<a href="guide/a4.html"><small>04</small><span>トラバース測量と閉合差</span><span aria-hidden="true">↗</span></a>
+<a href="guide/gnss.html"><small>05</small><span>GNSS測量の基礎</span><span aria-hidden="true">↗</span></a>
+</div>
+<div class="learning-tools"><a href="tools/coordinates.html"><span aria-hidden="true">▦</span><span><strong>座標・面積の計算</strong><small>計算過程を確認</small></span></a><a href="tools/pace.html"><span aria-hidden="true">◷</span><span><strong>学習ペース計算</strong><small>毎日の目標を計画</small></span></a></div>
+</section>
+
 <section class="more-info" aria-label="アプリについて">
-<details class="info-details"><summary>使い方と学習データについて <span aria-hidden="true">＋</span></summary><div class="info-details-body"><p>分野と問題数を選んで4択に回答すると、正誤と解説を確認できます。計算ツールは数値を自分で入力する方式。解答回数や誤答履歴は端末内に保存され、ほかの端末とは同期されません。</p><p><a href="https://nyantaro3588.github.io/sokuryo/">測点ノートの教材一覧へ →</a></p></div></details>
-<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v6 ・ 2026.10.24</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<details class="info-details"><summary>使い方と学習データについて <span aria-hidden="true">＋</span></summary><div class="info-details-body"><p>分野と問題数を選んで4択に回答すると、正誤と解説を確認できます。計算ツールは数値を自分で入力する方式。解答回数や誤答履歴は端末内に保存され、ほかの端末とは同期されません。</p><p><a href="guide/">学習ガイド一覧へ →</a></p></div></details>
+<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v7 ・ 2026.10.25</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<li><time datetime="2026-10-25">2026.10.25</time><div><strong>v7｜学習サイトを一本化</strong><p>5本の学習ガイド、座標計算、学習ペース計算を問題集アプリ側に統合しました。</p></div></li>
 <li><time datetime="2026-10-24">2026.10.24</time><div><strong>v6｜教材紹介枠の準備</strong><p>ホームと結果画面の紹介枠を整備。広告は媒体・提携先の承認が完了するまで表示しません。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v5｜ミニテキストと用語解説</strong><p>全8分野の要点テキストと、問題文から呼び出せる用語辞典を追加しました。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v4｜画面デザインを刷新</strong><p>演習への導線を短縮。分野選択を折りたたみ式にし、情報表示を整理しました。</p></div></li>
@@ -332,7 +365,7 @@ body.study-lock{overflow:hidden}
     <p class="calc-subnotes">※問題の数字は自動入力しません。正解を判定する機能ではなく、計算の補助です。結果は学習用の参考値です。計算欄の数値は次の問題へ持ち越しません。</p>
   </div>
 </section>
-<footer class="footer"><div class="container"><div class="footer-brand">測点ノート <span>／ 測量士補 問題集</span></div><nav aria-label="フッターリンク"><a href="https://nyantaro3588.github.io/sokuryo/">教材一覧</a><a href="intro20.html">入門20問</a><a href="#updates">更新履歴</a><a href="https://nyantaro3588.github.io/sokuryo/privacy.html">プライバシーポリシー</a></nav><p>© 測点ノート｜オリジナル無料学習教材</p></div></footer>
+<footer class="footer"><div class="container"><div class="footer-brand">測点ノート <span>／ 測量士補 問題集</span></div><nav aria-label="フッターリンク"><a href="guide/">学習ガイド</a><a href="tools/coordinates.html">座標計算</a><a href="tools/pace.html">ペース計算</a><a href="intro20.html">入門20問</a><a href="#updates">更新履歴</a><a href="privacy.html">プライバシーポリシー</a></nav><p>© 測点ノート｜オリジナル無料学習教材</p></div></footer>
 <script src="./data/chapters.js"></script>
 <script src="./data/glossary-a.js"></script>
 <script src="./data/glossary-b.js"></script>
