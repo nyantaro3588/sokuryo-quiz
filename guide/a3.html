@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>水準測量の計算｜器高式と昇降式の使い分けと検算｜測点ノート</title>
+<meta name="description" content="水準測量で標高を求める計算を、器高式と昇降式の両方で解説します。野帳の書き方、必ず成立する検算式、レベルの据え方で消える誤差と残る誤差まで。例題つき。">
+<meta property="og:title" content="水準測量の計算｜器高式と昇降式の使い分けと検算">
+<meta property="og:description" content="後視は足し、前視は引く。二つの記帳方式を例題で整理します。">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --ink:#16324A; --ink-soft:#4A6480; --paper:#EDF1F4;
+  --rule:#C3D4E0; --vermilion:#B4372F; --stake:#C8952A; --white:#FBFCFD;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  line-height:1.95; font-size:16.5px;
+  background-image:
+    linear-gradient(var(--rule) .5px,transparent .5px),
+    linear-gradient(90deg,var(--rule) .5px,transparent .5px);
+  background-size:28px 28px; background-position:-.5px -.5px;
+}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho",YuMincho,serif}
+.mono{font-family:"SFMono-Regular",Consolas,"Courier New",monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+
+.masthead{border-bottom:1px solid var(--rule);background:rgba(251,252,253,.88)}
+.masthead .wrap{display:flex;align-items:baseline;gap:12px;padding:14px 20px}
+.masthead a{color:var(--ink);text-decoration:none;font-size:17px;font-weight:600;letter-spacing:.12em}
+.masthead .here{font-size:11px;letter-spacing:.2em;color:var(--ink-soft)}
+
+article{background:var(--white);border:1px solid var(--rule);padding:40px 34px;margin:34px 0}
+.eyebrow{display:inline-block;font-size:11px;letter-spacing:.26em;color:var(--vermilion);
+  border-bottom:1px solid var(--vermilion);padding-bottom:3px;margin-bottom:18px}
+h1{font-size:clamp(23px,5.4vw,32px);line-height:1.48;font-weight:600;margin-bottom:18px}
+.stand{font-size:15px;color:var(--ink-soft);border-left:2px solid var(--stake);padding-left:14px;margin-bottom:34px}
+h2{font-size:19px;font-weight:600;letter-spacing:.03em;margin:42px 0 14px;
+  border-bottom:1px solid var(--ink);padding-bottom:7px}
+h3{font-size:16px;font-weight:600;margin:28px 0 8px}
+p{margin-bottom:17px}
+ul,ol{margin:0 0 18px 1.4em}
+li{margin-bottom:7px}
+strong{background:linear-gradient(transparent 62%,rgba(180,55,47,.2) 62%)}
+
+.formula{background:var(--paper);border:1px solid var(--rule);padding:18px 20px;margin:8px 0 22px;
+  font-size:16px;line-height:2.1;text-align:center}
+.formula .big{font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:8px 0 22px}
+th{font-size:11px;letter-spacing:.12em;color:var(--ink-soft);font-weight:400;text-align:left;
+  padding:0 9px 7px;border-bottom:1px solid var(--rule)}
+td{padding:7px 9px;border-bottom:1px solid var(--rule)}
+tr.sum td{border-bottom:none;border-top:1.5px solid var(--ink);font-weight:600}
+.scroll{overflow-x:auto}
+.scroll table{min-width:400px}
+
+.callout{border:1px solid var(--vermilion);padding:18px 20px;margin:24px 0;font-size:15px}
+.callout .t{font-size:12px;letter-spacing:.16em;color:var(--vermilion);margin-bottom:8px}
+
+.cta{background:var(--ink);color:var(--paper);padding:28px 24px;margin:38px 0 0}
+.cta h2{color:var(--paper);border-bottom-color:var(--stake);margin-top:0;font-size:17px}
+.cta p{font-size:14px;color:#C3D4E0}
+.cta a{color:var(--paper);text-decoration:none;border-bottom:1px solid var(--stake);padding-bottom:2px}
+.cta a:hover{border-bottom-color:#fff}
+
+.related{display:grid;gap:10px;margin-top:34px}
+.related a{display:block;background:var(--white);border:1px solid var(--rule);padding:14px 18px;
+  color:var(--ink);text-decoration:none;font-size:15px}
+.related a:hover{border-color:var(--ink)}
+.related .k{font-size:11px;letter-spacing:.14em;color:var(--ink-soft);display:block}
+
+footer{border-top:1px solid var(--rule);padding:22px 0 40px;font-size:12px;color:var(--ink-soft)}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:var(--ink-soft)}
+:focus-visible{outline:2px solid var(--vermilion);outline-offset:2px}
+@media (max-width:560px){
+  article{padding:28px 18px;margin:22px 0}
+  body{font-size:16px;line-height:1.9}
+  .formula{font-size:15px;padding:15px 13px}
+}
+.moved-article-nav{margin-top:34px;border-top:1px solid #dbe4e9;padding:19px 0 0;color:#637b8d;font-size:.82rem}.moved-article-nav a{color:#315f78;text-decoration:underline;text-underline-offset:3px}
+</style>
+
+<!-- Google Analytics 4: 測点ノート (Cloudflare Web Analytics と併用) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BCL3C7M6H5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-BCL3C7M6H5');
+</script>
+<!-- /Google Analytics 4 -->
+<link rel="canonical" href="https://nyantaro3588.github.io/sokuryo-quiz/guide/a3.html">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="mincho" href="../">測点ノート</a>
+    <span class="here mono">解説 / LEVELING</span>
+  </div>
+</header>
+
+<div class="wrap">
+<article>
+  <span class="eyebrow">計算の解説</span>
+  <h1 class="mincho">水準測量の計算<br>器高式と昇降式の使い分け</h1>
+  <p class="stand">後視と前視をどちらから引くのか、そこで迷うと野帳が埋まりません。二つの記帳方式の違いと、検算まで含めた手順を整理します。</p>
+
+  <h2>水準測量が求めているもの</h2>
+  <p>水準測量は、標高の分かっている点を起点に、別の点の標高を求める作業です。レベルで水平な視線をつくり、標尺の目盛を読む。それだけの繰り返しですが、読んだ数値をどう足し引きするかで二つの流儀に分かれます。</p>
+  <p>共通する原則は一つです。</p>
+  <div class="formula">
+    <span class="big">求める点の標高 ＝ 既知点の標高 ＋ 後視 − 前視</span>
+  </div>
+  <p><strong>後視は足し、前視は引く。</strong>後視は既に標高の分かっている点を振り返って読む値、前視はこれから標高を求める点を読む値です。「後ろを見て足し、前を見て引く」と覚えると取り違えが減ります。</p>
+
+  <h2>器高式</h2>
+  <p>器高式は、レベルの視線の高さそのものを一度計算してしまう方式です。</p>
+  <ol>
+    <li>器高 ＝ 既知点の標高 ＋ 後視</li>
+    <li>各点の標高 ＝ 器高 − その点の前視</li>
+  </ol>
+  <p>据えた場所から複数の点を観測する場合に強い方式です。器高を一度出せば、あとは前視を引くだけで何点でも標高が出ます。地形測量のように、一箇所から多くの点を測る作業では器高式が有利です。</p>
+
+  <h3>例題</h3>
+  <p>標高25.000mの点Aから出発し、点B、点Cの標高を求めます。</p>
+  <div class="scroll">
+  <table>
+    <tr><th>測点</th><th>後視</th><th>器高</th><th>前視</th><th>標高</th></tr>
+    <tr><td class="mono">A</td><td class="mono">1.520</td><td class="mono">26.520</td><td class="mono">—</td><td class="mono">25.000</td></tr>
+    <tr><td class="mono">B</td><td class="mono">1.850</td><td class="mono">27.390</td><td class="mono">0.980</td><td class="mono">25.540</td></tr>
+    <tr><td class="mono">C</td><td class="mono">—</td><td class="mono">—</td><td class="mono">2.310</td><td class="mono">25.080</td></tr>
+  </table>
+  </div>
+  <p>点Aの器高は 25.000 ＋ 1.520 ＝ 26.520。点Bの標高は 26.520 − 0.980 ＝ 25.540。ここでレベルを移動し、点Bを後視して 25.540 ＋ 1.850 ＝ 27.390 が新しい器高。点Cの標高は 27.390 − 2.310 ＝ 25.080 となります。</p>
+
+  <h2>昇降式</h2>
+  <p>昇降式は、区間ごとに上がったか下がったかだけを追う方式です。</p>
+  <div class="formula">
+    昇降 ＝ 後視 − 前視<br>
+    <span class="note" style="font-size:14px">プラスなら昇り、マイナスなら降り</span>
+  </div>
+  <p>上の例で言えば、A→Bは 1.520 − 0.980 ＝ ＋0.540 で0.540m上がった。B→Cは 1.850 − 2.310 ＝ −0.460 で0.460m下がった。出発点の25.000に順に足していけば、25.540、25.080と同じ答えに行き着きます。</p>
+  <p>路線に沿って一直線に進む作業に向いた方式です。<strong>どちらの方式を使っても答えは一致します。</strong>問題文で指定されていなければ、器高式の方が計算回数が少なく済みます。</p>
+
+  <h2>検算の方法</h2>
+  <p>水準測量には、必ず成立する関係があります。</p>
+  <div class="formula">
+    <span class="big">Σ後視 − Σ前視 ＝ 最終点の標高 − 出発点の標高</span>
+  </div>
+  <p>上の例で確かめます。後視の合計は 1.520 ＋ 1.850 ＝ 3.370。前視の合計は 0.980 ＋ 2.310 ＝ 3.290。差は ＋0.080 です。一方、最終点Cの標高25.080から出発点Aの25.000を引いても ＋0.080。一致しました。</p>
+  <p><strong>この検算は数十秒で終わります。</strong>合わなければ、どこかで足し引きを取り違えています。試験でも実務でも、必ず通してください。</p>
+
+  <h2>誤差を消すための据え方</h2>
+  <p>レベルは、前後の標尺のちょうど中間に据えます。この一手間で、次の三つの誤差がまとめて消えます。</p>
+  <ul>
+    <li>視準線誤差（視準線が水平でないことによるずれ）</li>
+    <li>地球の曲率による誤差</li>
+    <li>大気の屈折による誤差</li>
+  </ul>
+  <p>いずれも距離に比例して生じる誤差ですので、前後を等距離にすれば後視と前視で同量発生し、引き算で相殺されます。</p>
+  <p>ただし<strong>標尺そのものの目盛誤差は、据付位置と無関係に残ります。</strong>これは2本の標尺を交互に使い、据付回数を偶数にすることで相殺します。試験でよく問われる区別です。</p>
+
+  <h2>失点しやすい箇所</h2>
+  <div class="callout">
+    <div class="t">よくある間違い</div>
+    <ul style="margin-bottom:0">
+      <li>後視と前視を逆に処理する。符号が全部ひっくり返ります</li>
+      <li>もりかえ点で、後視を取り忘れる。レベルを移動したら必ず後視から始めます</li>
+      <li>器高式で、器高を更新せずに古い器高を使い続ける</li>
+      <li>検算をしないまま次の設問へ進む</li>
+      <li>単位。標尺の読みはメートル単位ですが、ミリメートルで書かれた出題に引っかかる形があります</li>
+    </ul>
+  </div>
+
+  <div class="cta">
+    <h2>解いて確かめる</h2>
+    <p>水準測量の計算問題も含めた一問一答を置いています。解説つきで、順不同に出ます。</p>
+    <p style="margin:0"><a href="../">測量士補 一問一答を開く →</a></p>
+  </div>
+
+  <div class="related">
+    <a href="a4.html"><span class="k">次に読む</span>トラバース測量の計算手順と閉合誤差の調整</a>
+    <a href="a1.html"><span class="k">あわせて読む</span>座標法による面積の求め方</a>
+  </div>
+<nav class="moved-article-nav" aria-label="学習ガイドナビゲーション"><a href="../">480問演習</a> · <a href="index.html">学習ガイド一覧</a> · <a href="../tools/coordinates.html">座標計算</a></nav>
+</article>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span><a href="../">← 測点ノートに戻る</a>　<a href="../privacy.html">プライバシーポリシー</a></span>
+    <span class="mono">A-3</span>
+  </div>
+</footer>
+
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f097692fd8bf4500bed2fdbecf0c93d3"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
