@@ -1,0 +1,66 @@
+<!doctype html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GNSS測量の基礎｜GPS・RTK・標高の計算｜測点ノート</title>
+<meta name="description" content="測量士補に必要なGNSS測量の基礎。GPSとの違い、スタティック法、RTK法、誤差、楕円体高とジオイド高、座標計算を例題付きで解説。">
+<meta property="og:type" content="article"><meta property="og:title" content="GNSS測量の基礎｜GPS・RTK・標高の計算">
+<link rel="canonical" href="https://nyantaro3588.github.io/sokuryo-quiz/guide/gnss.html">
+<style>
+:root{--ink:#173047;--muted:#607789;--gold:#b89254;--line:#dae4e9}
+*{box-sizing:border-box}body{margin:0;background:#f5f7f8;color:var(--ink);font:16px/1.92 "Hiragino Sans","Yu Gothic",Meiryo,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:0 18px}header{background:#152b3d;color:#fff;padding:17px 0}header a{color:#fff;text-decoration:none;font-weight:bold}
+article{background:#fff;margin:24px 0;padding:32px;border:1px solid var(--line);border-radius:16px}
+h1{font:700 clamp(1.6rem,5vw,2.15rem)/1.5 "Yu Mincho",serif}h2{margin-top:34px;border-bottom:1px solid var(--line);padding-bottom:8px;font-size:1.22rem}
+h3{font-size:1rem;margin:24px 0 4px}p{margin:10px 0 18px}li{margin:9px 0}a{color:#315d7b}
+.lead{border-left:3px solid var(--gold);padding-left:14px;color:var(--muted)}
+.tag{color:#9b7950;font-size:.76rem;font-weight:bold;letter-spacing:.11em}
+.formula{background:#f0f5f8;text-align:center;border:1px solid var(--line);border-radius:11px;padding:16px 12px;font-weight:bold;margin:17px 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}th{background:#eef4f7}
+.notice{background:#fff8ed;border-left:4px solid #b89254;padding:13px 16px;font-size:.88rem}
+nav{display:grid;gap:9px;margin:27px 0 0}nav a{display:block;border:1px solid var(--line);background:#f4f8fa;border-radius:10px;padding:12px;text-decoration:none}
+footer{padding:19px 0 30px;border-top:1px solid var(--line);font-size:.78rem}
+@media(max-width:620px){article{padding:23px 17px;margin:13px 0}table{font-size:.8rem}th,td{padding:7px}}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BCL3C7M6H5"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-BCL3C7M6H5');</script>
+</head><body><header><div class="wrap"><a href="../">◈ 測点ノート｜480問問題集</a></div></header><div class="wrap"><article><span class="tag">STUDY GUIDE 05 / GEODETIC SURVEYING</span>
+<h1>GNSS測量の基礎<br>GPS・観測方式・標高を理解する</h1>
+<p class="lead">GNSS測量は、衛星信号から位置や高さを求める技術。衛星の種類、観測方式、誤差の原因、高さの基準を区別すれば、計算問題も整理して解けるようになります。</p><h2>1. GNSSとGPSは同じではない</h2>
+<p><strong>GNSS（全球測位衛星システム）</strong>は、人工衛星を使って位置や時刻を求めるシステムの総称です。GPSはアメリカが運用する衛星測位システムで、GNSSの一種。ほかにも欧州のGalileo、ロシアのGLONASS、日本の準天頂衛星システム「みちびき」などがあります。</p>
+<p>受信機は複数の衛星から信号を受け、衛星の位置と信号の伝搬に関する情報から位置を求めます。衛星が多いほど必ず高精度になるわけではなく、配置や反射物、観測の条件が重要です。</p>
+<h2>2. 単独測位と相対測位</h2>
+<p>一つの受信機で位置を求める方法を単独測位、複数の受信機で共通の衛星信号を観測し、観測点間の相対的な位置を求める方法を相対測位と呼びます。高精度な測量では、相対測位や補正情報を利用する方法が重要です。</p>
+<p>既知点Aから新点Bへの位置差を表す三次元ベクトルを<strong>基線ベクトル</strong>と呼びます。座標差ΔX、ΔY、ΔZを使って二点間の位置関係を表します。</p>
+<h2>3. スタティック法とRTK法</h2>
+<table><thead><tr><th>方式</th><th>特徴</th></tr></thead><tbody>
+<tr><th>スタティック法</th><td>受信機を定点に置き、複数点で一定時間同時観測する。取得したデータを処理して位置差を求める。</td></tr>
+<tr><th>RTK法</th><td>基準局などの補正情報を使い、移動局の位置をリアルタイムに求める。</td></tr>
+<tr><th>ネットワーク型RTK法</th><td>電子基準点網などから得る補正情報を利用する。現地に独立した基準局を置かない運用も可能。</td></tr>
+</tbody></table>
+<p>名称の暗記よりも、<strong>「一定時間の定点観測」か「補正を使ったリアルタイム測位」か</strong>を理解するのが大切です。観測時間や精度の具体的条件は、適用する最新の作業規程の準則で確認しましょう。</p>
+<h2>4. なぜ測位に誤差が生じるのか</h2>
+<ul>
+<li><strong>マルチパス：</strong>建物や水面で反射した信号を受信し、距離測定が乱れる現象。</li>
+<li><strong>DOP：</strong>衛星の幾何学的配置が位置の決定に与える影響を表す指標。</li>
+<li><strong>電離層・対流圏の遅延：</strong>衛星信号が大気を通る間に伝搬が遅れる影響。</li>
+<li><strong>サイクルスリップ：</strong>搬送波位相の追跡が途切れ、観測された整数周期に飛びが生じる現象。</li>
+</ul>
+<p>観測点の選定では、上空の見通しと反射物の有無を確認します。正確な観測は機器の性能だけでなく、環境と点検の結果によっても左右されます。</p>
+<h2>5. 楕円体高・ジオイド高・標高</h2>
+<p><strong>楕円体高 h</strong>は基準楕円体からの高さ、<strong>ジオイド高 N</strong>は楕円体からジオイドまでの高さの差、<strong>標高 H</strong>は所定の高さの基準面からの高さです。基本的な幾何学関係は次の通りです。</p>
+<div class="formula">H ≒ h − N</div>
+<p>例：楕円体高が52.600m、ジオイド高が38.150mなら、基本式で得られる差は52.600−38.150＝<strong>14.450m</strong>です。符号と基準面の違いを意識しましょう。</p>
+<div class="notice">日本では2025年度の標高成果改定に伴い、ジオイド2024や基準面補正量の扱いがあります。実際の公共測量の標高計算では、単純な差だけでは済まない場合があるため、最新の国土地理院の案内に従ってください。</div>
+<h2>6. 基線ベクトルから距離を計算する</h2>
+<p>二点間の座標差がΔX＝30.000m、ΔY＝40.000mなら、水平距離は次の式で求められます。</p>
+<div class="formula">D＝√(ΔX²＋ΔY²)<br>＝√(30²＋40²)＝50.000m</div>
+<p>さらにΔZ＝12.000mの差があるとき、三次元距離は√(30²＋40²＋12²)＝√2644≒<strong>51.420m</strong>。水平距離と三次元距離を取り違えないようにしましょう。</p>
+<h2>7. ミニ確認問題</h2>
+<ol><li>GPSはGNSSと同じ意味か、それともGNSSの一種か。</li><li>スタティック法とRTK法のうち、移動局の位置をリアルタイムに求めるのはどちらか。</li><li>楕円体高45.000m、ジオイド高34.200mの場合、基本式による差は何mか。</li></ol>
+<details><summary><strong>答えを開く</strong></summary><p>① GNSSの一種。② RTK法。③ 45.000−34.200＝10.800m。ただし実務の標高計算には最新の取扱いを確認してください。</p></details>
+<h2>8. 公式資料と学習の続き</h2>
+<p>国土地理院の現行試験科目では、GNSS測量は「測地測量」に含まれます。測点ノートの8分野は学習用の細分化で、公式科目名と同じではありません。</p>
+<ul>
+<li><a href="https://www.gsi.go.jp/sokuryosidou/examsubjects.html" target="_blank" rel="noopener noreferrer">国土地理院｜測量士・測量士補試験科目</a></li>
+<li><a href="https://www.gsi.go.jp/sokuryosidou/sokuryosidou41048.html" target="_blank" rel="noopener noreferrer">国土地理院｜標高成果改定と公共測量での対応</a></li>
+<li><a href="https://www.gsi.go.jp/sokuchikijun/suijun-survey.html" target="_blank" rel="noopener noreferrer">国土地理院｜GNSS標高測量</a></li>
+</ul>
+<nav aria-label="学習リンク"><a href="../">480問アプリで理解度を試す →</a><a href="a4.html">トラバース測量の解説へ →</a><a href="index.html">学習ガイド一覧へ →</a></nav></article></div><footer><div class="wrap"><a href="../">測点ノートへ戻る</a> ／ <a href="../privacy.html">プライバシーポリシー</a><p>無料学習用の独自教材です。公式過去問題ではありません。</p></div></footer>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"f097692fd8bf4500bed2fdbecf0c93d3"}'></script></body></html>
