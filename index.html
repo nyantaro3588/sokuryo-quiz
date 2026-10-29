@@ -332,7 +332,8 @@ body.study-lock{overflow:hidden}
 
 <section class="more-info" aria-label="アプリについて">
 <details class="info-details"><summary>使い方と学習データについて <span aria-hidden="true">＋</span></summary><div class="info-details-body"><p>分野と問題数を選んで4択に回答すると、正誤と解説を確認できます。計算ツールは数値を自分で入力する方式。解答回数や誤答履歴は端末内に保存され、ほかの端末とは同期されません。</p><p><a href="guide/">学習ガイド一覧へ →</a></p></div></details>
-<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v7 ・ 2026.10.25</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v8 ・ 2026.10.29</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<li><time datetime="2026-10-29">2026.10.29</time><div><strong>v8｜PWA広告掲載の準備を更新</strong><p>提携ASPの回答に合わせ、登録URLの確認、外部リンクの参照元情報とクリック計測、オフライン時の非表示を整備。正規広告URLが未設定のため広告は引き続き非表示です。</p></div></li>
 <li><time datetime="2026-10-25">2026.10.25</time><div><strong>v7｜学習サイトを一本化</strong><p>5本の学習ガイド、座標計算、学習ペース計算を問題集アプリ側に統合しました。</p></div></li>
 <li><time datetime="2026-10-24">2026.10.24</time><div><strong>v6｜教材紹介枠の準備</strong><p>ホームと結果画面の紹介枠を整備。広告は媒体・提携先の承認が完了するまで表示しません。</p></div></li>
 <li><time datetime="2026-10-14">2026.10.14</time><div><strong>v5｜ミニテキストと用語解説</strong><p>全8分野の要点テキストと、問題文から呼び出せる用語辞典を追加しました。</p></div></li>
@@ -380,19 +381,32 @@ function trackStudy(name, params={}) {
   if (typeof window.gtag === "function") window.gtag("event", name, params);
 }
 
-/* Approval-gated recommendations: no advertiser links before PWA approval. */
+/* Affiliate cards: registered same-URL media only. The approved URL is never rewritten. */
 const AFFILIATE=window.SOKUTEN_AFFILIATE||{};
 function approvedAffiliateUrl(raw){
  if(typeof raw!=="string"||!raw)return null;
  try{const u=new URL(raw);return u.protocol==="https:"&&u.hostname&&!u.username&&!u.password?raw:null}
  catch(_){return null}
 }
+function registeredAffiliatePage(){
+ try{
+  const registered=new URL(AFFILIATE.registeredMedia);
+  const path=registered.pathname.endsWith("/")?registered.pathname:registered.pathname+"/";
+  return registered.protocol==="https:"&&location.origin===registered.origin
+    &&(location.pathname===path||location.pathname===path+"index.html");
+ }catch(_){return false}
+}
+function affiliateAppMode(){
+ return ((typeof window.matchMedia==="function"&&window.matchMedia("(display-mode: standalone)").matches)
+   ||navigator.standalone===true)?"standalone":"browser";
+}
 function renderAffiliateSlot(position,visible=true){
  const mount=el(position==="home"?"affiliateHome":"affiliateResult");
  if(!mount)return;
  mount.classList.add("hide");
  mount.replaceChildren();
- if(!visible||AFFILIATE.enabled!==true||AFFILIATE.approvedForPwa!==true||!Array.isArray(AFFILIATE.offers)
+ if(!visible||navigator.onLine===false||!registeredAffiliatePage()
+   ||AFFILIATE.enabled!==true||AFFILIATE.approvedForPwa!==true||!Array.isArray(AFFILIATE.offers)
    ||typeof AFFILIATE.provider!=="string"||!AFFILIATE.provider.trim()
    ||typeof AFFILIATE.disclosure!=="string"||!AFFILIATE.disclosure.trim())return;
  const offers=AFFILIATE.offers.filter(o=>o&&["both",position].includes(o.placement)
@@ -400,23 +414,27 @@ function renderAffiliateSlot(position,visible=true){
    &&approvedAffiliateUrl(o.url)).slice(0,2);
  if(!offers.length)return;
  const heading=document.createElement("div");heading.className="affiliate-heading";
- const kicker=document.createElement("span");kicker.className="affiliate-kicker";kicker.textContent="PR · 学習教材";
- const h3=document.createElement("h3");h3.textContent="学習を深める参考書";
+ const kicker=document.createElement("span");kicker.className="affiliate-kicker";kicker.textContent="PR · 広告";
+ const h3=document.createElement("h3");h3.textContent=AFFILIATE.heading||"学習に役立つ商品";
  heading.append(kicker,h3);
  const disclosure=document.createElement("p");disclosure.className="affiliate-disclosure";disclosure.textContent=AFFILIATE.disclosure;
  mount.append(heading,disclosure);
  for(const o of offers){
   const link=document.createElement("a");link.className="affiliate-link";
-  link.href=o.url;link.target="_blank";link.rel="sponsored noopener noreferrer";
+  link.href=o.url;link.target="_blank";link.rel="sponsored noopener";
   const emblem=document.createElement("span");emblem.className="affiliate-book";emblem.textContent="▤";emblem.setAttribute("aria-hidden","true");
   const copy=document.createElement("span");copy.className="affiliate-copy";
-  const category=document.createElement("small");category.textContent=o.category||"参考書";
+  const category=document.createElement("small");category.textContent=o.category||"おすすめ";
   const title=document.createElement("strong");title.textContent=o.title;
   const description=document.createElement("span");description.textContent=o.description;
   copy.append(category,title,description);
   const arrow=document.createElement("span");arrow.className="affiliate-arrow";arrow.textContent="↗";arrow.setAttribute("aria-hidden","true");
   link.append(emblem,copy,arrow);
-  link.addEventListener("click",()=>trackStudy("affiliate_click",{placement:position,offer_id:o.id,partner:AFFILIATE.provider}));
+  link.setAttribute("aria-label","PR・広告："+o.title+"（外部サイトで開く）");
+  link.dataset.affiliatePlacement=position;
+  link.addEventListener("click",()=>trackStudy("affiliate_click",{
+    placement:position,offer_id:o.id,partner:AFFILIATE.provider,app_mode:affiliateAppMode()
+  }));
   mount.append(link);
  }
  mount.classList.remove("hide");
@@ -714,6 +732,10 @@ el("calcPanel").addEventListener("keydown",event=>{
 });
 
 el("start").onclick=start;el("quit").onclick=()=>{count();switchView("homeView")};el("back").onclick=()=>{count();switchView("homeView")};el("retry").onclick=start;el("scope").addEventListener("change",refreshLimitOptions);chapters();refreshLimitOptions();count();renderAffiliateSlot("home");
+for(const state of ["online","offline"])window.addEventListener(state,()=>{
+ renderAffiliateSlot("home");
+ renderAffiliateSlot("result",!el("resultView").classList.contains("hide"));
+});
 
 // Installable PWA. An actual installation prompt appears where the browser supports it.
 // On iOS, installation uses the OS share menu instead of beforeinstallprompt.
