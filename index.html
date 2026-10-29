@@ -268,6 +268,12 @@ body.study-lock{overflow:hidden}
 .affiliate-copy strong{font-size:.9rem;line-height:1.45;overflow-wrap:anywhere}
 .affiliate-copy span{font-size:.77rem;color:#607788;line-height:1.55;overflow-wrap:anywhere}
 .affiliate-arrow{color:#7f94a2}
+/* v9: official ASP text source and its 1px impression pixel are kept together */
+.affiliate-source{display:flex;align-items:center;gap:10px;margin-top:8px;padding:13px 14px;background:#fafcfd;border:1px solid #e0e8ed;border-radius:11px}
+.affiliate-source a{display:inline-flex;align-items:center;flex:1;min-height:42px;font-size:.95rem;font-weight:700;color:#244259;overflow-wrap:anywhere;text-underline-offset:3px}
+.affiliate-source a:hover{color:#a36e20}
+.affiliate-source::after{content:"↗";font-size:.9rem;color:#7f94a2}
+.affiliate-source:focus-within{outline:2px solid #be9656;outline-offset:2px}
 @media(max-width:630px){.affiliate-slot{margin:15px 0;padding:15px 13px}.affiliate-link{padding:12px 10px}}
 
 /* v7 unified learning library */
@@ -332,7 +338,8 @@ body.study-lock{overflow:hidden}
 
 <section class="more-info" aria-label="アプリについて">
 <details class="info-details"><summary>使い方と学習データについて <span aria-hidden="true">＋</span></summary><div class="info-details-body"><p>分野と問題数を選んで4択に回答すると、正誤と解説を確認できます。計算ツールは数値を自分で入力する方式。解答回数や誤答履歴は端末内に保存され、ほかの端末とは同期されません。</p><p><a href="guide/">学習ガイド一覧へ →</a></p></div></details>
-<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v8 ・ 2026.10.29</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<details class="info-details" id="updates"><summary>更新履歴 <span class="summary-meta">v9 ・ 2026.10.29</span><span aria-hidden="true">＋</span></summary><div class="info-details-body"><ol class="changelog">
+<li><time datetime="2026-10-29">2026.10.29</time><div><strong>v9｜楽天市場の正規広告を掲載</strong><p>もしもアフィリエイトで発行されたテキスト広告を、計測用画像も含めて原文のまま使用。ホーム・結果画面にPR表記付きで表示し、演習中とオフラインでは非表示にします。</p></div></li>
 <li><time datetime="2026-10-29">2026.10.29</time><div><strong>v8｜PWA広告掲載の準備を更新</strong><p>提携ASPの回答に合わせ、登録URLの確認、外部リンクの参照元情報とクリック計測、オフライン時の非表示を整備。正規広告URLが未設定のため広告は引き続き非表示です。</p></div></li>
 <li><time datetime="2026-10-25">2026.10.25</time><div><strong>v7｜学習サイトを一本化</strong><p>5本の学習ガイド、座標計算、学習ペース計算を問題集アプリ側に統合しました。</p></div></li>
 <li><time datetime="2026-10-24">2026.10.24</time><div><strong>v6｜教材紹介枠の準備</strong><p>ホームと結果画面の紹介枠を整備。広告は媒体・提携先の承認が完了するまで表示しません。</p></div></li>
@@ -381,7 +388,7 @@ function trackStudy(name, params={}) {
   if (typeof window.gtag === "function") window.gtag("event", name, params);
 }
 
-/* Affiliate cards: registered same-URL media only. The approved URL is never rewritten. */
+/* Affiliate cards: registered same-URL media only. Issued ASP HTML is kept intact. */
 const AFFILIATE=window.SOKUTEN_AFFILIATE||{};
 function approvedAffiliateUrl(raw){
  if(typeof raw!=="string"||!raw)return null;
@@ -400,6 +407,26 @@ function affiliateAppMode(){
  return ((typeof window.matchMedia==="function"&&window.matchMedia("(display-mode: standalone)").matches)
    ||navigator.standalone===true)?"standalone":"browser";
 }
+function approvedAffiliateSource(raw){
+ if(typeof raw!=="string"||!raw||raw.length>2000)return null;
+ const template=document.createElement("template");
+ template.innerHTML=raw;
+ const nodes=Array.from(template.content.children);
+ if(nodes.length!==2||nodes[0].tagName!=="A"||nodes[1].tagName!=="IMG")return null;
+ const link=nodes[0],pixel=nodes[1];
+ const href=link.getAttribute("href")||"",src=pixel.getAttribute("src")||"";
+ if(!href.startsWith("//af.moshimo.com/af/c/click?")
+   ||!src.startsWith("//i.moshimo.com/af/i/impression?")
+   ||pixel.getAttribute("width")!=="1"||pixel.getAttribute("height")!=="1")return null;
+ try{
+  const click=new URL(href,location.href),impression=new URL(src,location.href);
+  if(click.protocol!=="https:"||impression.protocol!=="https:")return null;
+  for(const key of ["a_id","p_id","pc_id","pl_id"]){
+   if(!click.searchParams.has(key)||click.searchParams.get(key)!==impression.searchParams.get(key))return null;
+  }
+ }catch(_){return null}
+ return {fragment:template.content,link};
+}
 function renderAffiliateSlot(position,visible=true){
  const mount=el(position==="home"?"affiliateHome":"affiliateResult");
  if(!mount)return;
@@ -410,8 +437,9 @@ function renderAffiliateSlot(position,visible=true){
    ||typeof AFFILIATE.provider!=="string"||!AFFILIATE.provider.trim()
    ||typeof AFFILIATE.disclosure!=="string"||!AFFILIATE.disclosure.trim())return;
  const offers=AFFILIATE.offers.filter(o=>o&&["both",position].includes(o.placement)
-   &&["id","title","description"].every(k=>typeof o[k]==="string"&&o[k].trim())
-   &&approvedAffiliateUrl(o.url)).slice(0,2);
+   &&typeof o.id==="string"&&o.id.trim()
+   &&(typeof o.html==="string"?Boolean(approvedAffiliateSource(o.html)):
+      (["title","description"].every(k=>typeof o[k]==="string"&&o[k].trim())&&approvedAffiliateUrl(o.url)))).slice(0,2);
  if(!offers.length)return;
  const heading=document.createElement("div");heading.className="affiliate-heading";
  const kicker=document.createElement("span");kicker.className="affiliate-kicker";kicker.textContent="PR · 広告";
@@ -420,6 +448,18 @@ function renderAffiliateSlot(position,visible=true){
  const disclosure=document.createElement("p");disclosure.className="affiliate-disclosure";disclosure.textContent=AFFILIATE.disclosure;
  mount.append(heading,disclosure);
  for(const o of offers){
+  if(typeof o.html==="string"){
+   // Render only the officially issued source. Do not modify its link attributes or tracking pixel.
+   const source=approvedAffiliateSource(o.html);
+   if(!source)continue;
+   const wrapper=document.createElement("div");wrapper.className="affiliate-source";
+   source.link.addEventListener("click",()=>trackStudy("affiliate_click",{
+    placement:position,offer_id:o.id,partner:AFFILIATE.provider,app_mode:affiliateAppMode()
+   }));
+   wrapper.append(source.fragment);
+   mount.append(wrapper);
+   continue;
+  }
   const link=document.createElement("a");link.className="affiliate-link";
   link.href=o.url;link.target="_blank";link.rel="sponsored noopener";
   const emblem=document.createElement("span");emblem.className="affiliate-book";emblem.textContent="▤";emblem.setAttribute("aria-hidden","true");
@@ -485,7 +525,7 @@ function chapters(){
     el("chapterPicker").open=false;
   });
 }
-function switchView(target){if(target!=="quizView"){closeCalculator();el("calcDock").classList.add("hide")}for(const id of ["homeView","quizView","resultView"])el(id).classList.toggle("hide",id!==target);renderAffiliateSlot("home");renderAffiliateSlot("result",target==="resultView");scrollTo({top:0,behavior:"smooth"})}
+function switchView(target){if(target!=="quizView"){closeCalculator();el("calcDock").classList.add("hide")}for(const id of ["homeView","quizView","resultView"])el(id).classList.toggle("hide",id!==target);renderAffiliateSlot("home",target==="homeView");renderAffiliateSlot("result",target==="resultView");scrollTo({top:0,behavior:"smooth"})}
 function diagram(f){
  if(!f)return "";
  const type=f.type;
@@ -733,7 +773,7 @@ el("calcPanel").addEventListener("keydown",event=>{
 
 el("start").onclick=start;el("quit").onclick=()=>{count();switchView("homeView")};el("back").onclick=()=>{count();switchView("homeView")};el("retry").onclick=start;el("scope").addEventListener("change",refreshLimitOptions);chapters();refreshLimitOptions();count();renderAffiliateSlot("home");
 for(const state of ["online","offline"])window.addEventListener(state,()=>{
- renderAffiliateSlot("home");
+ renderAffiliateSlot("home",!el("homeView").classList.contains("hide"));
  renderAffiliateSlot("result",!el("resultView").classList.contains("hide"));
 });
 
